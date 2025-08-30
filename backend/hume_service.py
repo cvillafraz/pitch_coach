@@ -4,7 +4,7 @@ import tempfile
 import time
 from typing import Dict, Any, Optional, BinaryIO
 from hume import HumeClient
-from hume.expression_measurement.batch import Prosody, Models
+from hume.expression_measurement.batch import Prosody, Models, Language
 from hume.expression_measurement.batch.types import InferenceBaseRequest
 import logging
 
@@ -38,7 +38,7 @@ class HumeAudioService:
         try:
             # Create prosody configuration for audio analysis
             prosody_config = Prosody()
-            models_chosen = Models(prosody=prosody_config)
+            models_chosen = Models(prosody=prosody_config, language=Language())
             
             # Create inference request configuration
             inference_request = InferenceBaseRequest(models=models_chosen)
@@ -55,7 +55,9 @@ class HumeAudioService:
             results = await self._wait_for_results(job_id, timeout_seconds)
             
             # Process and return the results
-            return self._process_results(results)
+            processed = self._process_results(results)
+            logger.critical(f"Processed Hume results: {processed}")
+            return processed
             
         except Exception as e:
             logger.error(f"Error analyzing audio with Hume: {str(e)}")
@@ -87,14 +89,19 @@ class HumeAudioService:
         
         raise TimeoutError(f"Hume analysis timed out after {timeout_seconds} seconds")
     
-    def _process_results(self, results: Dict[str, Any]) -> Dict[str, Any]:
+    def _process_results(self, results) -> Dict[str, Any]:
         """Process raw Hume results into a structured format"""
         processed_results = {
             "success": True,
             "analysis": {
                 "emotions": [],
                 "overall_sentiment": {},
-                "timestamps": []
+                "timestamps": [],
+                "transcription": {
+                    "full_text": "",
+                    "confidence": 0,
+                    "detected_language": ""
+                }
             },
             "metadata": {
                 "processing_time": None,
@@ -103,37 +110,77 @@ class HumeAudioService:
         }
         
         try:
-            # Extract predictions from results
-            predictions = results.get("predictions", [])
+            logger.info(f"Processing Hume results: {type(results)}")
             
-            if not predictions:
-                logger.warning("No predictions found in Hume results")
+            # Results is a list of InferenceSourcePredictResult objects
+            if not results:
+                logger.warning("No results found from Hume API")
                 return processed_results
             
-            # Process each prediction (audio segment)
-            for prediction in predictions:
-                models_data = prediction.get("models", {})
-                prosody_data = models_data.get("prosody", {})
+            # Track transcription data
+            full_text_segments = []
+            transcription_confidence_total = 0
+            transcription_segment_count = 0
+            detected_language = ""
+            
+            # Process each result
+            for result in results:
+                # Access the results attribute which contains InferenceResults
+                inference_results = result.results
+                predictions = inference_results.predictions
                 
-                if "grouped_predictions" in prosody_data:
-                    for group in prosody_data["grouped_predictions"]:
-                        for pred in group.get("predictions", []):
-                            # Extract emotion scores
-                            emotions = pred.get("emotions", [])
-                            
-                            # Get timestamp info
-                            time_info = pred.get("time", {})
-                            
-                            segment_data = {
-                                "timestamp": {
-                                    "begin": time_info.get("begin", 0),
-                                    "end": time_info.get("end", 0)
-                                },
-                                "emotions": self._extract_top_emotions(emotions),
-                                "all_emotions": emotions
-                            }
-                            
-                            processed_results["analysis"]["timestamps"].append(segment_data)
+                # Process each prediction
+                for prediction in predictions:
+                    models = prediction.models
+                    
+                    # Check if prosody data is available
+                    if models.prosody:
+                        prosody_data = models.prosody
+                        
+                        # Extract transcription metadata if available
+                        if hasattr(prosody_data, 'metadata') and prosody_data.metadata:
+                            metadata = prosody_data.metadata
+                            if hasattr(metadata, 'detected_language'):
+                                detected_language = metadata.detected_language
+                        
+                        # Process grouped predictions
+                        if hasattr(prosody_data, 'grouped_predictions'):
+                            for group in prosody_data.grouped_predictions:
+                                for pred in group.predictions:
+                                    # Extract emotion scores
+                                    emotions = []
+                                    if hasattr(pred, 'emotions'):
+                                        emotions = [
+                                            {"name": emotion.name, "score": emotion.score}
+                                            for emotion in pred.emotions
+                                        ]
+                                    
+                                    # Get timestamp info
+                                    time_begin = pred.time.begin if hasattr(pred, 'time') else 0
+                                    time_end = pred.time.end if hasattr(pred, 'time') else 0
+                                    
+                                    # Get transcription text and confidence
+                                    text = getattr(pred, 'text', '')
+                                    confidence = getattr(pred, 'confidence', 0)
+                                    
+                                    # Add to transcription tracking
+                                    if text:
+                                        full_text_segments.append(text)
+                                        transcription_confidence_total += confidence
+                                        transcription_segment_count += 1
+                                    
+                                    segment_data = {
+                                        "text": text,
+                                        "confidence": confidence,
+                                        "timestamp": {
+                                            "begin": time_begin,
+                                            "end": time_end
+                                        },
+                                        "emotions": self._extract_top_emotions(emotions),
+                                        "all_emotions": emotions
+                                    }
+                                    
+                                    processed_results["analysis"]["timestamps"].append(segment_data)
             
             # Calculate overall sentiment
             processed_results["analysis"]["overall_sentiment"] = self._calculate_overall_sentiment(
@@ -153,15 +200,9 @@ class HumeAudioService:
             return []
         
         # Sort emotions by score (descending)
-        sorted_emotions = sorted(emotions, key=lambda x: x.get("score", 0), reverse=True)
+        sorted_emotions = sorted(emotions, key=lambda x: x["score"], reverse=True)
         
-        return [
-            {
-                "name": emotion.get("name", ""),
-                "score": emotion.get("score", 0)
-            }
-            for emotion in sorted_emotions[:top_n]
-        ]
+        return sorted_emotions[:top_n]
     
     def _calculate_overall_sentiment(self, timestamps: list) -> Dict[str, Any]:
         """Calculate overall sentiment from all timestamps"""
