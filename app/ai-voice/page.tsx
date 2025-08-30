@@ -1,16 +1,20 @@
 "use client"
 
-import { AIVoiceInput } from "@/components/ui/ai-voice-input"
+import { VoiceRecorder } from "@/components/ui/voice-recorder"
 import { UserNav } from "@/components/auth/user-nav"
+import { RequireAuth } from "@/components/auth/require-auth"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mic, ArrowLeft, Lightbulb, Zap, Circle, CheckCircle, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
+import { validateAudioBlob, sendAudioToAI } from "@/lib/audio-utils"
 
 interface Recording {
   duration: number
   timestamp: Date
+  audioUrl?: string
+  uploadResult?: any
 }
 
 interface AnalysisMetric {
@@ -27,6 +31,7 @@ export default function AIVoicePage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
   const [sidebarExpanded, setSidebarExpanded] = useState(true)
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null)
   const [analysisMetrics, setAnalysisMetrics] = useState<AnalysisMetric[]>([
     { id: 'clarity', label: 'Clarity', score: 0, status: 'analyzing', feedback: 'Speak clearly and at a steady pace' },
     { id: 'confidence', label: 'Confidence', score: 0, status: 'analyzing', feedback: 'Project confidence through your voice' },
@@ -46,9 +51,13 @@ export default function AIVoicePage() {
     })))
   }
 
-  const handleStop = (duration: number) => {
+  const handleStop = (duration: number, audioUrl?: string, audioBlob?: Blob) => {
     setIsRecording(false)
-    setRecordings((prev: Recording[]) => [...prev.slice(-4), { duration, timestamp: new Date() }])
+    setRecordings((prev: Recording[]) => [...prev.slice(-4), { 
+      duration, 
+      timestamp: new Date(),
+      audioUrl
+    }])
 
     // Simulate real-time AI analysis with progressive updates
     setIsAnalyzing(true)
@@ -87,6 +96,67 @@ export default function AIVoicePage() {
       setFeedback("Great energy in your pitch! Consider adding more specific metrics to strengthen your value proposition. Your pacing was excellent, and the passion really comes through.")
       setIsAnalyzing(false)
     }, 2000)
+  }
+
+  const handleUploadComplete = (uploadResult: any) => {
+    console.log('Upload completed:', uploadResult)
+    setUploadStatus(`Audio uploaded successfully: ${uploadResult.filename}`)
+    
+    // Update the latest recording with upload result
+    setRecordings((prev: Recording[]) => {
+      const updated = [...prev]
+      if (updated.length > 0) {
+        updated[updated.length - 1] = {
+          ...updated[updated.length - 1],
+          uploadResult
+        }
+      }
+      return updated
+    })
+
+    // Clear status after 3 seconds
+    setTimeout(() => setUploadStatus(null), 3000)
+  }
+
+  const handleError = (error: string) => {
+    console.error('Recording error:', error)
+    setUploadStatus(`Error: ${error}`)
+    setTimeout(() => setUploadStatus(null), 5000)
+  }
+
+  const handleAudioReady = async (audioBlob: Blob, duration: number) => {
+    console.log('Audio ready for processing:', {
+      size: audioBlob.size,
+      type: audioBlob.type,
+      duration: duration
+    })
+    
+    // Validate audio before processing
+    const validation = validateAudioBlob(audioBlob)
+    if (!validation.valid) {
+      setUploadStatus(`Error: ${validation.error}`)
+      setTimeout(() => setUploadStatus(null), 5000)
+      return
+    }
+    
+    setUploadStatus(`Processing audio (${validation.info.sizeInMB}MB)...`)
+    
+    try {
+      // Send audio to AI analysis API (currently commented out)
+      const result = await sendAudioToAI(audioBlob, { duration, apiEndpoint: "http://localhost:8000/analyze-audio" })
+      console.log('AI Analysis Result:', result)
+      
+      // Simulate AI processing delay
+      setTimeout(() => {
+        setUploadStatus('✅ Audio processed successfully!')
+        setTimeout(() => setUploadStatus(null), 3000)
+      }, 1500)
+      
+    } catch (error) {
+      console.error('Error processing audio:', error)
+      setUploadStatus(`Error: ${error instanceof Error ? error.message : 'Processing failed'}`)
+      setTimeout(() => setUploadStatus(null), 5000)
+    }
   }
 
   const formatTime = (seconds: number) => {
@@ -198,15 +268,30 @@ export default function AIVoicePage() {
                     <div className="space-y-2">
                       {recordings.slice(-3).map((recording: Recording, index: number) => (
                         <div key={index} className="flex items-center justify-between p-3 bg-gray-50/50 rounded-lg">
-                          <div>
+                          <div className="flex-1">
                             <p className="text-sm font-medium">Recording {recordings.length - index}</p>
                             <p className="text-xs text-gray-500">
                               {recording.timestamp.toLocaleTimeString()}
                             </p>
+                            {recording.uploadResult && (
+                              <p className="text-xs text-green-600 mt-1">
+                                ✓ Uploaded to cloud
+                              </p>
+                            )}
                           </div>
-                          <span className="text-xs font-mono text-gray-600">
-                            {formatTime(recording.duration)}
-                          </span>
+                          <div className="text-right">
+                            <span className="text-xs font-mono text-gray-600">
+                              {formatTime(recording.duration)}
+                            </span>
+                            {recording.audioUrl && (
+                              <div className="mt-1">
+                                <audio controls className="w-24 h-6" style={{fontSize: '10px'}}>
+                                  <source src={recording.audioUrl} type="audio/webm" />
+                                  <source src={recording.audioUrl} type="audio/mp4" />
+                                </audio>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -294,11 +379,26 @@ export default function AIVoicePage() {
                 </h3>
               </div>
 
-              <div className="flex justify-center">
-                <AIVoiceInput
+              <div className="flex flex-col items-center">
+                <VoiceRecorder
                   onStart={handleStart}
                   onStop={handleStop}
+                  onUploadComplete={handleUploadComplete}
+                  onError={handleError}
+                  onAudioReady={handleAudioReady}
+                  autoUpload={false}
+                  saveToStorage={false}
                 />
+                
+                {uploadStatus && (
+                  <div className={`mt-4 px-4 py-2 rounded-lg text-sm ${
+                    uploadStatus.includes('Error') 
+                      ? 'bg-red-100 text-red-700 border border-red-200'
+                      : 'bg-green-100 text-green-700 border border-green-200'
+                  }`}>
+                    {uploadStatus}
+                  </div>
+                )}
               </div>
             </div>
           </div>
