@@ -24,12 +24,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - Root endpoint (`/`) - Basic health check
   - Protected endpoint (`/protected`) - Requires JWT authentication
   - Dashboard endpoint (`/dashboard`) - Returns mock user data with authentication
+  - Audio analysis endpoint (`/analyze-audio`) - Accepts audio uploads for expression analysis
 - **`auth.py`**: Supabase JWT authentication utilities
   - `verify_supabase_jwt()` dependency for protected routes
   - Uses HTTPBearer scheme with JWT token validation
+- **`hume_service.py`**: Hume AI audio expression measurement service
+  - `HumeAudioService` class for analyzing audio emotional expressions
+  - Processes audio files and returns structured emotion data with timestamps
+  - Handles prosody analysis and aggregates results into overall sentiment
 - **`hello.py`**: Hume API integration example for emotion analysis
   - Demonstrates batch processing for face emotion detection
   - Requires HUME_API_KEY environment variable
+- **`test_audio_service.py`**: Test suite for audio analysis functionality
 
 ### Authentication Flow
 
@@ -61,6 +67,7 @@ def protected_endpoint(user=Depends(verify_supabase_jwt)):
 - `fastapi==0.116.1`: Web framework
 - `uvicorn==0.35.0`: ASGI server
 - `python-jose==3.5.0`: JWT handling
+- `python-multipart>=0.0.6`: File upload support
 - `hume>=0.11.3`: Emotion analysis API client
 - `pydantic==2.11.7`: Data validation
 
