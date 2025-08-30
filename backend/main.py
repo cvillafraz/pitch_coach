@@ -21,7 +21,7 @@ def protected_route(user=Depends(verify_supabase_jwt)):
     return {"message": "You are authenticated!", "user": user}
 
 @app.get("/dashboard")
-def get_dashboard_data(user=Depends(verify_supabase_jwt)):
+def get_dashboard_data():
     return {
         "user": {
             "name": "Alexa Johnson",
