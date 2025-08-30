@@ -1,142 +1,172 @@
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Mic, Target, TrendingUp, Users } from "lucide-react"
+import { TestimonialSlider } from "@/components/ui/testimonial-slider"
+import { Mic, Target, TrendingUp } from "lucide-react"
 import Link from "next/link"
+
+const testimonials = [
+  {
+    id: 1,
+    name: "Sarah Chen",
+    role: "Founder",
+    company: "TechFlow",
+    content: "PitchCoach helped me secure $2M in Series A funding. The AI feedback was incredibly precise and actionable.",
+    avatar: "/placeholder-user.jpg"
+  },
+  {
+    id: 2,
+    name: "Marcus Rodriguez",
+    role: "CEO",
+    company: "GreenTech Solutions",
+    content: "The investor persona feature is game-changing. I practiced with different types of VCs and felt prepared for every meeting.",
+    avatar: "/placeholder-user.jpg"
+  },
+  {
+    id: 3,
+    name: "Emily Watson",
+    role: "Co-founder",
+    company: "DataViz Pro",
+    content: "My pitch confidence improved dramatically after just a week of practice. The real-time feedback is spot on.",
+    avatar: "/placeholder-user.jpg"
+  }
+]
 
 export default function WelcomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50">
       {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Mic className="w-5 h-5 text-primary-foreground" />
+      <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
+              <Mic className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-foreground">PitchCoach</h1>
+            <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
           </div>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" asChild>
-              <Link href="/login">Sign In</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/signup">Get Started</Link>
+          <div>
+            <Button 
+              className="bg-gradient-to-r from-rose-400 via-orange-400 to-yellow-400 hover:from-rose-500 hover:via-orange-500 hover:to-yellow-500 text-white border-0 rounded-full shadow-sm hover:shadow-md transition-all duration-200 font-medium" 
+              asChild
+            >
+              <Link href="/auth/login">Login with Google</Link>
             </Button>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <main className="container mx-auto px-4 py-16">
-        <div className="text-center max-w-4xl mx-auto mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
-            Master Your Pitch with <span className="text-primary">AI-Powered</span> Practice
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 text-pretty max-w-2xl mx-auto">
-            Practice and refine your pitches through AI-driven simulations. Get real-time feedback, track your progress,
-            and boost your confidence with personalized coaching.
+      <main className="container mx-auto px-6 py-20">
+        <div className="text-center max-w-4xl mx-auto mb-32 py-20">
+          <h1 className="text-6xl md:text-8xl font-light text-gray-800 mb-6 leading-tight">
+            Make your pitch{" "}
+            <span className="italic bg-gradient-to-r from-rose-400 to-orange-400 bg-clip-text text-transparent">
+              shine.
+            </span>
+          </h1>
+          
+          <p className="text-xl text-gray-500 mb-16 max-w-2xl mx-auto leading-relaxed">
+            Turn ideas into a calm, confident pitch that gets money.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8" asChild>
-              <Link href="/practice">Start Practicing</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 bg-transparent" asChild>
-              <Link href="/demo">Watch Demo</Link>
+          
+          <div className="flex justify-center">
+            <Button 
+              size="lg" 
+              className="h-14 px-8 bg-white/60 hover:bg-white/80 border border-gray-200 text-gray-700 rounded-full shadow-sm hover:shadow-md transition-all duration-200 text-lg font-light flex items-center space-x-2"
+              asChild
+            >
+              <Link href="/dashboard">
+                <span>Improve my pitch</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </Button>
           </div>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <Card className="text-center">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Mic className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle className="text-lg">Speech Recognition</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Practice with realistic speech recognition that responds to your pitch in real-time
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardHeader>
-              <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6 text-secondary" />
-              </div>
-              <CardTitle className="text-lg">Investor Personas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Choose from VC investors, corporate customers, or create custom personas for targeted practice
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Target className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle className="text-lg">Real-Time Feedback</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Get instant, actionable suggestions to improve your pitch delivery and content
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardHeader>
-              <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="w-6 h-6 text-secondary" />
-              </div>
-              <CardTitle className="text-lg">Performance Tracking</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>Track your improvement over time with detailed analytics and scoring</CardDescription>
-            </CardContent>
-          </Card>
+        {/* Secondary Hero Section */}
+        <div className="text-center max-w-4xl mx-auto mb-24 py-16">
+          <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6 leading-tight">
+            Good pitches get{" "}
+            <span className="italic font-medium text-gray-900">
+              money
+            </span>
+          </h2>
+          
+          <p className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
+            Real examples of confident, compelling pitches
+          </p>
         </div>
 
-        {/* Problem Statement */}
-        <div className="bg-card rounded-lg p-8 mb-16 text-center">
-          <h3 className="text-2xl font-bold text-card-foreground mb-4">
-            70% of pitches fail due to poor presentation skills
-          </h3>
-          <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-            Many startup founders struggle to effectively communicate their value propositions to investors, leading to
-            missed funding opportunities. PitchCoach provides the practice environment you need to succeed.
-          </p>
+        {/* Features Section */}
+        <div id="features" className="grid md:grid-cols-3 gap-8 mb-24">
+          <div className="text-center p-8 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-100">
+            <div className="w-16 h-16 bg-gradient-to-br from-rose-100 to-orange-100 rounded-lg flex items-center justify-center mx-auto mb-6">
+              <Mic className="w-8 h-8 text-rose-500" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-800 mb-4">Smart Recognition</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Advanced speech recognition that understands your pitch and responds naturally
+            </p>
+          </div>
+
+          <div className="text-center p-8 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-100">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-6">
+              <Target className="w-8 h-8 text-orange-500" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-800 mb-4">Instant Feedback</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Get actionable insights to improve your delivery, content, and overall impact
+            </p>
+          </div>
+
+          <div className="text-center p-8 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-100">
+            <div className="w-16 h-16 bg-gradient-to-br from-yellow-100 to-rose-100 rounded-lg flex items-center justify-center mx-auto mb-6">
+              <TrendingUp className="w-8 h-8 text-yellow-500" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-800 mb-4">Track Progress</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Monitor your improvement with detailed analytics and performance metrics
+            </p>
+          </div>
+        </div>
+
+        {/* Testimonials Section */}
+        <div className="mb-24">
+          <div className="text-center mb-16">
+            <h3 className="text-3xl font-light text-gray-800 mb-4">
+              Trusted by founders
+            </h3>
+            <p className="text-gray-600 text-lg">
+              See how PitchCoach helped secure millions in funding
+            </p>
+          </div>
+          <TestimonialSlider testimonials={testimonials} />
         </div>
 
         {/* CTA Section */}
-        <div className="text-center">
-          <h3 className="text-3xl font-bold text-foreground mb-4">Ready to transform your pitch?</h3>
-          <p className="text-muted-foreground mb-8 text-lg">
-            Join startup founders who are already improving their pitch skills with AI-powered coaching.
+        <div className="text-center bg-white/40 backdrop-blur-sm rounded-lg p-16 border border-gray-100">
+          <h3 className="text-4xl font-light text-gray-800 mb-6">
+            Ready to nail your next pitch?
+          </h3>
+          <p className="text-gray-600 mb-10 text-lg max-w-2xl mx-auto">
+            Join hundreds of founders who've improved their pitch skills and secured funding with AI-powered practice.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-12" asChild>
-              <Link href="/onboarding">Start Your Free Practice</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 bg-transparent" asChild>
-              <Link href="/demo">Watch Demo</Link>
-            </Button>
-          </div>
+          <Button 
+            size="lg" 
+            className="h-14 px-12 bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500 text-white border-0 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 text-base"
+            asChild
+          >
+            <Link href="/auth/login">Start Free Practice</Link>
+          </Button>
         </div>
-
-        {/* Footer */}
-        <footer className="border-t bg-muted/50 mt-16">
-          <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-            <p>&copy; 2024 PitchCoach. Empowering founders to pitch with confidence.</p>
-          </div>
-        </footer>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-100 bg-white/40 backdrop-blur-sm mt-24">
+        <div className="container mx-auto px-6 py-8 text-center text-gray-500">
+          <p>&copy; 2025 PitchCoach. Empowering founders to pitch with confidence.</p>
+        </div>
+      </footer>
     </div>
   )
 }

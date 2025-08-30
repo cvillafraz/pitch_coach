@@ -4,40 +4,40 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated color tokens to match PitchCoach design brief with #3B82F6 primary and #10B981 secondary */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.35 0 0);
-  --card: oklch(0.98 0 0);
-  --card-foreground: oklch(0.35 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.35 0 0);
-  --primary: oklch(0.6 0.2 250); /* #3B82F6 - PitchCoach primary blue */
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.7 0.15 160); /* #10B981 - PitchCoach secondary green */
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.96 0 0);
-  --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.7 0.15 160); /* Using secondary green as accent */
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.65 0.2 25);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.9 0 0);
-  --input: oklch(1 0 0);
-  --ring: oklch(0.6 0.2 250); /* Primary blue for focus rings */
-  --chart-1: oklch(0.6 0.2 250); /* Primary blue */
-  --chart-2: oklch(0.7 0.15 160); /* Secondary green */
-  --chart-3: oklch(0.35 0 0); /* Dark gray */
-  --chart-4: oklch(0.8 0.1 200); /* Light blue variant */
-  --chart-5: oklch(0.75 0.12 140); /* Light green variant */
+  /* Minimalist pastel theme with rose, orange, and yellow tones */
+  --background: oklch(0.99 0.01 30); /* Very light warm white */
+  --foreground: oklch(0.25 0.02 20); /* Warm dark gray */
+  --card: oklch(0.97 0.01 25);
+  --card-foreground: oklch(0.25 0.02 20);
+  --popover: oklch(0.99 0.01 30);
+  --popover-foreground: oklch(0.25 0.02 20);
+  --primary: oklch(0.65 0.15 15); /* Warm rose-orange */
+  --primary-foreground: oklch(0.99 0.01 30);
+  --secondary: oklch(0.7 0.12 45); /* Soft orange */
+  --secondary-foreground: oklch(0.25 0.02 20);
+  --muted: oklch(0.95 0.01 25);
+  --muted-foreground: oklch(0.45 0.02 20);
+  --accent: oklch(0.75 0.1 60); /* Gentle yellow */
+  --accent-foreground: oklch(0.25 0.02 20);
+  --destructive: oklch(0.65 0.15 10);
+  --destructive-foreground: oklch(0.99 0.01 30);
+  --border: oklch(0.92 0.01 25);
+  --input: oklch(0.99 0.01 30);
+  --ring: oklch(0.65 0.15 15);
+  --chart-1: oklch(0.65 0.15 15);
+  --chart-2: oklch(0.7 0.12 45);
+  --chart-3: oklch(0.75 0.1 60);
+  --chart-4: oklch(0.6 0.12 25);
+  --chart-5: oklch(0.8 0.08 50);
   --radius: 0.5rem;
-  --sidebar: oklch(0.35 0 0); /* Dark gray for sidebar */
-  --sidebar-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.6 0.2 250);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.7 0.15 160);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.4 0 0);
-  --sidebar-ring: oklch(0.6 0.2 250);
+  --sidebar: oklch(0.25 0.02 20);
+  --sidebar-foreground: oklch(0.99 0.01 30);
+  --sidebar-primary: oklch(0.65 0.15 15);
+  --sidebar-primary-foreground: oklch(0.99 0.01 30);
+  --sidebar-accent: oklch(0.7 0.12 45);
+  --sidebar-accent-foreground: oklch(0.99 0.01 30);
+  --sidebar-border: oklch(0.35 0.02 20);
+  --sidebar-ring: oklch(0.65 0.15 15);
 }
 
 .dark {
@@ -124,5 +124,58 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Custom button animations */
+  .btn-gradient {
+    @apply bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500;
+    @apply transition-all duration-200 ease-in-out;
+    @apply shadow-sm hover:shadow-md;
+  }
+  
+  /* Backdrop blur utilities */
+  .glass {
+    @apply bg-white/60 backdrop-blur-sm border border-gray-100;
+  }
+  
+  /* Subtle animations */
+  .fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Slow rotation animation for testimonial gradient */
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+  }
+  
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Focus styles for accessibility */
+  .focus-visible:focus-visible {
+    @apply outline-2 outline-offset-2 outline-rose-400;
   }
 }

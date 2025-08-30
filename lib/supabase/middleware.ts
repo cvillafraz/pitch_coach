@@ -39,5 +39,18 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  // Redirect old login/signup routes to new auth structure
+  if (request.nextUrl.pathname === "/login") {
+    const url = request.nextUrl.clone()
+    url.pathname = "/auth/login"
+    return NextResponse.redirect(url)
+  }
+
+  if (request.nextUrl.pathname === "/signup") {
+    const url = request.nextUrl.clone()
+    url.pathname = "/auth/login"
+    return NextResponse.redirect(url)
+  }
+
   return supabaseResponse
 }

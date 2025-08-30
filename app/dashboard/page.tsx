@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { LogoutButton } from "@/components/auth/logout-button"
 import {
   Mic,
   TrendingUp,
@@ -141,23 +142,27 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50">
       {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Mic className="w-5 h-5 text-primary-foreground" />
+      <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
+              <Mic className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-foreground">PitchCoach</h1>
+            <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
           </div>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" asChild>
+          <div className="flex items-center space-x-3">
+            <Button variant="ghost" className="text-gray-600 hover:text-gray-800 hover:bg-white/50" asChild>
               <Link href="/performance">Performance</Link>
             </Button>
-            <Button asChild>
+            <Button 
+              className="bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500 text-white border-0 rounded-lg shadow-sm hover:shadow-md transition-all duration-200" 
+              asChild
+            >
               <Link href="/practice">Practice Now</Link>
             </Button>
+            <LogoutButton />
           </div>
         </div>
       </header>
@@ -187,15 +192,15 @@ export default function DashboardPage() {
 
         {/* Quick Stats */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
+          <Card className="bg-white/40 backdrop-blur-sm border-gray-100">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
+              <CardTitle className="text-sm font-medium text-gray-600 flex items-center">
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Total Sessions
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-primary">{mockDashboardData.quickStats.totalSessions}</div>
+              <div className="text-2xl font-bold text-rose-500">{mockDashboardData.quickStats.totalSessions}</div>
               <div className="flex items-center text-green-600 text-sm mt-1">
                 <TrendingUp className="w-3 h-3 mr-1" />+{mockDashboardData.quickStats.improvement}% this month
               </div>
