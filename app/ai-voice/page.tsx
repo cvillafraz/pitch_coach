@@ -143,7 +143,7 @@ export default function AIVoicePage() {
     
     try {
       // Send audio to AI analysis API (currently commented out)
-      const result = await sendAudioToAI(audioBlob, { duration, apiEndpoint: "http://localhost:8000/analyze-audio" })
+      const result = await sendAudioToAI(audioBlob, { duration, apiEndpoint: "http://localhost:8000/analyze-pitch" })
       console.log('AI Analysis Result:', result)
       
       // Simulate AI processing delay
