@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { LogoutButton } from "@/components/auth/logout-button"
+import { UserNav } from "@/components/auth/user-nav"
 import {
   Mic,
   TrendingUp,
@@ -162,7 +162,7 @@ export default function DashboardPage() {
             >
               <Link href="/practice">Practice Now</Link>
             </Button>
-            <LogoutButton />
+            <UserNav />
           </div>
         </div>
       </header>

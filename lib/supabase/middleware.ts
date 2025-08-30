@@ -19,37 +19,53 @@ export async function updateSession(request: NextRequest) {
           supabaseResponse = NextResponse.next({
             request,
           })
-          cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
+          cookiesToSet.forEach(({ name, value, options }) => 
+            supabaseResponse.cookies.set(name, value, options)
+          )
         },
       },
     },
   )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  try {
+    // Get user session
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-  // Protect dashboard, practice, feedback, performance, and personas routes
-  const protectedPaths = ["/dashboard", "/practice", "/feedback", "/performance", "/personas"]
-  const isProtectedPath = protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
+    // Protect dashboard, practice, feedback, performance, and personas routes
+    const protectedPaths = ["/dashboard", "/practice", "/feedback", "/performance", "/personas"]
+    const isProtectedPath = protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
 
-  if (isProtectedPath && !user && !request.nextUrl.pathname.startsWith("/auth")) {
-    const url = request.nextUrl.clone()
-    url.pathname = "/auth/login"
-    return NextResponse.redirect(url)
-  }
+    if (isProtectedPath && !user && !request.nextUrl.pathname.startsWith("/auth")) {
+      const url = request.nextUrl.clone()
+      url.pathname = "/auth/login"
+      return NextResponse.redirect(url)
+    }
 
-  // Redirect old login/signup routes to new auth structure
-  if (request.nextUrl.pathname === "/login") {
-    const url = request.nextUrl.clone()
-    url.pathname = "/auth/login"
-    return NextResponse.redirect(url)
-  }
+    // Redirect authenticated users away from auth pages
+    if (user && request.nextUrl.pathname.startsWith("/auth/login")) {
+      const url = request.nextUrl.clone()
+      url.pathname = "/dashboard"
+      return NextResponse.redirect(url)
+    }
 
-  if (request.nextUrl.pathname === "/signup") {
-    const url = request.nextUrl.clone()
-    url.pathname = "/auth/login"
-    return NextResponse.redirect(url)
+    // Redirect old login/signup routes to new auth structure
+    if (request.nextUrl.pathname === "/login") {
+      const url = request.nextUrl.clone()
+      url.pathname = "/auth/login"
+      return NextResponse.redirect(url)
+    }
+
+    if (request.nextUrl.pathname === "/signup") {
+      const url = request.nextUrl.clone()
+      url.pathname = "/auth/login"
+      return NextResponse.redirect(url)
+    }
+
+  } catch (error) {
+    // If there's an error getting the user, continue without authentication
+    console.error('Middleware auth error:', error)
   }
 
   return supabaseResponse

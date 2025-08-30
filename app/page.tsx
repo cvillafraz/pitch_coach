@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { TestimonialSlider } from "@/components/ui/testimonial-slider"
+import { UserNav } from "@/components/auth/user-nav"
 import { Mic, Target, TrendingUp } from "lucide-react"
 import Link from "next/link"
 
@@ -43,12 +44,7 @@ export default function WelcomePage() {
             <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
           </div>
           <div>
-            <Button 
-              className="bg-gradient-to-r from-rose-400 via-orange-400 to-yellow-400 hover:from-rose-500 hover:via-orange-500 hover:to-yellow-500 text-white border-0 rounded-full shadow-sm hover:shadow-md transition-all duration-200 font-medium" 
-              asChild
-            >
-              <Link href="/auth/login">Login with Google</Link>
-            </Button>
+            <UserNav />
           </div>
         </div>
       </header>

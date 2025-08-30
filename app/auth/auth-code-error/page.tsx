@@ -15,24 +15,32 @@ export default function AuthCodeErrorPage() {
           </div>
           <CardTitle className="text-2xl font-light text-gray-800">Authentication Error</CardTitle>
           <CardDescription className="text-gray-600 text-base">
-            There was a problem signing you in. Please try again.
+            There was a problem signing you in. This could be due to:
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <Button 
-            asChild
-            className="w-full h-12 bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500 text-white border-0 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md"
-          >
-            <Link href="/auth/login">Try Again</Link>
-          </Button>
+        <CardContent className="space-y-6">
+          <ul className="text-sm text-gray-600 space-y-2 list-disc list-inside">
+            <li>The authentication code has expired</li>
+            <li>The authentication process was interrupted</li>
+            <li>There was a temporary server issue</li>
+          </ul>
           
-          <Button 
-            variant="outline"
-            asChild
-            className="w-full h-12 bg-white/60 hover:bg-white/80 border-gray-200 text-gray-700 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md"
-          >
-            <Link href="/">Back to Home</Link>
-          </Button>
+          <div className="space-y-3">
+            <Button 
+              className="w-full bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500 text-white border-0 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              asChild
+            >
+              <Link href="/auth/login">Try Again</Link>
+            </Button>
+            
+            <Button 
+              variant="outline"
+              className="w-full bg-transparent"
+              asChild
+            >
+              <Link href="/">Go Home</Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
