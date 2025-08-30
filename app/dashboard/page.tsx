@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -22,6 +22,7 @@ import {
   Zap,
 } from "lucide-react"
 import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
 
 // Mock dashboard data (in a real app, this would come from APIs)
 const mockDashboardData = {
@@ -114,7 +115,36 @@ const mockDashboardData = {
 }
 
 export default function DashboardPage() {
+  const [dashboardData, setDashboardData] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
   const [selectedTimeframe, setSelectedTimeframe] = useState("week")
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      const supabase = createClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      const token = session?.access_token
+
+      try {
+        const res = await fetch("http://localhost:8000/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        if (res.ok) {
+          const data = await res.json()
+          setDashboardData(data)
+        }
+      } catch (e) {
+        // fail silently, fallback to mock
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDashboard()
+  }, [])
+
+  const data = dashboardData || mockDashboardData
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
@@ -141,6 +171,8 @@ export default function DashboardPage() {
     }
   }
 
+  if (loading && !dashboardData) return <div>Loading...</div>
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50">
       {/* Header */}
@@ -162,15 +194,15 @@ export default function DashboardPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-3xl font-light text-gray-800">Welcome back, {mockDashboardData.user.name}!</h2>
+              <h2 className="text-3xl font-light text-gray-800">Welcome back, {data.user.name}!</h2>
               <p className="text-gray-600">
-                You're on a {mockDashboardData.user.currentStreak}-day streak. Keep up the great work!
+                You're on a {data.user.currentStreak}-day streak. Keep up the great work!
               </p>
             </div>
             <div className="flex items-center space-x-2">
               <Badge variant="outline" className="flex items-center space-x-1 bg-white/60 text-gray-700 border-gray-200">
                 <Zap className="w-3 h-3" />
-                <span>{mockDashboardData.user.level}</span>
+                <span>{data.user.level}</span>
               </Badge>
             </div>
           </div>
@@ -186,9 +218,9 @@ export default function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-light text-gray-800">{mockDashboardData.quickStats.totalSessions}</div>
+              <div className="text-2xl font-light text-gray-800">{data.quickStats.totalSessions}</div>
               <div className="flex items-center text-green-600 text-sm mt-1">
-                <TrendingUp className="w-3 h-3 mr-1" />+{mockDashboardData.quickStats.improvement}% this month
+                <TrendingUp className="w-3 h-3 mr-1" />+{data.quickStats.improvement}% this month
               </div>
             </CardContent>
           </Card>
@@ -202,7 +234,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-light text-gray-800">
-                {mockDashboardData.quickStats.averageScore}
+                {data.quickStats.averageScore}
               </div>
               <div className="text-sm text-gray-500 mt-1">out of 100</div>
             </CardContent>
@@ -217,7 +249,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-light text-gray-800">
-                {formatTime(mockDashboardData.quickStats.practiceTime)}
+                {formatTime(data.quickStats.practiceTime)}
               </div>
               <div className="text-sm text-gray-500 mt-1">total practice</div>
             </CardContent>

@@ -17,6 +17,19 @@ const nextConfig = {
   },
   serverExternalPackages: ['@supabase/supabase-js'],
   outputFileTracingRoot: __dirname,
+  webpack: (config) => {
+    // Optimize large string serialization for audio processing
+    config.cache = {
+      ...config.cache,
+      buildDependencies: {
+        config: [__filename],
+      },
+      // Use Buffer for large binary data instead of strings
+      compression: 'gzip',
+      maxMemoryGenerations: 1,
+    }
+    return config
+  },
 }
 
 export default nextConfig
