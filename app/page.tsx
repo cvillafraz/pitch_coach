@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { TestimonialSlider } from "@/components/ui/testimonial-slider"
-import { UserNav } from "@/components/auth/user-nav"
+import { HeaderNav } from "@/components/auth/header-nav"
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
 import { Mic, Target, TrendingUp } from "lucide-react"
 import Link from "next/link"
 
@@ -37,14 +38,14 @@ export default function WelcomePage() {
       {/* Header */}
       <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
               <Mic className="w-5 h-5 text-white" />
             </div>
             <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
-          </div>
-          <div>
-            <UserNav />
+          </Link>
+          <div className="flex items-center space-x-3">
+            <HeaderNav />
           </div>
         </div>
       </header>
@@ -64,18 +65,12 @@ export default function WelcomePage() {
           </p>
           
           <div className="flex justify-center">
-            <Button 
-              size="lg" 
-              className="h-14 px-8 bg-white/60 hover:bg-white/80 border border-gray-200 text-gray-700 rounded-full shadow-sm hover:shadow-md transition-all duration-200 text-lg font-light flex items-center space-x-2"
-              asChild
-            >
-              <Link href="/dashboard">
-                <span>Improve my pitch</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </Button>
+            <Link href="/ai-voice">
+              <InteractiveHoverButton 
+                text="Improve my pitch"
+                className="text-lg font-light"
+              />
+            </Link>
           </div>
         </div>
 
@@ -148,8 +143,9 @@ export default function WelcomePage() {
             Join hundreds of founders who've improved their pitch skills and secured funding with AI-powered practice.
           </p>
           <Button 
+            variant="outline"
             size="lg" 
-            className="h-14 px-12 bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500 text-white border-0 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 text-base"
+            className="text-base bg-white/80 hover:bg-white border-gray-200 text-gray-800 hover:text-gray-900 shadow-sm hover:shadow-md transition-all duration-200"
             asChild
           >
             <Link href="/auth/login">Start Free Practice</Link>

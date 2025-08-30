@@ -146,24 +146,14 @@ export default function DashboardPage() {
       {/* Header */}
       <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
               <Mic className="w-5 h-5 text-white" />
             </div>
             <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
-          </div>
-          <div className="flex items-center space-x-3">
-            <Button variant="ghost" className="text-gray-600 hover:text-gray-800 hover:bg-white/50" asChild>
-              <Link href="/performance">Performance</Link>
-            </Button>
-            <Button 
-              className="bg-gradient-to-r from-rose-400 to-orange-400 hover:from-rose-500 hover:to-orange-500 text-white border-0 rounded-lg shadow-sm hover:shadow-md transition-all duration-200" 
-              asChild
-            >
-              <Link href="/practice">Practice Now</Link>
-            </Button>
-            <UserNav />
-          </div>
+          </Link>
+          
+          <UserNav />
         </div>
       </header>
 
@@ -172,27 +162,23 @@ export default function DashboardPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-3xl font-bold text-foreground">Welcome back, {mockDashboardData.user.name}!</h2>
-              <p className="text-muted-foreground">
+              <h2 className="text-3xl font-light text-gray-800">Welcome back, {mockDashboardData.user.name}!</h2>
+              <p className="text-gray-600">
                 You're on a {mockDashboardData.user.currentStreak}-day streak. Keep up the great work!
               </p>
             </div>
             <div className="flex items-center space-x-2">
-              <Badge variant="secondary" className="flex items-center space-x-1">
+              <Badge variant="outline" className="flex items-center space-x-1 bg-white/60 text-gray-700 border-gray-200">
                 <Zap className="w-3 h-3" />
                 <span>{mockDashboardData.user.level}</span>
-              </Badge>
-              <Badge variant="outline" className="flex items-center space-x-1">
-                <Star className="w-3 h-3" />
-                <span>{mockDashboardData.user.currentStreak} day streak</span>
               </Badge>
             </div>
           </div>
         </div>
 
         {/* Quick Stats */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-white/40 backdrop-blur-sm border-gray-100">
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-gray-600 flex items-center">
                 <MessageSquare className="w-4 h-4 mr-2" />
@@ -200,83 +186,64 @@ export default function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-rose-500">{mockDashboardData.quickStats.totalSessions}</div>
+              <div className="text-2xl font-light text-gray-800">{mockDashboardData.quickStats.totalSessions}</div>
               <div className="flex items-center text-green-600 text-sm mt-1">
                 <TrendingUp className="w-3 h-3 mr-1" />+{mockDashboardData.quickStats.improvement}% this month
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
+              <CardTitle className="text-sm font-medium text-gray-600 flex items-center">
                 <Target className="w-4 h-4 mr-2" />
                 Average Score
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className={`text-2xl font-bold ${getScoreColor(mockDashboardData.quickStats.averageScore)}`}>
+              <div className="text-2xl font-light text-gray-800">
                 {mockDashboardData.quickStats.averageScore}
               </div>
-              <div className="text-sm text-muted-foreground mt-1">out of 100</div>
+              <div className="text-sm text-gray-500 mt-1">out of 100</div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
+              <CardTitle className="text-sm font-medium text-gray-600 flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
                 Practice Time
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-primary">
+              <div className="text-2xl font-light text-gray-800">
                 {formatTime(mockDashboardData.quickStats.practiceTime)}
               </div>
-              <div className="text-sm text-muted-foreground mt-1">total practice</div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
-                <Award className="w-4 h-4 mr-2" />
-                Achievements
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{mockDashboardData.achievements.length}</div>
-              <div className="flex items-center space-x-1 mt-1">
-                {mockDashboardData.achievements.slice(0, 3).map((achievement, index) => (
-                  <span key={index} className="text-sm">
-                    {achievement.icon}
-                  </span>
-                ))}
-              </div>
+              <div className="text-sm text-gray-500 mt-1">total practice</div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Column */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="space-y-8">
             {/* Quick Actions */}
-            <Card>
+            <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
               <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-                <CardDescription>Jump into your next practice session</CardDescription>
+                <CardTitle className="text-gray-800 font-medium">Quick Actions</CardTitle>
+                <CardDescription className="text-gray-600">Jump into your next practice session</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-3 gap-4">
-                  <Button className="h-20 flex flex-col items-center justify-center space-y-2" asChild>
-                    <Link href="/practice">
+                  <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-gray-900 hover:bg-gray-800 text-white" asChild>
+                    <Link href="/ai-voice">
                       <Play className="w-6 h-6" />
                       <span>Start Practice</span>
                     </Link>
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent"
+                    className="h-20 flex flex-col items-center justify-center space-y-2 bg-white/80 hover:bg-white border-gray-200 text-gray-700"
                     asChild
                   >
                     <Link href="/personas">
@@ -286,63 +253,22 @@ export default function DashboardPage() {
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent"
+                    className="h-20 flex flex-col items-center justify-center space-y-2 bg-white/80 hover:bg-white border-gray-200 text-gray-700"
                     asChild
                   >
-                    <Link href="/feedback">
+                    <Link href="/performance">
                       <BarChart3 className="w-6 h-6" />
-                      <span>View Feedback</span>
+                      <span>View Performance</span>
                     </Link>
                   </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recent Sessions */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Recent Sessions</CardTitle>
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href="/performance" className="flex items-center space-x-1">
-                      <span>View All</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {mockDashboardData.recentSessions.map((session) => (
-                    <div key={session.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                          <Users className="w-5 h-5 text-primary" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{session.persona}</p>
-                          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                            <span>{session.date}</span>
-                            <Badge variant="outline" className="text-xs">
-                              {session.type}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className={`text-lg font-bold ${getScoreColor(session.score)}`}>{session.score}</div>
-                        <div className="text-xs text-muted-foreground">{formatTime(session.duration)}</div>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </CardContent>
             </Card>
 
             {/* Weekly Activity */}
-            <Card>
+            <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
+                <CardTitle className="flex items-center space-x-2 text-gray-800 font-medium">
                   <Calendar className="w-5 h-5" />
                   <span>This Week's Activity</span>
                 </CardTitle>
@@ -351,15 +277,15 @@ export default function DashboardPage() {
                 <div className="grid grid-cols-7 gap-2">
                   {mockDashboardData.weeklyActivity.map((day, index) => (
                     <div key={index} className="text-center">
-                      <div className="text-xs text-muted-foreground mb-2">{day.day}</div>
+                      <div className="text-xs text-gray-500 mb-2">{day.day}</div>
                       <div
                         className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
-                          day.sessions > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                          day.sessions > 0 ? "bg-gradient-to-br from-rose-400 to-orange-400 text-white" : "bg-gray-200 text-gray-500"
                         }`}
                       >
                         {day.sessions}
                       </div>
-                      {day.score > 0 && <div className={`text-xs mt-1 ${getScoreColor(day.score)}`}>{day.score}</div>}
+                      {day.score > 0 && <div className="text-xs mt-1 text-gray-700">{day.score}</div>}
                     </div>
                   ))}
                 </div>
@@ -369,84 +295,26 @@ export default function DashboardPage() {
 
           {/* Right Column */}
           <div className="space-y-8">
-            {/* Goals Progress */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Target className="w-5 h-5" />
-                  <span>Goals</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {mockDashboardData.upcomingGoals.map((goal) => (
-                  <div key={goal.id} className={`p-3 rounded-lg border ${getPriorityColor(goal.priority)}`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium text-sm">{goal.title}</h4>
-                      <Badge variant="outline" className="text-xs">
-                        {goal.dueDate}
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-2">{goal.description}</p>
-                    <Progress value={goal.progress} className="h-2" />
-                    <div className="text-xs text-muted-foreground mt-1">{goal.progress}% complete</div>
-                  </div>
-                ))}
-                <Button variant="outline" size="sm" className="w-full bg-transparent" asChild>
-                  <Link href="/performance">View All Goals</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
             {/* Recent Feedback */}
-            <Card>
+            <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
               <CardHeader>
-                <CardTitle>Latest Feedback</CardTitle>
+                <CardTitle className="text-gray-800 font-medium">Latest Feedback</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {mockDashboardData.recentFeedback.map((feedback) => (
-                  <div key={feedback.id} className="p-3 border rounded-lg">
+                  <div key={feedback.id} className="p-3 border border-gray-200 rounded-lg bg-white/40">
                     <div className="flex items-center justify-between mb-2">
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" className="text-xs bg-white/60 text-gray-700 border-gray-200">
                         {feedback.category}
                       </Badge>
-                      <span className={`text-sm font-medium ${getScoreColor(feedback.score)}`}>{feedback.score}</span>
+                      <span className="text-sm font-medium text-gray-800">{feedback.score}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-1">{feedback.feedback}</p>
-                    <p className="text-xs text-muted-foreground">{feedback.session}</p>
+                    <p className="text-sm text-gray-700 mb-1">{feedback.feedback}</p>
+                    <p className="text-xs text-gray-500">{feedback.session}</p>
                   </div>
                 ))}
-                <Button variant="outline" size="sm" className="w-full bg-transparent" asChild>
-                  <Link href="/feedback">View Detailed Feedback</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Recent Achievements */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Award className="w-5 h-5" />
-                  <span>Achievements</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {mockDashboardData.achievements.map((achievement, index) => (
-                    <div key={index} className="flex items-center space-x-3">
-                      <div className="text-lg">{achievement.icon}</div>
-                      <div className="flex-1">
-                        <p className="font-medium text-sm">{achievement.title}</p>
-                        {achievement.recent && (
-                          <Badge variant="secondary" className="text-xs mt-1">
-                            New!
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <Button variant="outline" size="sm" className="w-full mt-4 bg-transparent" asChild>
-                  <Link href="/performance">View All Achievements</Link>
+                <Button variant="outline" size="sm" className="w-full bg-white/80 hover:bg-white border-gray-200 text-gray-700" asChild>
+                  <Link href="/performance">View Detailed Feedback</Link>
                 </Button>
               </CardContent>
             </Card>

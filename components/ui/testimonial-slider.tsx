@@ -21,7 +21,7 @@ interface TestimonialSliderProps {
 export function TestimonialSlider({
     testimonials,
     autoPlay = true,
-    autoPlayInterval = 1800
+    autoPlayInterval = 2500
 }: TestimonialSliderProps) {
     const testimonialsRef = useRef<HTMLDivElement>(null)
     const [active, setActive] = useState<number>(0)
@@ -106,31 +106,21 @@ export function TestimonialSlider({
                 </div>
             </div>
 
-            {/* Author buttons */}
+            {/* Navigation dots */}
             <div className="-m-1.5 flex flex-wrap justify-center">
-                {testimonials.map((testimonial, index) => (
+                {testimonials.map((_, index) => (
                     <button
                         key={index}
-                        className={`m-1.5 inline-flex justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm shadow-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring focus-visible:ring-rose-300 ${active === index
-                            ? "bg-gradient-to-r from-rose-400 to-orange-400 text-white shadow-rose-950/10"
-                            : "bg-white/60 text-gray-700 hover:bg-white/80 border border-gray-200"
+                        className={`m-1.5 w-3 h-3 rounded-full transition-colors duration-150 focus-visible:outline-none focus-visible:ring focus-visible:ring-rose-300 ${active === index
+                            ? "bg-gradient-to-r from-rose-400 to-orange-400"
+                            : "bg-gray-300 hover:bg-gray-400"
                             }`}
                         onClick={() => {
                             setActive(index)
                             setAutorotate(false)
                         }}
-                    >
-                        <span>{testimonial.name}</span>
-                        {" "}
-                        <span
-                            className={`${active === index ? "text-rose-100" : "text-gray-400"
-                                }`}
-                        >
-                            -
-                        </span>
-                        {" "}
-                        <span>{testimonial.company}</span>
-                    </button>
+                        aria-label={`Go to testimonial ${index + 1}`}
+                    />
                 ))}
             </div>
         </div>
