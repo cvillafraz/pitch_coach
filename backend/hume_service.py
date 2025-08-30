@@ -56,7 +56,6 @@ class HumeAudioService:
             
             # Process and return the results
             processed = self._process_results(results)
-            logger.critical(f"Processed Hume results: {processed}")
             return processed
             
         except Exception as e:
@@ -125,6 +124,7 @@ class HumeAudioService:
             
             # Process each result
             for result in results:
+                
                 # Access the results attribute which contains InferenceResults
                 inference_results = result.results
                 predictions = inference_results.predictions
@@ -132,6 +132,30 @@ class HumeAudioService:
                 # Process each prediction
                 for prediction in predictions:
                     models = prediction.models
+                    
+                    # Check if language/transcription data is available
+                    if hasattr(models, 'language') and models.language:
+                        language_data = models.language
+                        
+                        # Try different ways to extract transcription
+                        if hasattr(language_data, 'grouped_predictions'):
+                            for group in language_data.grouped_predictions:
+                                for pred in group.predictions:
+                                    text = getattr(pred, 'text', '')
+                                    confidence = getattr(pred, 'confidence', 0)
+                                    
+                                    if text:
+                                        full_text_segments.append(text)
+                                        transcription_confidence_total += confidence
+                                        transcription_segment_count += 1
+                        elif hasattr(language_data, 'predictions'):
+                            for pred in language_data.predictions:
+                                text = getattr(pred, 'text', '')
+                                confidence = getattr(pred, 'confidence', 0)
+                                if text:
+                                    full_text_segments.append(text)
+                                    transcription_confidence_total += confidence
+                                    transcription_segment_count += 1
                     
                     # Check if prosody data is available
                     if models.prosody:
@@ -143,7 +167,7 @@ class HumeAudioService:
                             if hasattr(metadata, 'detected_language'):
                                 detected_language = metadata.detected_language
                         
-                        # Process grouped predictions
+                        # Process grouped predictions - use prosody text as fallback for transcription
                         if hasattr(prosody_data, 'grouped_predictions'):
                             for group in prosody_data.grouped_predictions:
                                 for pred in group.predictions:
@@ -159,12 +183,12 @@ class HumeAudioService:
                                     time_begin = pred.time.begin if hasattr(pred, 'time') else 0
                                     time_end = pred.time.end if hasattr(pred, 'time') else 0
                                     
-                                    # Get transcription text and confidence
+                                    # Get transcription text and confidence from prosody
                                     text = getattr(pred, 'text', '')
                                     confidence = getattr(pred, 'confidence', 0)
                                     
-                                    # Add to transcription tracking
-                                    if text:
+                                    # If no language model transcription found, use prosody text
+                                    if text and not full_text_segments:
                                         full_text_segments.append(text)
                                         transcription_confidence_total += confidence
                                         transcription_segment_count += 1
@@ -182,6 +206,15 @@ class HumeAudioService:
                                     
                                     processed_results["analysis"]["timestamps"].append(segment_data)
             
+            # Combine transcript segments into full text
+            if full_text_segments:
+                processed_results["analysis"]["transcription"]["full_text"] = " ".join(full_text_segments)
+                processed_results["analysis"]["transcription"]["confidence"] = (
+                    transcription_confidence_total / transcription_segment_count 
+                    if transcription_segment_count > 0 else 0
+                )
+                processed_results["analysis"]["transcription"]["detected_language"] = detected_language
+
             # Calculate overall sentiment
             processed_results["analysis"]["overall_sentiment"] = self._calculate_overall_sentiment(
                 processed_results["analysis"]["timestamps"]
