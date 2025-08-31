@@ -106,23 +106,6 @@ export function TestimonialSlider({
                 </div>
             </div>
 
-            {/* Navigation dots */}
-            <div className="-m-1.5 flex flex-wrap justify-center">
-                {testimonials.map((_, index) => (
-                    <button
-                        key={index}
-                        className={`m-1.5 w-3 h-3 rounded-full transition-colors duration-150 focus-visible:outline-none focus-visible:ring focus-visible:ring-rose-300 ${active === index
-                            ? "bg-gradient-to-r from-rose-400 to-orange-400"
-                            : "bg-gray-300 hover:bg-gray-400"
-                            }`}
-                        onClick={() => {
-                            setActive(index)
-                            setAutorotate(false)
-                        }}
-                        aria-label={`Go to testimonial ${index + 1}`}
-                    />
-                ))}
-            </div>
         </div>
     )
 }

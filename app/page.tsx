@@ -39,8 +39,8 @@ export default function WelcomePage() {
       <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
-              <Mic className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm">
+              <Mic className="w-5 h-5 text-black" />
             </div>
             <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
           </Link>
@@ -52,7 +52,7 @@ export default function WelcomePage() {
 
       {/* Hero Section */}
       <main className="container mx-auto px-6 py-20">
-        <div className="text-center max-w-4xl mx-auto mb-32 py-20">
+        <div className="text-center max-w-4xl mx-auto mb-12 py-20">
           <h1 className="text-6xl md:text-8xl font-light text-gray-800 mb-6 leading-tight">
             Make your pitch{" "}
             <span className="italic bg-gradient-to-r from-rose-400 to-orange-400 bg-clip-text text-transparent">
@@ -91,9 +91,7 @@ export default function WelcomePage() {
         {/* Features Section */}
         <div id="features" className="grid md:grid-cols-3 gap-8 mb-24">
           <div className="text-center p-8 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-100">
-            <div className="w-16 h-16 bg-gradient-to-br from-rose-100 to-orange-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-              <Mic className="w-8 h-8 text-rose-500" />
-            </div>
+          <Mic className="w-8 h-8 text-rose-500" />
             <h3 className="text-xl font-medium text-gray-800 mb-4">Smart Recognition</h3>
             <p className="text-gray-600 leading-relaxed">
               Advanced speech recognition that understands your pitch and responds naturally
@@ -101,9 +99,7 @@ export default function WelcomePage() {
           </div>
 
           <div className="text-center p-8 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-100">
-            <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-              <Target className="w-8 h-8 text-orange-500" />
-            </div>
+          <Target className="w-8 h-8 text-orange-500" />
             <h3 className="text-xl font-medium text-gray-800 mb-4">Instant Feedback</h3>
             <p className="text-gray-600 leading-relaxed">
               Get actionable insights to improve your delivery, content, and overall impact
@@ -111,9 +107,7 @@ export default function WelcomePage() {
           </div>
 
           <div className="text-center p-8 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-100">
-            <div className="w-16 h-16 bg-gradient-to-br from-yellow-100 to-rose-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-              <TrendingUp className="w-8 h-8 text-yellow-500" />
-            </div>
+          <TrendingUp className="w-8 h-8 text-yellow-500" />
             <h3 className="text-xl font-medium text-gray-800 mb-4">Track Progress</h3>
             <p className="text-gray-600 leading-relaxed">
               Monitor your improvement with detailed analytics and performance metrics
@@ -134,23 +128,7 @@ export default function WelcomePage() {
           <TestimonialSlider testimonials={testimonials} />
         </div>
 
-        {/* CTA Section */}
-        <div className="text-center bg-white/40 backdrop-blur-sm rounded-lg p-16 border border-gray-100">
-          <h3 className="text-4xl font-light text-gray-800 mb-6">
-            Ready to nail your next pitch?
-          </h3>
-          <p className="text-gray-600 mb-10 text-lg max-w-2xl mx-auto">
-            Join hundreds of founders who've improved their pitch skills and secured funding with AI-powered practice.
-          </p>
-          <Button 
-            variant="outline"
-            size="lg" 
-            className="text-base bg-white/80 hover:bg-white border-gray-200 text-gray-800 hover:text-gray-900 shadow-sm hover:shadow-md transition-all duration-200"
-            asChild
-          >
-            <Link href="/auth/login">Start Free Practice</Link>
-          </Button>
-        </div>
+
       </main>
 
       {/* Footer */}
