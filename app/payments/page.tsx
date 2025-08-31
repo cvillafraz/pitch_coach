@@ -6,6 +6,7 @@ import { PaymentType } from "@/lib/web3-config"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { UserNav } from "@/components/auth/user-nav"
+import { MicdropLogo } from "@/components/ui/micdrop-logo"
 import { ArrowLeft, Mic, CreditCard, Shield, Zap } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
@@ -74,12 +75,7 @@ export default function PaymentsPage() {
               </Link>
             </Button>
             
-            <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-              <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
-                <Mic className="w-5 h-5 text-white" />
-              </div>
-              <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
-            </Link>
+            <MicdropLogo showText={true} />
           </div>
           
           <UserNav />

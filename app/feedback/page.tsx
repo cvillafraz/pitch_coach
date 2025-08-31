@@ -19,6 +19,7 @@ import {
   Download,
 } from "lucide-react"
 import Link from "next/link"
+import { MicdropLogo } from "@/components/ui/micdrop-logo"
 
 // Mock feedback data (in a real app, this would come from AI analysis)
 const mockFeedbackData = {
@@ -150,12 +151,7 @@ export default function FeedbackPage() {
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Mic className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <h1 className="text-xl font-bold text-foreground">Micdrop</h1>
-          </div>
+          <MicdropLogo size="xxl" variant="white" />
           <div className="flex items-center space-x-4">
             <Button variant="ghost" asChild>
               <Link href="/dashboard">Dashboard</Link>

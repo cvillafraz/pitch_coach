@@ -1,4 +1,4 @@
-import { Mic } from "lucide-react"
+import { MicdropLogo } from "@/components/ui/micdrop-logo"
 
 export default function Loading() {
   return (
@@ -6,12 +6,7 @@ export default function Loading() {
       {/* Header */}
       <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
-              <Mic className="w-5 h-5 text-white" />
-            </div>
-            <h1 className="text-xl font-light text-gray-800">Micdrops</h1>
-          </div>
+          <MicdropLogo showText={true} />
           <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse" />
         </div>
       </header>

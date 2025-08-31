@@ -38,24 +38,24 @@ export function UserNav() {
 
     return (
         <div className="flex items-center gap-3">
-            {/* Username */}
-            <span className="text-gray-800 font-medium">{displayName}</span>
+            {/* Username - más grande y bold */}
+            <span className="text-gray-800 font-bold text-lg">{displayName}</span>
             
-            {/* Navigation icons */}
+            {/* Navigation icons con colores */}
             <Button variant="ghost" size="icon" className="hover:bg-white/50" asChild>
                 <Link href="/dashboard">
-                    <User className="h-4 w-4 text-gray-600" />
+                    <User className="h-5 w-5 text-blue-600" />
                 </Link>
             </Button>
             
             <Button variant="ghost" size="icon" className="hover:bg-white/50" asChild>
                 <Link href="/performance">
-                    <Settings className="h-4 w-4 text-gray-600" />
+                    <Settings className="h-5 w-5 text-yellow-600" />
                 </Link>
             </Button>
             
             <Button variant="ghost" size="icon" className="hover:bg-white/50" onClick={signOut}>
-                <LogOut className="h-4 w-4 text-gray-600" />
+                <LogOut className="h-5 w-5 text-red-600" />
             </Button>
             
             {/* Avatar with dropdown for additional options */}

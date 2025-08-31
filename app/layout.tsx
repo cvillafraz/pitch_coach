@@ -21,6 +21,19 @@ export const metadata: Metadata = {
   title: "Micdrop - AI-Powered Pitch Practice Platform",
   description: "Practice and refine your pitches with AI-driven simulations and real-time feedback",
   generator: "v0.app",
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' }
+    ],
+    apple: '/apple-touch-icon.png',
+    other: [
+      { rel: 'android-chrome-192x192', url: '/android-chrome-192x192.png' },
+      { rel: 'android-chrome-512x512', url: '/android-chrome-512x512.png' }
+    ]
+  },
+  manifest: '/site.webmanifest',
 }
 
 export default function RootLayout({

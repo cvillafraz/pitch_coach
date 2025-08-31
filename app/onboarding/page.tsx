@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
+import { MicdropLogo } from "@/components/ui/micdrop-logo"
 import { CheckCircle, Mic, Users, Target, TrendingUp, ArrowRight, Play } from "lucide-react"
 import Link from "next/link"
 
@@ -238,12 +239,7 @@ export default function OnboardingPage() {
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Mic className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <h1 className="text-xl font-bold text-foreground">Micdrop</h1>
-          </div>
+          <MicdropLogo size="sm" showText={true} />
           <div className="flex items-center space-x-4">
             <div className="text-sm text-muted-foreground">
               Step {currentStep} of {onboardingSteps.length}

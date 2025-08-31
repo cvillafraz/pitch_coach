@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Mic } from "lucide-react"
+import { MicdropLogo } from "@/components/ui/micdrop-logo"
 import Link from "next/link"
 
 export default function LoginPage() {
@@ -10,11 +10,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="flex items-center justify-center space-x-2 mb-8">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <Mic className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <h1 className="text-2xl font-bold text-foreground">Micdrop</h1>
+        <div className="flex justify-center mb-8">
+          <MicdropLogo size="lg" showText={true} href="/" />
         </div>
 
         <Card>

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { TestimonialSlider } from "@/components/ui/testimonial-slider"
 import { HeaderNav } from "@/components/auth/header-nav"
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
+import { MicdropLogo } from "@/components/ui/micdrop-logo"
 import { Mic, Target, TrendingUp } from "lucide-react"
 import Link from "next/link"
 
@@ -12,7 +13,7 @@ const testimonials = [
     role: "Founder",
     company: "TechFlow",
     content: "Micdrop helped me secure $2M in Series A funding. The AI feedback was incredibly precise and actionable.",
-    avatar: "/placeholder-user.jpg"
+    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
   },
   {
     id: 2,
@@ -20,7 +21,7 @@ const testimonials = [
     role: "CEO",
     company: "GreenTech Solutions",
     content: "The investor persona feature is game-changing. I practiced with different types of VCs and felt prepared for every meeting.",
-    avatar: "/placeholder-user.jpg"
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
   },
   {
     id: 3,
@@ -28,7 +29,23 @@ const testimonials = [
     role: "Co-founder",
     company: "DataViz Pro",
     content: "My pitch confidence improved dramatically after just a week of practice. The real-time feedback is spot on.",
-    avatar: "/placeholder-user.jpg"
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    id: 4,
+    name: "David Kim",
+    role: "Founder",
+    company: "InnovateLab",
+    content: "The AI simulations are incredibly realistic. I felt like I was actually pitching to real investors.",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    id: 5,
+    name: "Lisa Thompson",
+    role: "CEO",
+    company: "EcoSmart",
+    content: "Micdrop transformed my presentation skills. I went from nervous to confident in just two weeks.",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face"
   }
 ]
 
@@ -38,12 +55,7 @@ export default function WelcomePage() {
       {/* Header */}
       <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm">
-              <Mic className="w-5 h-5 text-black" />
-            </div>
-            <h1 className="text-xl font-light text-gray-800">Micdrop</h1>
-          </Link>
+          <MicdropLogo size="xxl" />
           <div className="flex items-center space-x-3">
             <HeaderNav />
           </div>

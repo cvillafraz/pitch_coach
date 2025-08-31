@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
+import { MicdropLogo } from "@/components/ui/micdrop-logo"
 
 export default function DashboardPage() {
   const [dashboardData, setDashboardData] = useState<any>(null)
@@ -59,12 +60,7 @@ export default function DashboardPage() {
       {/* Header */}
       <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
-              <Mic className="w-5 h-5 text-white" />
-            </div>
-            <h1 className="text-xl font-light text-gray-800">Micdrop</h1>
-          </Link>
+          <MicdropLogo href="/" size="xxl" />
 
           <UserNav />
         </div>

@@ -1,8 +1,8 @@
 "use client"
 
-import { Mic } from "lucide-react"
 import Link from "next/link"
 import { HeaderNav } from "@/components/auth/header-nav"
+import { MicdropLogo } from "@/components/ui/micdrop-logo"
 
 interface AppHeaderProps {
   showBackButton?: boolean
@@ -22,12 +22,7 @@ export function AppHeader({
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
-              <Mic className="w-5 h-5 text-white" />
-            </div>
-            <h1 className="text-xl font-light text-gray-800">{title}</h1>
-          </Link>
+          <MicdropLogo showText={true} />
 
           {/* Navigation */}
           <div className="flex items-center space-x-3">
