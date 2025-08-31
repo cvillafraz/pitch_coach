@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Mic, MicOff, User, Clock, MessageSquare, TrendingUp, AlertCircle, CheckCircle, Circle } from "lucide-react"
+import { Mic, MicOff, User, Clock, MessageSquare, TrendingUp, AlertCircle, CheckCircle, Circle, Star } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useSearchParams } from "next/navigation"
@@ -347,6 +347,23 @@ export default function PracticePage() {
     setTimeout(() => setUploadStatus(null), 5000)
   }
 
+  const calculateStarRating = () => {
+    // Calculate average score from all metrics
+    const metricsWithScores = analysisMetrics.filter(metric => metric.score > 0)
+    if (metricsWithScores.length === 0) return 0
+    
+    const averageScore = metricsWithScores.reduce((sum, metric) => sum + metric.score, 0) / metricsWithScores.length
+    
+    // Convert to 0-5 star scale
+    return Math.round((averageScore / 100) * 5)
+  }
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: rating }, (_, index) => (
+      <span key={index} className="text-4xl">⭐</span>
+    ))
+  }
+
   const handleAudioReady = async (audioBlob: Blob, duration: number) => {
     console.log('Audio ready for processing:', {
       size: audioBlob.size,
@@ -619,26 +636,18 @@ export default function PracticePage() {
 
           {/* Right Column - Pitch Score and Conversation */}
           <div className="space-y-6">
-            {/* Session Stats */}
+            {/* Pitch Score */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Pitch Score</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Duration</span>
-                  <span className="font-medium">{formatTime(sessionDuration)}</span>
+              <CardContent className="text-center py-8">
+                <div className="flex justify-center space-x-1 mb-2">
+                  {renderStars(calculateStarRating())}
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Exchanges</span>
-                  <span className="font-medium">{Math.floor(conversation.length / 2)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Status</span>
-                  <Badge variant={isSessionActive ? "default" : "secondary"}>
-                    {isSessionActive ? "Active" : "Inactive"}
-                  </Badge>
-                </div>
+                <p className="text-2xl font-bold text-muted-foreground">
+                  {calculateStarRating()}/5
+                </p>
               </CardContent>
             </Card>
 
