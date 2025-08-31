@@ -156,8 +156,8 @@ export default function AIVoicePage() {
     setUploadStatus(`Processing audio (${validation.info.sizeInMB}MB)...`)
     
     try {
-      // Send audio to AI analysis API
-      const result = await sendAudioToAI(audioBlob, { duration, apiEndpoint: process.env.API_ENDPOINT+"/analyze-pitch" })
+      // Send audio to AI analysis APIhttp://localhost:8000
+      const result = await sendAudioToAI(audioBlob, { duration, apiEndpoint: "https://pitch-coach.onrender.com/analyze-pitch" })
       console.log('AI Analysis Result:', result)
       
       // Update analysis metrics with the API response
