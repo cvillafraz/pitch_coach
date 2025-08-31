@@ -59,43 +59,57 @@ export default function AIVoicePage() {
       audioUrl
     }])
 
-    // Simulate real-time AI analysis with progressive updates
+    // Start analysis - metrics will be updated when audio processing completes
     setIsAnalyzing(true)
+  }
 
-    // Simulate progressive analysis updates
-    setTimeout(() => {
-      setAnalysisMetrics(prev => prev.map(metric =>
-        metric.id === 'clarity'
-          ? { ...metric, score: 85, status: 'good' as const, feedback: 'Excellent clarity and pronunciation' }
-          : metric
-      ))
-    }, 500)
+  const updateAnalysisFromResponse = (apiResponse: any) => {
+    // Extract pitch scores from the API response
+    const pitchScores = apiResponse.pitch_scores || {}
+    
+    // Map API response to UI metrics
+    const updatedMetrics = analysisMetrics.map(metric => {
+      switch (metric.id) {
+        case 'clarity':
+          return {
+            ...metric,
+            score: Math.round(pitchScores.clarity || 0),
+            status: (pitchScores.clarity >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
+            feedback: `Speech clarity: ${pitchScores.clarity ? `${Math.round(pitchScores.clarity)}% - ` : ''}${pitchScores.explanation || 'Analysis complete'}`
+          }
+        case 'confidence':
+          return {
+            ...metric,
+            score: Math.round(pitchScores.confidence || 0),
+            status: (pitchScores.confidence >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
+            feedback: `Speaker confidence: ${pitchScores.confidence ? `${Math.round(pitchScores.confidence)}% - ` : ''}Based on vocal tone and emotion analysis`
+          }
+        case 'engagement':
+          return {
+            ...metric,
+            score: Math.round(pitchScores.tone || 0),
+            status: (pitchScores.tone >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
+            feedback: `Tone appropriateness: ${pitchScores.tone ? `${Math.round(pitchScores.tone)}% - ` : ''}How suitable your tone is for a professional pitch`
+          }
+        case 'structure':
+          return {
+            ...metric,
+            score: Math.round(pitchScores.fluency || 0),
+            status: (pitchScores.fluency >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
+            feedback: `Speech fluency: ${pitchScores.fluency ? `${Math.round(pitchScores.fluency)}% - ` : ''}How smooth and natural your speech flow is`
+          }
+        default:
+          return metric
+      }
+    })
 
-    setTimeout(() => {
-      setAnalysisMetrics(prev => prev.map(metric =>
-        metric.id === 'confidence'
-          ? { ...metric, score: 72, status: 'needs-improvement' as const, feedback: 'Try to sound more confident and assertive' }
-          : metric
-      ))
-    }, 1000)
-
-    setTimeout(() => {
-      setAnalysisMetrics(prev => prev.map(metric =>
-        metric.id === 'engagement'
-          ? { ...metric, score: 90, status: 'good' as const, feedback: 'Great energy and enthusiasm!' }
-          : metric
-      ))
-    }, 1500)
-
-    setTimeout(() => {
-      setAnalysisMetrics(prev => prev.map(metric =>
-        metric.id === 'structure'
-          ? { ...metric, score: 68, status: 'needs-improvement' as const, feedback: 'Consider following the problem-solution-market structure' }
-          : metric
-      ))
-      setFeedback("Great energy in your pitch! Consider adding more specific metrics to strengthen your value proposition. Your pacing was excellent, and the passion really comes through.")
-      setIsAnalyzing(false)
-    }, 2000)
+    setAnalysisMetrics(updatedMetrics)
+    
+    // Set overall feedback from the LLM explanation
+    const overallFeedback = pitchScores.explanation || 
+      "Analysis complete! Review the individual metrics for detailed feedback on your pitch performance."
+    setFeedback(overallFeedback)
+    setIsAnalyzing(false)
   }
 
   const handleUploadComplete = (uploadResult: any) => {
@@ -142,19 +156,24 @@ export default function AIVoicePage() {
     setUploadStatus(`Processing audio (${validation.info.sizeInMB}MB)...`)
     
     try {
-      // Send audio to AI analysis API (currently commented out)
-      const result = await sendAudioToAI(audioBlob, { duration, apiEndpoint: process.env.API_ENDPOINT+"/analyze-pitch" })
+      // Send audio to AI analysis API
+      const result = await sendAudioToAI(audioBlob, { duration, apiEndpoint: "http://localhost:8000/analyze-pitch" })
       console.log('AI Analysis Result:', result)
       
-      // Simulate AI processing delay
-      setTimeout(() => {
+      // Update analysis metrics with the API response
+      if (result && result.success) {
+        updateAnalysisFromResponse(result)
         setUploadStatus('✅ Audio processed successfully!')
-        setTimeout(() => setUploadStatus(null), 3000)
-      }, 1500)
+      } else {
+        throw new Error('Analysis failed - invalid response')
+      }
+      
+      setTimeout(() => setUploadStatus(null), 3000)
       
     } catch (error) {
       console.error('Error processing audio:', error)
       setUploadStatus(`Error: ${error instanceof Error ? error.message : 'Processing failed'}`)
+      setIsAnalyzing(false) // Stop the analyzing state on error
       setTimeout(() => setUploadStatus(null), 5000)
     }
   }
