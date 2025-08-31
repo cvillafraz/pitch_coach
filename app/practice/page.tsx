@@ -4,9 +4,11 @@ import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Mic, MicOff, User, Clock, MessageSquare, TrendingUp, AlertCircle } from "lucide-react"
+import { Mic, MicOff, User, Clock, MessageSquare, TrendingUp, AlertCircle, CheckCircle, Circle } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
+import { VoiceRecorder } from "@/components/ui/voice-recorder"
+import { validateAudioBlob, sendAudioToAI } from "@/lib/audio-utils"
 
 // Mock investor personas data (in a real app, this would come from an API)
 const investorPersonas = {
@@ -61,6 +63,34 @@ interface SpeechRecognition extends EventTarget {
   onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => any) | null
 }
 
+interface AnalysisMetric {
+  id: string
+  label: string
+  score: number
+  status: 'good' | 'needs-improvement' | 'analyzing'
+  feedback: string
+}
+
+interface Recording {
+  duration: number
+  timestamp: Date
+  audioUrl?: string
+  uploadResult?: any
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean
+  interimResults: boolean
+  lang: string
+  start(): void
+  stop(): void
+  abort(): void
+  onstart: ((this: SpeechRecognition, ev: Event) => any) | null
+  onend: ((this: SpeechRecognition, ev: Event) => any) | null
+  onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => any) | null
+  onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => any) | null
+}
+
 declare global {
   interface Window {
     SpeechRecognition: new () => SpeechRecognition
@@ -83,6 +113,18 @@ export default function PracticePage() {
   const [isSessionActive, setIsSessionActive] = useState(false)
   const [speechSupported, setSpeechSupported] = useState(true)
   const [currentFeedback, setCurrentFeedback] = useState<string | null>(null)
+  
+  // Audio analysis state
+  const [recordings, setRecordings] = useState<Recording[]>([])
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null)
+  const [analysisMetrics, setAnalysisMetrics] = useState<AnalysisMetric[]>([
+    { id: 'clarity', label: 'Clarity', score: 0, status: 'analyzing', feedback: 'Speak clearly and at a steady pace' },
+    { id: 'confidence', label: 'Confidence', score: 0, status: 'analyzing', feedback: 'Project confidence through your voice' },
+    { id: 'engagement', label: 'Engagement', score: 0, status: 'analyzing', feedback: 'Keep your audience engaged' },
+    { id: 'structure', label: 'Structure', score: 0, status: 'analyzing', feedback: 'Follow a clear pitch structure' },
+  ])
 
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const sessionStartRef = useRef<Date | null>(null)
@@ -180,6 +222,169 @@ export default function PracticePage() {
 
     // Clear feedback after 5 seconds
     setTimeout(() => setCurrentFeedback(null), 5000)
+  }
+
+  // Audio recording handlers
+  const handleRecordingStart = () => {
+    console.log('Recording started')
+    setIsRecording(true)
+    setCurrentFeedback(null)
+    // Reset metrics to analyzing state
+    setAnalysisMetrics(prev => prev.map(metric => ({
+      ...metric,
+      status: 'analyzing' as const,
+      score: 0
+    })))
+  }
+
+  const handleRecordingStop = (duration: number, audioUrl?: string, audioBlob?: Blob) => {
+    setIsRecording(false)
+    setRecordings((prev: Recording[]) => [...prev.slice(-4), { 
+      duration, 
+      timestamp: new Date(),
+      audioUrl
+    }])
+
+    // Start analysis - metrics will be updated when audio processing completes
+    setIsAnalyzing(true)
+  }
+
+  const updateAnalysisFromResponse = (apiResponse: any) => {
+    // Extract pitch scores from the API response
+    const pitchScores = apiResponse.pitch_scores || {}
+    
+    // Map API response to UI metrics
+    const updatedMetrics = analysisMetrics.map(metric => {
+      switch (metric.id) {
+        case 'clarity':
+          return {
+            ...metric,
+            score: Math.round(pitchScores.clarity || 0),
+            status: (pitchScores.clarity >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
+            feedback: ""
+          }
+        case 'confidence':
+          return {
+            ...metric,
+            score: Math.round(pitchScores.confidence || 0),
+            status: (pitchScores.confidence >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
+            feedback: ""
+          }
+        case 'engagement':
+          return {
+            ...metric,
+            score: Math.round(pitchScores.tone || 0),
+            status: (pitchScores.tone >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
+            feedback: ""
+          }
+        case 'structure':
+          return {
+            ...metric,
+            score: Math.round(pitchScores.fluency || 0),
+            status: (pitchScores.fluency >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
+            feedback: ""
+          }
+        default:
+          return metric
+      }
+    })
+
+    setAnalysisMetrics(updatedMetrics)
+    
+    // Set overall feedback from the LLM explanation
+    const overallFeedback = pitchScores.explanation || 
+      "Analysis complete! Review the individual metrics for detailed feedback on your pitch performance."
+    setCurrentFeedback(overallFeedback)
+    setIsAnalyzing(false)
+    
+    // Also add the transcription to the conversation if available
+    if (apiResponse.transcription) {
+      setConversation((prev) => [...prev, { 
+        speaker: "user", 
+        text: apiResponse.transcription, 
+        timestamp: new Date() 
+      }])
+      
+      // Generate investor response
+      setTimeout(() => {
+        const responses = persona.responses
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)]
+        setConversation((prev) => [...prev, { 
+          speaker: "investor", 
+          text: randomResponse, 
+          timestamp: new Date() 
+        }])
+      }, 1500 + Math.random() * 1000)
+    }
+  }
+
+  const handleUploadComplete = (uploadResult: any) => {
+    console.log('Upload completed:', uploadResult)
+    setUploadStatus(`Audio uploaded successfully: ${uploadResult.filename}`)
+    
+    // Update the latest recording with upload result
+    setRecordings((prev: Recording[]) => {
+      const updated = [...prev]
+      if (updated.length > 0) {
+        updated[updated.length - 1] = {
+          ...updated[updated.length - 1],
+          uploadResult
+        }
+      }
+      return updated
+    })
+
+    // Clear status after 3 seconds
+    setTimeout(() => setUploadStatus(null), 3000)
+  }
+
+  const handleRecordingError = (error: string) => {
+    console.error('Recording error:', error)
+    setUploadStatus(`Error: ${error}`)
+    setTimeout(() => setUploadStatus(null), 5000)
+  }
+
+  const handleAudioReady = async (audioBlob: Blob, duration: number) => {
+    console.log('Audio ready for processing:', {
+      size: audioBlob.size,
+      type: audioBlob.type,
+      duration: duration
+    })
+    
+    // Validate audio before processing
+    const validation = validateAudioBlob(audioBlob)
+    if (!validation.valid) {
+      setUploadStatus(`Error: ${validation.error}`)
+      setTimeout(() => setUploadStatus(null), 5000)
+      return
+    }
+    
+    setUploadStatus(`Processing audio (${validation.info.sizeInMB}MB)...`)
+    
+    try {
+      // Send audio to AI analysis API
+      const result = await sendAudioToAI(audioBlob, { 
+        duration, 
+        apiEndpoint: "https://pitch-coach.onrender.com/analyze-pitch" 
+      })
+      console.log('AI Analysis Result:', result)
+      
+      // Update analysis metrics with the API response
+      if (result && result.success) {
+        updateAnalysisFromResponse(result)
+        setUploadStatus('✅ Audio processed successfully!')
+      } else {
+        throw new Error('Analysis failed - invalid response')
+      }
+      
+      setTimeout(() => setUploadStatus(null), 3000)
+      
+    } catch (error) {
+      console.error('Error processing audio:', error)
+      setUploadStatus(`Error: ${error instanceof Error ? error.message : 'Processing failed'}`)
+      setIsAnalyzing(false) // Stop the analyzing state on error
+      setTimeout(() => setUploadStatus(null), 5000)
+    }
   }
 
   const startListening = () => {
@@ -325,32 +530,84 @@ export default function PracticePage() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Analysis Metrics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Performance Metrics</CardTitle>
+                <CardDescription>Real-time analysis of your pitch</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {analysisMetrics.map((metric) => (
+                  <div key={metric.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
+                    <div className="mt-0.5">
+                      {metric.status === 'analyzing' ? (
+                        <Circle className="w-4 h-4 text-muted-foreground animate-pulse" />
+                      ) : metric.status === 'good' ? (
+                        <CheckCircle className="w-4 h-4 text-green-500" />
+                      ) : (
+                        <AlertCircle className="w-4 h-4 text-orange-500" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-sm font-medium">{metric.label}</p>
+                        {metric.score > 0 && (
+                          <span className={`text-xs px-2 py-1 rounded-full ${metric.status === 'good'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-orange-100 text-orange-700'
+                            }`}>
+                            {metric.score}%
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">{metric.feedback}</p>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Upload Status */}
+            {uploadStatus && (
+              <Card className={`${uploadStatus.includes('Error') ? 'border-destructive' : 'border-green-500'}`}>
+                <CardContent className="pt-6">
+                  <p className={`text-sm ${uploadStatus.includes('Error') ? 'text-destructive' : 'text-green-600'}`}>
+                    {uploadStatus}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Center Column - Speech Interface */}
           <div className="space-y-6">
-            {/* Microphone Controls */}
+            {/* Voice Recording Interface */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-center">Speech Recognition</CardTitle>
+                <CardTitle className="text-center">AI-Powered Pitch Analysis</CardTitle>
                 <CardDescription className="text-center">
-                  Click the microphone to start practicing your pitch
+                  Record your pitch to get real-time AI feedback and analysis
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center space-y-6">
-                <div className="flex justify-center">
-                  <Button
-                    size="lg"
-                    variant={isListening ? "destructive" : "default"}
-                    onClick={isListening ? stopListening : startListening}
-                    className="w-20 h-20 rounded-full"
-                  >
-                    {isListening ? <MicOff className="w-8 h-8" /> : <Mic className="w-8 h-8" />}
-                  </Button>
-                </div>
+                <VoiceRecorder
+                  onStart={handleRecordingStart}
+                  onStop={handleRecordingStop}
+                  onUploadComplete={handleUploadComplete}
+                  onError={handleRecordingError}
+                  onAudioReady={handleAudioReady}
+                  autoUpload={false}
+                  saveToStorage={false}
+                />
+                
                 <div className="space-y-2">
-                  <p className="text-sm font-medium">{isListening ? "Listening..." : "Click to start speaking"}</p>
-                  {isListening && (
+                  <p className="text-sm font-medium">
+                    {isRecording ? "Recording your pitch..." : 
+                     isAnalyzing ? "Analyzing with AI..." : 
+                     "Click to start recording"}
+                  </p>
+                  {(isRecording || isAnalyzing) && (
                     <div className="flex justify-center">
                       <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
@@ -359,6 +616,33 @@ export default function PracticePage() {
                       </div>
                     </div>
                   )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Speech Recognition Fallback */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-center">Live Speech Recognition</CardTitle>
+                <CardDescription className="text-center">
+                  Alternative: Use browser speech recognition for conversation
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center space-y-6">
+                <div className="flex justify-center">
+                  <Button
+                    size="lg"
+                    variant={isListening ? "destructive" : "outline"}
+                    onClick={isListening ? stopListening : startListening}
+                    className="w-16 h-16 rounded-full"
+                  >
+                    {isListening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-xs text-muted-foreground">
+                    {isListening ? "Listening for conversation..." : "Click for speech-to-text"}
+                  </p>
                 </div>
               </CardContent>
             </Card>

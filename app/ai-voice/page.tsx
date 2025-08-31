@@ -75,28 +75,28 @@ export default function AIVoicePage() {
             ...metric,
             score: Math.round(pitchScores.clarity || 0),
             status: (pitchScores.clarity >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
-            feedback: `Speech clarity: ${pitchScores.clarity ? `${Math.round(pitchScores.clarity)}% - ` : ''}${pitchScores.explanation || 'Analysis complete'}`
+            feedback: ""
           }
         case 'confidence':
           return {
             ...metric,
             score: Math.round(pitchScores.confidence || 0),
             status: (pitchScores.confidence >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
-            feedback: `Speaker confidence: ${pitchScores.confidence ? `${Math.round(pitchScores.confidence)}% - ` : ''}Based on vocal tone and emotion analysis`
+            feedback: ""
           }
         case 'engagement':
           return {
             ...metric,
             score: Math.round(pitchScores.tone || 0),
             status: (pitchScores.tone >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
-            feedback: `Tone appropriateness: ${pitchScores.tone ? `${Math.round(pitchScores.tone)}% - ` : ''}How suitable your tone is for a professional pitch`
+            feedback: ""
           }
         case 'structure':
           return {
             ...metric,
             score: Math.round(pitchScores.fluency || 0),
             status: (pitchScores.fluency >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
-            feedback: `Speech fluency: ${pitchScores.fluency ? `${Math.round(pitchScores.fluency)}% - ` : ''}How smooth and natural your speech flow is`
+            feedback: ""
           }
         default:
           return metric
@@ -156,8 +156,8 @@ export default function AIVoicePage() {
     setUploadStatus(`Processing audio (${validation.info.sizeInMB}MB)...`)
     
     try {
-      // Send audio to AI analysis API
-      const result = await sendAudioToAI(audioBlob, { duration, apiEndpoint: "http://localhost:8000/analyze-pitch" })
+      // Send audio to AI analysis APIhttp://localhost:8000
+      const result = await sendAudioToAI(audioBlob, { duration, apiEndpoint: "https://pitch-coach.onrender.com/analyze-pitch" })
       console.log('AI Analysis Result:', result)
       
       // Update analysis metrics with the API response
