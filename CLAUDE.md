@@ -82,6 +82,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Audio Utilities**: Helper functions in `lib/audio-utils.ts` for processing, validation, and API transmission
 - **Database Integration**: Use `PitchSessionService` class and `usePitchSessions` hook for saved sessions
 
+## Base Blockchain Payments
+
+### Integration Overview
+- **Payment System**: Base (Layer 2) ETH payments for premium features
+- **Wallet Support**: MetaMask, Coinbase Wallet, and other Ethereum wallets
+- **Network**: Base Sepolia (testnet) for development, Base mainnet for production
+- **Components**: Located in `components/payments/` directory
+- **Configuration**: Web3 settings in `lib/web3-config.ts`
+
+### Payment Types
+- **Premium Session**: 0.01 ETH for single advanced AI session
+- **Monthly Subscription**: 0.05 ETH for unlimited premium sessions
+- **Yearly Subscription**: 0.5 ETH for annual plan with savings
+
+### Key Components
+- **WalletConnector**: Handles wallet connection and network switching
+- **PaymentButton**: Processes individual payments with transaction handling
+- **PaymentFlow**: Complete payment interface combining wallet connection and payment options
+- **PaymentService**: Backend service for payment verification and database operations
+
+### Database Schema
+- **payments** table: Tracks transaction hashes, payment types, amounts, and confirmation status
+- **RLS enabled**: Users can only access their own payment records
+- **Migration**: Located in `supabase/migrations/001_payments_table.sql`
+
+### API Endpoints
+- **POST /api/verify-payment**: Verifies blockchain transactions and updates payment status
+
 ## Environment Setup
 
 Required environment variables:
@@ -89,3 +117,4 @@ Required environment variables:
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` 
 - `SUPABASE_SERVICE_ROLE_KEY` (for server-side operations)
 - `BLOB_READ_WRITE_TOKEN` (for Vercel Blob storage)
+- `NEXT_PUBLIC_BASE_RECEIVER_ADDRESS` (Your Base wallet address for receiving payments)
