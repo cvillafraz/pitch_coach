@@ -11,7 +11,7 @@ const testimonials = [
     name: "Sarah Chen",
     role: "Founder",
     company: "TechFlow",
-    content: "PitchCoach helped me secure $2M in Series A funding. The AI feedback was incredibly precise and actionable.",
+    content: "Micdrop helped me secure $2M in Series A funding. The AI feedback was incredibly precise and actionable.",
     avatar: "/placeholder-user.jpg"
   },
   {
@@ -42,7 +42,7 @@ export default function WelcomePage() {
             <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm">
               <Mic className="w-5 h-5 text-black" />
             </div>
-            <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
+            <h1 className="text-xl font-light text-gray-800">Micdrop</h1>
           </Link>
           <div className="flex items-center space-x-3">
             <HeaderNav />
@@ -122,7 +122,7 @@ export default function WelcomePage() {
               Trusted by founders
             </h3>
             <p className="text-gray-600 text-lg">
-              See how PitchCoach helped secure millions in funding
+              See how Micdrop helped secure millions in funding
             </p>
           </div>
           <TestimonialSlider testimonials={testimonials} />
@@ -134,7 +134,7 @@ export default function WelcomePage() {
       {/* Footer */}
       <footer className="border-t border-gray-100 bg-white/40 backdrop-blur-sm mt-24">
         <div className="container mx-auto px-6 py-8 text-center text-gray-500">
-          <p>&copy; 2025 PitchCoach. Empowering founders to pitch with confidence.</p>
+          <p>&copy; 2025 Micdrop. Empowering founders to pitch with confidence.</p>
         </div>
       </footer>
     </div>

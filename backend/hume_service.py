@@ -7,6 +7,8 @@ from hume import HumeClient
 from hume.expression_measurement.batch import Prosody, Models, Language
 from hume.expression_measurement.batch.types import InferenceBaseRequest
 import logging
+from dotenv import load_dotenv
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 

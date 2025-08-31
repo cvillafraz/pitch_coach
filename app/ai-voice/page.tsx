@@ -75,28 +75,28 @@ export default function AIVoicePage() {
             ...metric,
             score: Math.round(pitchScores.clarity || 0),
             status: (pitchScores.clarity >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
-            feedback: `Speech clarity: ${pitchScores.clarity ? `${Math.round(pitchScores.clarity)}% - ` : ''}${pitchScores.explanation || 'Analysis complete'}`
+            feedback: ""
           }
         case 'confidence':
           return {
             ...metric,
             score: Math.round(pitchScores.confidence || 0),
             status: (pitchScores.confidence >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
-            feedback: `Speaker confidence: ${pitchScores.confidence ? `${Math.round(pitchScores.confidence)}% - ` : ''}Based on vocal tone and emotion analysis`
+            feedback: ""
           }
         case 'engagement':
           return {
             ...metric,
             score: Math.round(pitchScores.tone || 0),
             status: (pitchScores.tone >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
-            feedback: `Tone appropriateness: ${pitchScores.tone ? `${Math.round(pitchScores.tone)}% - ` : ''}How suitable your tone is for a professional pitch`
+            feedback: ""
           }
         case 'structure':
           return {
             ...metric,
             score: Math.round(pitchScores.fluency || 0),
             status: (pitchScores.fluency >= 75 ? 'good' : 'needs-improvement') as 'good' | 'needs-improvement',
-            feedback: `Speech fluency: ${pitchScores.fluency ? `${Math.round(pitchScores.fluency)}% - ` : ''}How smooth and natural your speech flow is`
+            feedback: ""
           }
         default:
           return metric
@@ -193,7 +193,7 @@ export default function AIVoicePage() {
             <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
               <Mic className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
+            <h1 className="text-xl font-light text-gray-800">Micdrop</h1>
           </Link>
           
           <UserNav />

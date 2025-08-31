@@ -15,7 +15,7 @@ export function AppHeader({
   showBackButton = false, 
   backHref = "/dashboard", 
   backText = "Dashboard",
-  title = "PitchCoach" 
+  title = "Micdrop" 
 }: AppHeaderProps) {
   return (
     <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">

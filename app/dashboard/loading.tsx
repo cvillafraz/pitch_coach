@@ -10,7 +10,7 @@ export default function Loading() {
             <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
               <Mic className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-light text-gray-800">PitchCoachs</h1>
+            <h1 className="text-xl font-light text-gray-800">Micdrops</h1>
           </div>
           <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse" />
         </div>

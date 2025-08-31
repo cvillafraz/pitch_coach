@@ -11,7 +11,7 @@ import Link from "next/link"
 const onboardingSteps = [
   {
     id: 1,
-    title: "Welcome to PitchCoach",
+    title: "Welcome to Micdrop",
     description: "Your AI-powered pitch practice platform",
     content: "WelcomeStep",
   },
@@ -66,7 +66,7 @@ export default function OnboardingPage() {
         <Mic className="w-10 h-10 text-primary" />
       </div>
       <div>
-        <h2 className="text-3xl font-bold text-foreground mb-4">Welcome to PitchCoach!</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-4">Welcome to Micdrop!</h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           You're about to transform your pitch skills with AI-powered practice sessions. Let's get you set up in just a
           few quick steps.
@@ -92,7 +92,7 @@ export default function OnboardingPage() {
   const FeaturesStep = () => (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-foreground mb-4">How PitchCoach Works</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-4">How Micdrop Works</h2>
         <p className="text-lg text-muted-foreground">Four powerful features to help you master your pitch</p>
       </div>
       <div className="grid md:grid-cols-2 gap-6">
@@ -192,7 +192,7 @@ export default function OnboardingPage() {
       <div>
         <h2 className="text-3xl font-bold text-foreground mb-4">You're All Set!</h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-          Your PitchCoach account is ready. Let's start with your first practice session and see how our AI can help
+          Your Micdrop account is ready. Let's start with your first practice session and see how our AI can help
           improve your pitch.
         </p>
         <div className="bg-card rounded-lg p-6 max-w-md mx-auto">
@@ -242,7 +242,7 @@ export default function OnboardingPage() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Mic className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h1 className="text-xl font-bold text-foreground">PitchCoach</h1>
+            <h1 className="text-xl font-bold text-foreground">Micdrop</h1>
           </div>
           <div className="flex items-center space-x-4">
             <div className="text-sm text-muted-foreground">
