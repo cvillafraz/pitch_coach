@@ -32,7 +32,7 @@ export default function DashboardPage() {
       setUser(session?.user)
 
       try {
-        const res = await fetch("http://localhost:8000/dashboard", {
+        const res = await fetch(process.env.SITE_URL+"/dashboard", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
