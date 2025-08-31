@@ -33,20 +33,20 @@ export async function updateSession(request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser()
 
-    // Protect dashboard, practice, feedback, performance, and personas routes
-    const protectedPaths = ["/dashboard", "/practice", "/feedback", "/performance", "/personas"]
-    const isProtectedPath = protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
+    // Redirect old multi-page routes to main interface
+    const oldRoutes = ["/dashboard", "/practice", "/feedback", "/performance", "/personas", "/onboarding"]
+    const isOldRoute = oldRoutes.some((path) => request.nextUrl.pathname.startsWith(path))
 
-    if (isProtectedPath && !user && !request.nextUrl.pathname.startsWith("/auth")) {
+    if (isOldRoute) {
       const url = request.nextUrl.clone()
-      url.pathname = "/auth/login"
+      url.pathname = "/"
       return NextResponse.redirect(url)
     }
 
-    // Redirect authenticated users away from auth pages
+    // Redirect authenticated users away from auth pages to main interface
     if (user && request.nextUrl.pathname.startsWith("/auth/login")) {
       const url = request.nextUrl.clone()
-      url.pathname = "/dashboard"
+      url.pathname = "/"
       return NextResponse.redirect(url)
     }
 

@@ -13,8 +13,8 @@ interface AppHeaderProps {
 
 export function AppHeader({ 
   showBackButton = false, 
-  backHref = "/dashboard", 
-  backText = "Dashboard",
+  backHref = "/", 
+  backText = "Home",
   title = "PitchCoach" 
 }: AppHeaderProps) {
   return (

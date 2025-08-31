@@ -1,7 +1,7 @@
 "use client"
 
 import { Mic, Square, Upload } from "lucide-react"
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, memo } from "react"
 import { cn } from "@/lib/utils"
 
 interface VoiceRecorderProps {
@@ -16,7 +16,7 @@ interface VoiceRecorderProps {
   saveToStorage?: boolean
 }
 
-export function VoiceRecorder({
+export const VoiceRecorder = memo(function VoiceRecorder({
   onStart,
   onStop,
   onUploadComplete,
@@ -74,17 +74,27 @@ export function VoiceRecorder({
       streamRef.current = stream
       setHasPermission(true)
 
-      // Set up audio analysis for visualization
-      const audioContext = new AudioContext()
-      const analyser = audioContext.createAnalyser()
-      const microphone = audioContext.createMediaStreamSource(stream)
+      // Set up optimized audio analysis for visualization
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)({
+        sampleRate: 44100,
+        latencyHint: 'interactive'
+      })
       
-      analyser.fftSize = 256
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume()
+      }
+      
+      const analyser = audioContext.createAnalyser()
+      analyser.fftSize = 256 // Optimized for performance
       analyser.smoothingTimeConstant = 0.8
+      analyser.minDecibels = -90
+      analyser.maxDecibels = -10
+      
+      const microphone = audioContext.createMediaStreamSource(stream)
       microphone.connect(analyser)
       analyserRef.current = analyser
 
-      // Start audio level monitoring
+      // Start optimized audio level monitoring
       updateAudioLevels()
 
       // Set up MediaRecorder
@@ -166,29 +176,38 @@ export function VoiceRecorder({
     }
   }
 
-  const updateAudioLevels = () => {
+  const updateAudioLevels = useCallback(() => {
     if (!analyserRef.current || !isRecording) return
 
     const bufferLength = analyserRef.current.frequencyBinCount
     const dataArray = new Uint8Array(bufferLength)
     analyserRef.current.getByteFrequencyData(dataArray)
 
-    // Calculate levels for visualization bars
+    // Calculate levels for visualization bars with optimized processing
     const barWidth = Math.floor(bufferLength / visualizerBars)
-    const newLevels = []
+    const newLevels = new Array(visualizerBars)
 
     for (let i = 0; i < visualizerBars; i++) {
       let sum = 0
-      for (let j = 0; j < barWidth; j++) {
-        sum += dataArray[i * barWidth + j]
+      const startIndex = i * barWidth
+      const endIndex = Math.min(startIndex + barWidth, bufferLength)
+      
+      for (let j = startIndex; j < endIndex; j++) {
+        sum += dataArray[j]
       }
-      const average = sum / barWidth
-      newLevels.push(Math.min(100, (average / 255) * 100))
+      const average = sum / (endIndex - startIndex)
+      newLevels[i] = Math.min(100, (average / 255) * 100)
     }
 
     setAudioLevels(newLevels)
-    animationRef.current = requestAnimationFrame(updateAudioLevels)
-  }
+    
+    // Throttle animation frame requests to 30fps for better performance
+    setTimeout(() => {
+      if (isRecording) {
+        animationRef.current = requestAnimationFrame(updateAudioLevels)
+      }
+    }, 33) // ~30fps
+  }, [isRecording, visualizerBars])
 
   const uploadAudio = async (audioBlob: Blob) => {
     try {
@@ -345,4 +364,4 @@ export function VoiceRecorder({
       </div>
     </div>
   )
-}
+})

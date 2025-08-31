@@ -1,27 +1,42 @@
 "use client"
 
+import { memo } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import { useAuth } from "@/hooks/use-auth"
 
 interface GoogleLoginButtonProps {
   className?: string
   size?: "sm" | "default" | "lg"
+  variant?: "link" | "direct"
+  onLoginStart?: () => void
+  onLoginSuccess?: () => void
+  onLoginError?: (error: Error) => void
 }
 
-export function GoogleLoginButton({ className, size = "default" }: GoogleLoginButtonProps) {
-  return (
-    <Link
-      href="/auth/login"
-      className={cn(
-        "group relative inline-flex items-center justify-center gap-3 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-gray-900 border border-gray-200/60 hover:border-gray-300 rounded-full shadow-sm hover:shadow-lg transition-all duration-300 ease-out font-light hover:font-normal overflow-hidden",
-        // Subtle gradient overlay on hover
-        "before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-50/0 before:via-green-50/0 before:to-yellow-50/0 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
-        size === "sm" && "h-9 px-4 text-sm",
-        size === "default" && "h-11 px-6 text-base",
-        size === "lg" && "h-12 px-8 text-lg",
-        className
-      )}
-    >
+export const GoogleLoginButton = memo(function GoogleLoginButton({ 
+  className, 
+  size = "default", 
+  variant = "link",
+  onLoginStart,
+  onLoginSuccess,
+  onLoginError
+}: GoogleLoginButtonProps) {
+  const { signInWithGoogle, isAuthenticating } = useAuth()
+
+  const handleDirectLogin = async () => {
+    try {
+      onLoginStart?.()
+      await signInWithGoogle()
+      // Success will be handled by the auth state change listener
+    } catch (error) {
+      console.error('Login error:', error)
+      onLoginError?.(error as Error)
+    }
+  }
+
+  const buttonContent = (
+    <>
       <svg className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
         <path
           fill="#4285F4"
@@ -43,6 +58,44 @@ export function GoogleLoginButton({ className, size = "default" }: GoogleLoginBu
       <span className="relative z-10 transition-all duration-300 group-hover:translate-x-0.5">
         Continue with Google
       </span>
+    </>
+  )
+
+  const buttonClasses = cn(
+    "group relative inline-flex items-center justify-center gap-3 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-gray-900 border border-gray-200/60 hover:border-gray-300 rounded-full shadow-sm hover:shadow-lg transition-all duration-300 ease-out font-light hover:font-normal overflow-hidden",
+    // Subtle gradient overlay on hover
+    "before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-50/0 before:via-green-50/0 before:to-yellow-50/0 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
+    size === "sm" && "h-9 px-4 text-sm",
+    size === "default" && "h-11 px-6 text-base",
+    size === "lg" && "h-12 px-8 text-lg",
+    className
+  )
+
+  if (variant === "direct") {
+    return (
+      <button
+        onClick={handleDirectLogin}
+        disabled={isAuthenticating}
+        className={cn(buttonClasses, isAuthenticating && "opacity-50 cursor-not-allowed")}
+      >
+        {isAuthenticating ? (
+          <>
+            <div className="w-5 h-5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600" />
+            <span className="relative z-10">Signing in...</span>
+          </>
+        ) : (
+          buttonContent
+        )}
+      </button>
+    )
+  }
+
+  return (
+    <Link
+      href="/auth/login"
+      className={buttonClasses}
+    >
+      {buttonContent}
     </Link>
   )
-}
+})

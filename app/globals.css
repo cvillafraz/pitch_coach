@@ -135,7 +135,49 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* Responsive breakpoints and mobile-first structure */
+  .pitch-layout {
+    /* Mobile first - single column */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100vh;
+    padding: 1rem;
+  }
+
+  /* Tablet breakpoint (768px+) */
+  @media (min-width: 768px) {
+    .pitch-layout {
+      padding: 2rem;
+    }
+  }
+
+  /* Desktop breakpoint (1024px+) - Two column layout */
+  @media (min-width: 1024px) {
+    .pitch-layout {
+      display: grid;
+      grid-template-columns: 30% 70%;
+      gap: 2rem;
+      flex-direction: unset;
+    }
+  }
+
+  /* Large desktop optimization */
+  @media (min-width: 1280px) {
+    .pitch-layout {
+      gap: 3rem;
+      padding: 3rem;
+    }
+  }
   
+  /* Score display colors - CSS custom properties for gradient support */
+  :root {
+    --score-low: oklch(0.65 0.15 10);      /* Red */
+    --score-medium: oklch(0.75 0.1 60);    /* Yellow */
+    --score-high: oklch(0.6 0.15 140);     /* Green */
+  }
+
   /* Custom button animations */
   .btn-gradient {
     background: linear-gradient(to right, theme(colors.rose.400), theme(colors.orange.400));
@@ -146,6 +188,22 @@
   .btn-gradient:hover {
     background: linear-gradient(to right, theme(colors.rose.500), theme(colors.orange.500));
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  /* Score display animations */
+  .score-pulse {
+    animation: scorePulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scorePulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.02);
+    }
   }
   
   /* Backdrop blur utilities */

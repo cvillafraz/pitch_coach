@@ -41,18 +41,7 @@ export function UserNav() {
             {/* Username */}
             <span className="text-gray-800 font-medium">{displayName}</span>
             
-            {/* Navigation icons */}
-            <Button variant="ghost" size="icon" className="hover:bg-white/50" asChild>
-                <Link href="/dashboard">
-                    <User className="h-4 w-4 text-gray-600" />
-                </Link>
-            </Button>
-            
-            <Button variant="ghost" size="icon" className="hover:bg-white/50" asChild>
-                <Link href="/performance">
-                    <Settings className="h-4 w-4 text-gray-600" />
-                </Link>
-            </Button>
+            {/* Navigation icons - removed since we're using single-page architecture */}
             
             <Button variant="ghost" size="icon" className="hover:bg-white/50" onClick={signOut}>
                 <LogOut className="h-4 w-4 text-gray-600" />

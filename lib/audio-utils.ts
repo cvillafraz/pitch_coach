@@ -8,16 +8,28 @@ export interface AudioProcessingOptions {
   sampleRate?: number
 }
 
+// Cache for blob to base64 conversions to avoid reprocessing
+const base64Cache = new WeakMap<Blob, string>()
+
 /**
- * Convert audio blob to base64 string for API transmission
+ * Convert audio blob to base64 string for API transmission (with caching)
  */
 export function blobToBase64(blob: Blob): Promise<string> {
+  // Check cache first
+  const cached = base64Cache.get(blob)
+  if (cached) {
+    return Promise.resolve(cached)
+  }
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => {
       const result = reader.result as string
       // Remove data:audio/webm;base64, prefix
       const base64 = result.split(',')[1]
+      
+      // Cache the result
+      base64Cache.set(blob, base64)
       resolve(base64)
     }
     reader.onerror = reject
@@ -25,13 +37,28 @@ export function blobToBase64(blob: Blob): Promise<string> {
   })
 }
 
+// Cache for blob to ArrayBuffer conversions
+const arrayBufferCache = new WeakMap<Blob, ArrayBuffer>()
+
 /**
- * Convert audio blob to ArrayBuffer for binary transmission
+ * Convert audio blob to ArrayBuffer for binary transmission (with caching)
  */
 export function blobToArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
+  // Check cache first
+  const cached = arrayBufferCache.get(blob)
+  if (cached) {
+    return Promise.resolve(cached)
+  }
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as ArrayBuffer)
+    reader.onload = () => {
+      const result = reader.result as ArrayBuffer
+      
+      // Cache the result
+      arrayBufferCache.set(blob, result)
+      resolve(result)
+    }
     reader.onerror = reject
     reader.readAsArrayBuffer(blob)
   })
