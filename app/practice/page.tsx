@@ -502,44 +502,6 @@ export default function PracticePage() {
               </CardContent>
             </Card>
 
-            {/* Session Stats */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Pitch Score</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Duration</span>
-                  <span className="font-medium">{formatTime(sessionDuration)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Exchanges</span>
-                  <span className="font-medium">{Math.floor(conversation.length / 2)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Status</span>
-                  <Badge variant={isSessionActive ? "default" : "secondary"}>
-                    {isSessionActive ? "Active" : "Inactive"}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Real-time Feedback */}
-            {currentFeedback && (
-              <Card className="border-secondary">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center space-x-2">
-                    <TrendingUp className="w-5 h-5 text-secondary" />
-                    <span>Live Feedback</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm">{currentFeedback}</p>
-                </CardContent>
-              </Card>
-            )}
-
 
 
             {/* Upload Status */}
@@ -594,42 +556,20 @@ export default function PracticePage() {
               </CardContent>
             </Card>
 
-            {/* Performance Metrics */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Performance Metrics</CardTitle>
-                <CardDescription>Real-time analysis of your pitch</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {analysisMetrics.map((metric) => (
-                  <div key={metric.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="mt-0.5">
-                      {metric.status === 'analyzing' ? (
-                        <Circle className="w-4 h-4 text-muted-foreground animate-pulse" />
-                      ) : metric.status === 'good' ? (
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <AlertCircle className="w-4 h-4 text-orange-500" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="text-sm font-medium">{metric.label}</p>
-                        {metric.score > 0 && (
-                          <span className={`text-xs px-2 py-1 rounded-full ${metric.status === 'good'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-orange-100 text-orange-700'
-                            }`}>
-                            {metric.score}%
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-xs text-muted-foreground">{metric.feedback}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+            {/* Real-time Feedback */}
+            {currentFeedback && (
+              <Card className="border-secondary">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center space-x-2">
+                    <TrendingUp className="w-5 h-5 text-secondary" />
+                    <span>Live Feedback</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm">{currentFeedback}</p>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Speech Recognition Fallback */}
             {/* <Card>
@@ -677,12 +617,70 @@ export default function PracticePage() {
             </Card> */}
           </div>
 
-          {/* Right Column - Empty for now */}
-          <div>
-            {/* Content can be added here later */}
+          {/* Right Column - Pitch Score and Conversation */}
+          <div className="space-y-6">
+            {/* Session Stats */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Pitch Score</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Duration</span>
+                  <span className="font-medium">{formatTime(sessionDuration)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Exchanges</span>
+                  <span className="font-medium">{Math.floor(conversation.length / 2)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Status</span>
+                  <Badge variant={isSessionActive ? "default" : "secondary"}>
+                    {isSessionActive ? "Active" : "Inactive"}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Performance Metrics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Performance Metrics</CardTitle>
+                <CardDescription>Real-time analysis of your pitch</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {analysisMetrics.map((metric) => (
+                  <div key={metric.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
+                    <div className="mt-0.5">
+                      {metric.status === 'analyzing' ? (
+                        <Circle className="w-4 h-4 text-muted-foreground animate-pulse" />
+                      ) : metric.status === 'good' ? (
+                        <CheckCircle className="w-4 h-4 text-green-500" />
+                      ) : (
+                        <AlertCircle className="w-4 h-4 text-orange-500" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-sm font-medium">{metric.label}</p>
+                        {metric.score > 0 && (
+                          <span className={`text-xs px-2 py-1 rounded-full ${metric.status === 'good'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-orange-100 text-orange-700'
+                            }`}>
+                            {metric.score}%
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">{metric.feedback}</p>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
           </div>
           {/* Right Column - Conversation */}
-          {/* <div>
+          <div>
             <Card className="h-[600px] flex flex-col">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center space-x-2">
@@ -723,7 +721,7 @@ export default function PracticePage() {
                 )}
               </CardContent>
             </Card>
-          </div> */}
+          </div>
         </div>
       </main>
     </div>
