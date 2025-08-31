@@ -502,6 +502,21 @@ export default function PracticePage() {
               </CardContent>
             </Card>
 
+            {/* Real-time Feedback */}
+            {currentFeedback && (
+              <Card className="border-secondary">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center space-x-2">
+                    <TrendingUp className="w-5 h-5 text-secondary" />
+                    <span>Live Feedback</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm">{currentFeedback}</p>
+                </CardContent>
+              </Card>
+            )}
+
 
 
             {/* Upload Status */}
@@ -555,21 +570,6 @@ export default function PracticePage() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Real-time Feedback */}
-            {currentFeedback && (
-              <Card className="border-secondary">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center space-x-2">
-                    <TrendingUp className="w-5 h-5 text-secondary" />
-                    <span>Live Feedback</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm">{currentFeedback}</p>
-                </CardContent>
-              </Card>
-            )}
 
             {/* Speech Recognition Fallback */}
             {/* <Card>
@@ -681,7 +681,7 @@ export default function PracticePage() {
           </div>
           {/* Right Column - Conversation */}
           <div>
-            <Card className="h-[600px] flex flex-col">
+            {/* <Card className="h-[600px] flex flex-col">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center space-x-2">
                   <MessageSquare className="w-5 h-5" />
@@ -720,7 +720,7 @@ export default function PracticePage() {
                   ))
                 )}
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </main>
