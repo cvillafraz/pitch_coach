@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Mic, MicOff, User, Clock, MessageSquare, TrendingUp, AlertCircle, CheckCircle, Circle } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { useSearchParams } from "next/navigation"
 import { VoiceRecorder } from "@/components/ui/voice-recorder"
 import { validateAudioBlob, sendAudioToAI } from "@/lib/audio-utils"
@@ -17,6 +18,7 @@ const investorPersonas = {
     title: "Partner at TechVentures",
     type: "VC Investor",
     avatar: "SC",
+    avatarImage: "/placeholder-user.jpg", // Using existing placeholder image
     responses: [
       "That's interesting. Can you tell me more about your customer acquisition strategy?",
       "What's your monthly recurring revenue growth rate?",
@@ -30,6 +32,7 @@ const investorPersonas = {
     title: "Serial Entrepreneur & Angel",
     type: "Angel Investor",
     avatar: "MR",
+    avatarImage: "/michael.png", // Using existing placeholder image
     responses: [
       "I love the passion I'm hearing. What's your biggest challenge right now?",
       "How did you validate this idea with customers?",
@@ -477,26 +480,32 @@ export default function PracticePage() {
           {/* Left Column - Investor Info */}
           <div className="space-y-6">
             <Card>
-              <CardHeader>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground font-semibold">{persona.avatar}</span>
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg">{persona.name}</CardTitle>
-                    <CardDescription>{persona.title}</CardDescription>
+              <CardHeader className="text-center pb-4">
+                <div className="flex justify-center mb-4">
+                  <div className="w-32 h-32 rounded-full overflow-hidden shadow-lg border-4 border-primary">
+                    <Image
+                      src={persona.avatarImage}
+                      alt={`${persona.name} avatar`}
+                      width={128}
+                      height={128}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
+                <div>
+                  <CardTitle className="text-xl">{persona.name}</CardTitle>
+                  <CardDescription className="text-base">{persona.title}</CardDescription>
+                </div>
               </CardHeader>
-              <CardContent>
-                <Badge variant="outline">{persona.type}</Badge>
+              <CardContent className="text-center">
+                <Badge variant="outline" className="text-sm">{persona.type}</Badge>
               </CardContent>
             </Card>
 
             {/* Session Stats */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Session Stats</CardTitle>
+                <CardTitle className="text-lg">Pitch Score</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -531,42 +540,7 @@ export default function PracticePage() {
               </Card>
             )}
 
-            {/* Analysis Metrics */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Performance Metrics</CardTitle>
-                <CardDescription>Real-time analysis of your pitch</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {analysisMetrics.map((metric) => (
-                  <div key={metric.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="mt-0.5">
-                      {metric.status === 'analyzing' ? (
-                        <Circle className="w-4 h-4 text-muted-foreground animate-pulse" />
-                      ) : metric.status === 'good' ? (
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <AlertCircle className="w-4 h-4 text-orange-500" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="text-sm font-medium">{metric.label}</p>
-                        {metric.score > 0 && (
-                          <span className={`text-xs px-2 py-1 rounded-full ${metric.status === 'good'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-orange-100 text-orange-700'
-                            }`}>
-                            {metric.score}%
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-xs text-muted-foreground">{metric.feedback}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+
 
             {/* Upload Status */}
             {uploadStatus && (
@@ -620,8 +594,45 @@ export default function PracticePage() {
               </CardContent>
             </Card>
 
-            {/* Speech Recognition Fallback */}
+            {/* Performance Metrics */}
             <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Performance Metrics</CardTitle>
+                <CardDescription>Real-time analysis of your pitch</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {analysisMetrics.map((metric) => (
+                  <div key={metric.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
+                    <div className="mt-0.5">
+                      {metric.status === 'analyzing' ? (
+                        <Circle className="w-4 h-4 text-muted-foreground animate-pulse" />
+                      ) : metric.status === 'good' ? (
+                        <CheckCircle className="w-4 h-4 text-green-500" />
+                      ) : (
+                        <AlertCircle className="w-4 h-4 text-orange-500" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-sm font-medium">{metric.label}</p>
+                        {metric.score > 0 && (
+                          <span className={`text-xs px-2 py-1 rounded-full ${metric.status === 'good'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-orange-100 text-orange-700'
+                            }`}>
+                            {metric.score}%
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">{metric.feedback}</p>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Speech Recognition Fallback */}
+            {/* <Card>
               <CardHeader>
                 <CardTitle className="text-center">Live Speech Recognition</CardTitle>
                 <CardDescription className="text-center">
@@ -645,10 +656,10 @@ export default function PracticePage() {
                   </p>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Live Transcript */}
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Live Transcript</CardTitle>
               </CardHeader>
@@ -663,11 +674,15 @@ export default function PracticePage() {
                   </p>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
 
-          {/* Right Column - Conversation */}
+          {/* Right Column - Empty for now */}
           <div>
+            {/* Content can be added here later */}
+          </div>
+          {/* Right Column - Conversation */}
+          {/* <div>
             <Card className="h-[600px] flex flex-col">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center space-x-2">
@@ -708,7 +723,7 @@ export default function PracticePage() {
                 )}
               </CardContent>
             </Card>
-          </div>
+          </div> */}
         </div>
       </main>
     </div>
