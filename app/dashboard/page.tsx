@@ -20,6 +20,7 @@ import {
   ArrowRight,
   Star,
   Zap,
+  CreditCard,
 } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
@@ -266,7 +267,7 @@ export default function DashboardPage() {
                 <CardDescription className="text-gray-600">Jump into your next practice session</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-4 gap-4">
                   <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-gray-900 hover:bg-gray-800 text-white" asChild>
                     <Link href="/ai-voice">
                       <Play className="w-6 h-6" />
@@ -291,6 +292,16 @@ export default function DashboardPage() {
                     <Link href="/performance">
                       <BarChart3 className="w-6 h-6" />
                       <span>View Performance</span>
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br from-orange-100 to-rose-100 hover:from-orange-200 hover:to-rose-200 border-orange-200 text-orange-800"
+                    asChild
+                  >
+                    <Link href="/payments">
+                      <CreditCard className="w-6 h-6" />
+                      <span>Premium Plans</span>
                     </Link>
                   </Button>
                 </div>
