@@ -76,48 +76,6 @@ const investorPersonas = [
     difficulty: "Intermediate",
     color: "primary",
   },
-  {
-    id: "growth-vc",
-    name: "David Kim",
-    title: "Principal at Growth Capital",
-    type: "Growth VC",
-    focus: "Series B+ Companies",
-    personality: "Growth-obsessed, wants to see proven traction and clear path to scale",
-    background: "Former McKinsey consultant, specializes in scaling operations",
-    interests: ["Marketplace", "SaaS", "Healthcare Tech"],
-    investmentRange: "$10M - $50M",
-    icon: Target,
-    difficulty: "Advanced",
-    color: "secondary",
-  },
-  {
-    id: "international-vc",
-    name: "Emma Thompson",
-    title: "Managing Director at Global Ventures",
-    type: "International VC",
-    focus: "Cross-border expansion",
-    personality: "Global perspective, interested in international market potential",
-    background: "Investment banking background, focuses on international expansion",
-    interests: ["Global Markets", "Cross-border", "Emerging Tech"],
-    investmentRange: "$5M - $25M",
-    icon: Globe,
-    difficulty: "Intermediate",
-    color: "primary",
-  },
-  {
-    id: "industry-expert",
-    name: "Robert Johnson",
-    title: "Healthcare Industry Veteran",
-    type: "Industry Expert",
-    focus: "Healthcare & Biotech",
-    personality: "Domain expertise focused, wants deep technical understanding",
-    background: "30 years in healthcare, former pharma executive",
-    interests: ["Healthcare", "Biotech", "Medical Devices"],
-    investmentRange: "$500K - $5M",
-    icon: Briefcase,
-    difficulty: "Advanced",
-    color: "secondary",
-  },
 ]
 
 export default function PersonasPage() {
@@ -149,7 +107,7 @@ export default function PersonasPage() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Mic className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h1 className="text-xl font-bold text-foreground">PitchCoach</h1>
+            <h1 className="text-xl font-bold text-foreground">Micdrop</h1>
           </div>
           <div className="flex items-center space-x-4">
             <Button variant="ghost" asChild>

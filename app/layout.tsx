@@ -18,7 +18,7 @@ const robotoMono = Roboto_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "PitchCoach - AI-Powered Pitch Practice Platform",
+  title: "Micdrop - AI-Powered Pitch Practice Platform",
   description: "Practice and refine your pitches with AI-driven simulations and real-time feedback",
   generator: "v0.app",
 }

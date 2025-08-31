@@ -1,6 +1,6 @@
-# PitchCoach
+# Micdrop
 
-Local development setup for the PitchCoach Next.js app.
+Local development setup for the Micdrop Next.js app.
 
 ## Prerequisites
 - Node.js 18.18+ or 20+

@@ -193,7 +193,7 @@ export default function AIVoicePage() {
             <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
               <Mic className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-light text-gray-800">PitchCoach</h1>
+            <h1 className="text-xl font-light text-gray-800">Micdrop</h1>
           </Link>
           
           <UserNav />

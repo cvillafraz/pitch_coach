@@ -14,7 +14,7 @@ export default function SignupPage() {
           <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
             <Mic className="w-6 h-6 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground">PitchCoach</h1>
+          <h1 className="text-2xl font-bold text-foreground">Micdrop</h1>
         </div>
 
         <Card>

@@ -183,9 +183,6 @@ export default function PracticePage() {
               const responses = persona.responses
               const randomResponse = responses[Math.floor(Math.random() * responses.length)]
               setConversation((prev) => [...prev, { speaker: "investor", text: randomResponse, timestamp: new Date() }])
-
-              // Generate mock feedback
-              generateMockFeedback(finalTranscript)
             },
             1500 + Math.random() * 1000,
           )
@@ -211,21 +208,6 @@ export default function PracticePage() {
       }
     }
   }, [persona])
-
-  const generateMockFeedback = (text: string) => {
-    const feedbackOptions = [
-      "Great energy! Try to slow down slightly for better clarity.",
-      "Good use of specific numbers. Consider adding more context.",
-      "Strong opening! Make sure to maintain eye contact.",
-      "Nice storytelling approach. Could use more concrete examples.",
-      "Confident delivery! Try to pause more between key points.",
-    ]
-    const randomFeedback = feedbackOptions[Math.floor(Math.random() * feedbackOptions.length)]
-    setCurrentFeedback(randomFeedback)
-
-    // Clear feedback after 5 seconds
-    setTimeout(() => setCurrentFeedback(null), 5000)
-  }
 
   // Audio recording handlers
   const handleRecordingStart = () => {
@@ -385,7 +367,7 @@ export default function PracticePage() {
       // Send audio to AI analysis API
       const result = await sendAudioToAI(audioBlob, { 
         duration, 
-        apiEndpoint: "https://pitch-coach.onrender.com/analyze-pitch" 
+        apiEndpoint: process.env.NEXT_PUBLIC_API_ENDPOINT || "https://pitch-coach.onrender.com/analyze-pitch" 
       })
       console.log('AI Analysis Result:', result)
       
@@ -478,7 +460,7 @@ export default function PracticePage() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Mic className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h1 className="text-xl font-bold text-foreground">PitchCoach</h1>
+            <h1 className="text-xl font-bold text-foreground">Micdrop</h1>
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">

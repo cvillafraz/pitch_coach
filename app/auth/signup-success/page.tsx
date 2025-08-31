@@ -14,7 +14,7 @@ export default function SignUpSuccessPage() {
         </CardHeader>
         <CardContent className="text-center">
           <p className="text-sm text-gray-600 mb-4">
-            Please check your email and click the confirmation link to activate your PitchCoach account.
+            Please check your email and click the confirmation link to activate your Micdrop account.
           </p>
           <p className="text-xs text-gray-500">
             Didn't receive the email? Check your spam folder or try signing up again.
