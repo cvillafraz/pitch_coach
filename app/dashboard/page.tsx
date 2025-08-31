@@ -208,54 +208,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600 flex items-center">
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Total Sessions
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-light text-gray-800">{data.quickStats.totalSessions}</div>
-              <div className="flex items-center text-green-600 text-sm mt-1">
-                <TrendingUp className="w-3 h-3 mr-1" />+{data.quickStats.improvement}% this month
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600 flex items-center">
-                <Target className="w-4 h-4 mr-2" />
-                Average Score
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-light text-gray-800">
-                {data.quickStats.averageScore}
-              </div>
-              <div className="text-sm text-gray-500 mt-1">out of 100</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600 flex items-center">
-                <Clock className="w-4 h-4 mr-2" />
-                Practice Time
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-light text-gray-800">
-                {formatTime(data.quickStats.practiceTime)}
-              </div>
-              <div className="text-sm text-gray-500 mt-1">total practice</div>
-            </CardContent>
-          </Card>
-        </div>
-
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Column */}
           <div className="space-y-8">
@@ -293,33 +245,6 @@ export default function DashboardPage() {
                       <span>View Performance</span>
                     </Link>
                   </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Weekly Activity */}
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2 text-gray-800 font-medium">
-                  <Calendar className="w-5 h-5" />
-                  <span>This Week's Activity</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-7 gap-2">
-                  {mockDashboardData.weeklyActivity.map((day, index) => (
-                    <div key={index} className="text-center">
-                      <div className="text-xs text-gray-500 mb-2">{day.day}</div>
-                      <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
-                          day.sessions > 0 ? "bg-gradient-to-br from-rose-400 to-orange-400 text-white" : "bg-gray-200 text-gray-500"
-                        }`}
-                      >
-                        {day.sessions}
-                      </div>
-                      {day.score > 0 && <div className="text-xs mt-1 text-gray-700">{day.score}</div>}
-                    </div>
-                  ))}
                 </div>
               </CardContent>
             </Card>
