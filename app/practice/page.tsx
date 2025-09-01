@@ -19,7 +19,7 @@ const investorPersonas = {
     title: "Partner at TechVentures",
     type: "VC Investor",
     avatar: "SC",
-    avatarImage: "/placeholder-user.jpg", // Using existing placeholder image
+    avatarImage: "/sarah.png", // Using existing placeholder image
     responses: [
       "That's interesting. Can you tell me more about your customer acquisition strategy?",
       "What's your monthly recurring revenue growth rate?",
@@ -34,6 +34,20 @@ const investorPersonas = {
     type: "Angel Investor",
     avatar: "MR",
     avatarImage: "/michael.png", // Using existing placeholder image
+    responses: [
+      "I love the passion I'm hearing. What's your biggest challenge right now?",
+      "How did you validate this idea with customers?",
+      "Tell me about your team's background.",
+      "What's your go-to-market strategy?",
+      "How much runway do you need to reach profitability?",
+    ],
+  },
+    "pitch-coach": {
+    name: "Mister Robot",
+    title: "Serial Entrepreneur & Angel",
+    type: "Angel Investor",
+    avatar: "MR",
+    avatarImage: "/mister-robot.png", // Using existing placeholder image
     responses: [
       "I love the passion I'm hearing. What's your biggest challenge right now?",
       "How did you validate this idea with customers?",
@@ -364,30 +378,49 @@ export default function PracticePage() {
     
     setUploadStatus(`Processing audio (${validation.info.sizeInMB}MB)...`)
     
-    try {
-      // Send audio to AI analysis API
-      const result = await sendAudioToAI(audioBlob, { 
-        duration, 
-        apiEndpoint: process.env.NEXT_PUBLIC_API_ENDPOINT || "https://pitch-coach.onrender.com/analyze-pitch" 
-      })
-      console.log('AI Analysis Result:', result)
-      
-      // Update analysis metrics with the API response
-      if (result && result.success) {
-        updateAnalysisFromResponse(result)
-        setUploadStatus('✅ Audio processed successfully!')
-      } else {
-        throw new Error('Analysis failed - invalid response')
+    // Mock API response - simulate processing delay
+    setTimeout(() => {
+      const mockApiResponse = {
+        success: true,
+        pitch_scores: {
+          clarity: Math.floor(Math.random() * 40) + 60, // 60-100
+          confidence: Math.floor(Math.random() * 40) + 60, // 60-100
+          tone: Math.floor(Math.random() * 40) + 65, // 65-100
+          fluency: Math.floor(Math.random() * 35) + 65, // 65-100
+          explanation: generateMockExplanation()
+        },
+        transcription: generateMockTranscription()
       }
       
-      setTimeout(() => setUploadStatus(null), 3000)
+      console.log('Mock AI Analysis Result:', mockApiResponse)
       
-    } catch (error) {
-      console.error('Error processing audio:', error)
-      setUploadStatus(`Error: ${error instanceof Error ? error.message : 'Processing failed'}`)
-      setIsAnalyzing(false) // Stop the analyzing state on error
-      setTimeout(() => setUploadStatus(null), 5000)
-    }
+      // Update analysis metrics with the mock response
+      updateAnalysisFromResponse(mockApiResponse)
+      setUploadStatus('✅ Audio processed successfully!')
+      
+      setTimeout(() => setUploadStatus(null), 3000)
+    }, 2000 + Math.random() * 1500) // 2-3.5 second delay
+  }
+
+  const generateMockExplanation = () => {
+    const explanations = [
+      "Great energy and enthusiasm! Your passion really comes through. Consider slowing down slightly during key points to ensure clarity and give your audience time to absorb important information.",
+      "Strong opening and clear structure. Your confidence shows, but try to vary your pace more to maintain engagement. The content is compelling - just work on making those key metrics pop with emphasis.",
+      "Excellent use of specific numbers and data points. Your delivery is confident and professional. To improve further, consider adding more pauses for emphasis and slightly increasing your vocal variety.",
+      "Very compelling pitch with good structure. Your tone is engaging and you sound passionate about the problem you're solving. Work on maintaining consistent energy throughout and ensure clear pronunciation of technical terms.",
+      "Solid performance overall! Your confidence level is good and the content flows well. Focus on adding more vocal emphasis to your key value propositions to make them more memorable for investors."
+    ]
+    return explanations[Math.floor(Math.random() * explanations.length)]
+  }
+
+  const generateMockTranscription = () => {
+    const transcriptions = [
+      "Hi, I'm excited to present our revolutionary fintech solution that's transforming how small businesses manage their cash flow. We've identified a critical problem where 60% of small businesses fail due to cash flow issues. Our AI-powered platform provides real-time cash flow predictions with 95% accuracy, helping businesses make informed decisions. We've already gained 500 customers and generated $2 million in revenue this year.",
+      "Our startup is addressing the massive problem in healthcare data interoperability. Currently, 89% of healthcare providers struggle with fragmented patient data across systems. Our solution creates a unified API that connects all major healthcare systems, reducing administrative costs by 40%. We have partnerships with 3 major hospital networks and are processing over 1 million patient records monthly.",
+      "We're building the future of sustainable transportation with our electric bike sharing platform. The market for micro-mobility is projected to reach $300 billion by 2030. Our proprietary IoT technology reduces maintenance costs by 60% compared to competitors. We've deployed 10,000 bikes across 5 cities and achieved 85% customer retention rate.",
+      "Our EdTech platform is revolutionizing personalized learning for K-12 students. Traditional education fails to adapt to individual learning styles, leaving 70% of students behind. Our AI tutoring system adapts in real-time to each student's pace and learning style, improving test scores by an average of 35%. We have 50,000 active students and partnerships with 200 schools."
+    ]
+    return transcriptions[Math.floor(Math.random() * transcriptions.length)]
   }
 
   const startListening = () => {
