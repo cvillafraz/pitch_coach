@@ -101,7 +101,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <Button className="h-24 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white shadow-lg transition-all duration-200" asChild>
-                <Link href="/ai-voice">
+                <Link href="/practice">
                   <Play className="w-7 h-7" />
                   <span className="text-sm font-medium">Start Practice</span>
                 </Link>

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Mic, MicOff, User, Clock, MessageSquare, TrendingUp, AlertCircle, CheckCircle, Circle, Star } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import { VoiceRecorder } from "@/components/ui/voice-recorder"
 import { validateAudioBlob, sendAudioToAI } from "@/lib/audio-utils"
 import { MicdropLogo } from "@/components/ui/micdrop-logo"
@@ -118,8 +118,9 @@ declare global {
 
 export default function PracticePage() {
   const searchParams = useSearchParams()
-  const personaId = searchParams.get("persona") || "tech-vc"
-  const persona = investorPersonas[personaId as keyof typeof investorPersonas] || investorPersonas["tech-vc"]
+  const router = useRouter()
+  const personaId = searchParams.get("persona") || "pitch-coach"
+  const persona = investorPersonas[personaId as keyof typeof investorPersonas] || investorPersonas["pitch-coach"]
 
   const [isListening, setIsListening] = useState(false)
   const [transcript, setTranscript] = useState("")
@@ -297,7 +298,7 @@ export default function PracticePage() {
     setCurrentFeedback(overallFeedback)
     setIsAnalyzing(false)
     
-    // Also add the transcription to the conversation if available
+    // Add the transcription to the conversation if available
     if (apiResponse.transcription) {
       setConversation((prev) => [...prev, { 
         speaker: "user", 
@@ -378,49 +379,25 @@ export default function PracticePage() {
     
     setUploadStatus(`Processing audio (${validation.info.sizeInMB}MB)...`)
     
-    // Mock API response - simulate processing delay
-    setTimeout(() => {
-      const mockApiResponse = {
-        success: true,
-        pitch_scores: {
-          clarity: Math.floor(Math.random() * 40) + 60, // 60-100
-          confidence: Math.floor(Math.random() * 40) + 60, // 60-100
-          tone: Math.floor(Math.random() * 40) + 65, // 65-100
-          fluency: Math.floor(Math.random() * 35) + 65, // 65-100
-          explanation: generateMockExplanation()
-        },
-        transcription: generateMockTranscription()
-      }
+    try {
+      // Send audio to AI analysis API
+      const result = await sendAudioToAI(audioBlob, { 
+        duration, 
+        apiEndpoint: "http://localhost:8000/analyze-pitch" 
+      })
       
-      console.log('Mock AI Analysis Result:', mockApiResponse)
+      console.log('AI Analysis Result:', result)
       
-      // Update analysis metrics with the mock response
-      updateAnalysisFromResponse(mockApiResponse)
+      // Update analysis metrics with the API response
+      updateAnalysisFromResponse(result)
       setUploadStatus('✅ Audio processed successfully!')
       
       setTimeout(() => setUploadStatus(null), 3000)
-    }, 2000 + Math.random() * 1500) // 2-3.5 second delay
-  }
-
-  const generateMockExplanation = () => {
-    const explanations = [
-      "Great energy and enthusiasm! Your passion really comes through. Consider slowing down slightly during key points to ensure clarity and give your audience time to absorb important information.",
-      "Strong opening and clear structure. Your confidence shows, but try to vary your pace more to maintain engagement. The content is compelling - just work on making those key metrics pop with emphasis.",
-      "Excellent use of specific numbers and data points. Your delivery is confident and professional. To improve further, consider adding more pauses for emphasis and slightly increasing your vocal variety.",
-      "Very compelling pitch with good structure. Your tone is engaging and you sound passionate about the problem you're solving. Work on maintaining consistent energy throughout and ensure clear pronunciation of technical terms.",
-      "Solid performance overall! Your confidence level is good and the content flows well. Focus on adding more vocal emphasis to your key value propositions to make them more memorable for investors."
-    ]
-    return explanations[Math.floor(Math.random() * explanations.length)]
-  }
-
-  const generateMockTranscription = () => {
-    const transcriptions = [
-      "Hi, I'm excited to present our revolutionary fintech solution that's transforming how small businesses manage their cash flow. We've identified a critical problem where 60% of small businesses fail due to cash flow issues. Our AI-powered platform provides real-time cash flow predictions with 95% accuracy, helping businesses make informed decisions. We've already gained 500 customers and generated $2 million in revenue this year.",
-      "Our startup is addressing the massive problem in healthcare data interoperability. Currently, 89% of healthcare providers struggle with fragmented patient data across systems. Our solution creates a unified API that connects all major healthcare systems, reducing administrative costs by 40%. We have partnerships with 3 major hospital networks and are processing over 1 million patient records monthly.",
-      "We're building the future of sustainable transportation with our electric bike sharing platform. The market for micro-mobility is projected to reach $300 billion by 2030. Our proprietary IoT technology reduces maintenance costs by 60% compared to competitors. We've deployed 10,000 bikes across 5 cities and achieved 85% customer retention rate.",
-      "Our EdTech platform is revolutionizing personalized learning for K-12 students. Traditional education fails to adapt to individual learning styles, leaving 70% of students behind. Our AI tutoring system adapts in real-time to each student's pace and learning style, improving test scores by an average of 35%. We have 50,000 active students and partnerships with 200 schools."
-    ]
-    return transcriptions[Math.floor(Math.random() * transcriptions.length)]
+    } catch (error) {
+      console.error('Error processing audio:', error)
+      setUploadStatus(`Error: ${error instanceof Error ? error.message : 'Processing failed'}`)
+      setTimeout(() => setUploadStatus(null), 5000)
+    }
   }
 
   const startListening = () => {
@@ -445,7 +422,7 @@ export default function PracticePage() {
     }
   }
 
-  const endSession = () => {
+  const goBackToPersonas = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop()
     }
@@ -453,6 +430,7 @@ export default function PracticePage() {
     if (intervalRef.current) {
       clearInterval(intervalRef.current)
     }
+    router.push('/personas')
   }
 
   const formatTime = (seconds: number) => {
@@ -496,7 +474,7 @@ export default function PracticePage() {
               <Clock className="w-4 h-4" />
               <span>{formatTime(sessionDuration)}</span>
             </div>
-            <Button variant="outline" onClick={endSession} disabled={!isSessionActive}>
+            <Button variant="outline" onClick={goBackToPersonas}>
               End Session
             </Button>
           </div>

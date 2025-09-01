@@ -130,7 +130,7 @@ export default function PersonasPage() {
           </p>
         </div>
 
-        {/* Filters and Search */}
+        {/* Filters and Search TODO: KEEP UNTIL WE HAVE MORE AND IMPLMENT ADDING NEW COACHES*/}
         {/* <div className="flex flex-col md:flex-row gap-4 mb-8">
           <div className="flex-1">
             <div className="relative">
@@ -212,12 +212,12 @@ export default function PersonasPage() {
                     </div>
                   </div>
                   <div className="flex justify-center mb-6">
-                    <div className="w-24 h-24 rounded-full overflow-hidden">
+                    <div className="w-32 h-32 rounded-full overflow-hidden">
                       <Image
                         src={persona.image}
                         alt={`${persona.name} profile picture`}
-                        width={96}
-                        height={96}
+                        width={128}
+                        height={128}
                         className="w-full h-full object-cover"
                       />
                     </div>
