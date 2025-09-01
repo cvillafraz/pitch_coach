@@ -29,11 +29,11 @@ const investorPersonas = {
     ],
   },
   "angel-investor": {
-    name: "Michael Rodriguez",
+    name: "Dave Rodriguez",
     title: "Serial Entrepreneur & Angel",
     type: "Angel Investor",
     avatar: "MR",
-    avatarImage: "/michael.png", // Using existing placeholder image
+    avatarImage: "/dave.png", // Using existing placeholder image
     responses: [
       "I love the passion I'm hearing. What's your biggest challenge right now?",
       "How did you validate this idea with customers?",
@@ -43,11 +43,11 @@ const investorPersonas = {
     ],
   },
     "pitch-coach": {
-    name: "Mister Robot",
-    title: "Serial Entrepreneur & Angel",
-    type: "Angel Investor",
-    avatar: "MR",
-    avatarImage: "/mister-robot.png", // Using existing placeholder image
+    name: "Mike Dropp",
+    title: "Chief Pitch Officer | Founder Mentor",
+    type: "Pitch Coach",
+    avatar: "CM",
+    avatarImage: "/coach.png", // Using existing placeholder image
     responses: [
       "I love the passion I'm hearing. What's your biggest challenge right now?",
       "How did you validate this idea with customers?",

@@ -56,13 +56,20 @@ export default function DashboardPage() {
   if (loading) return <div>Loading...</div>
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
       {/* Header */}
-      <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <MicdropLogo href="/" size="xxl" />
-
-          <UserNav />
+      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <MicdropLogo size="xxl" variant="white" />
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" asChild>
+              <Link href="/personas">Personas</Link>
+            </Button>
+            <Button variant="ghost" asChild>
+              <Link href="/practice">Practice</Link>
+            </Button>
+            <UserNav />
+          </div>
         </div>
       </header>
 
@@ -71,13 +78,13 @@ export default function DashboardPage() {
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div className="flex-1">
-              <h2 className="text-3xl font-light text-gray-800 mb-2">Welcome back, {displayName}!</h2>
-              <p className="text-gray-600 text-lg">
+              <h2 className="text-3xl font-bold text-foreground mb-2">Welcome back, {displayName}!</h2>
+              <p className="text-lg text-muted-foreground">
                 Ready to practice your pitch? Let's get started!
               </p>
             </div>
             <div className="flex items-center space-x-2 sm:flex-shrink-0">
-              <Badge variant="outline" className="flex items-center space-x-2 bg-white/60 text-gray-700 border-gray-200 px-3 py-1">
+              <Badge variant="outline" className="flex items-center space-x-2">
                 <Zap className="w-4 h-4" />
                 <span className="font-medium">Ready to Practice</span>
               </Badge>
@@ -86,10 +93,10 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions - Full Width */}
-        <Card className="bg-white/60 backdrop-blur-sm border-gray-200 mb-8">
+        <Card className="hover:shadow-lg transition-shadow mb-8">
           <CardHeader>
-            <CardTitle className="text-gray-800 font-medium">Quick Actions</CardTitle>
-            <CardDescription className="text-gray-600">Jump into your next practice session</CardDescription>
+            <CardTitle className="text-foreground font-medium">Quick Actions</CardTitle>
+            <CardDescription className="text-muted-foreground">Jump into your next practice session</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -101,7 +108,7 @@ export default function DashboardPage() {
               </Button>
               <Button
                 variant="outline"
-                className="h-24 flex flex-col items-center justify-center space-y-2 bg-white/80 hover:bg-white border-gray-200 text-gray-700 shadow-sm transition-all duration-200"
+                className="h-24 flex flex-col items-center justify-center space-y-2 hover:bg-accent transition-all duration-200"
                 asChild
               >
                 <Link href="/personas">
@@ -111,7 +118,7 @@ export default function DashboardPage() {
               </Button>
               <Button
                 variant="outline"
-                className="h-24 flex flex-col items-center justify-center space-y-2 bg-white/80 hover:bg-white border-gray-200 text-gray-700 shadow-sm transition-all duration-200"
+                className="h-24 flex flex-col items-center justify-center space-y-2 hover:bg-accent transition-all duration-200"
                 asChild
               >
                 <Link href="/performance">
@@ -137,49 +144,49 @@ export default function DashboardPage() {
           <div className="space-y-6">
 
             {/* Left Column - Stats or Info */}
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CardTitle className="text-gray-800 font-medium">Your Progress</CardTitle>
-                <CardDescription className="text-gray-600">Track your improvement over time</CardDescription>
+                <CardTitle className="text-foreground font-medium">Your Progress</CardTitle>
+                <CardDescription className="text-muted-foreground">Track your improvement over time</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8 text-gray-500">
-                  <BarChart3 className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                <div className="text-center py-8 text-muted-foreground">
+                  <BarChart3 className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm">Start practicing to see your progress stats!</p>
                 </div>
               </CardContent>
             </Card>
 
             {/* Right Column - Recent Feedback */}
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CardTitle className="text-gray-800 font-medium">Latest Feedback</CardTitle>
-                <CardDescription className="text-gray-600">Recent insights from your practice sessions</CardDescription>
+                <CardTitle className="text-foreground font-medium">Latest Feedback</CardTitle>
+                <CardDescription className="text-muted-foreground">Recent insights from your practice sessions</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {dashboardData?.recentFeedback?.length > 0 ? (
                   dashboardData.recentFeedback.map((feedback: any) => (
-                    <div key={feedback.id} className="p-4 border border-gray-200 rounded-lg bg-white/40 shadow-sm">
+                    <div key={feedback.id} className="p-4 border rounded-lg bg-accent/5 shadow-sm">
                       <div className="flex items-center justify-between mb-3">
-                        <Badge variant="outline" className="text-xs bg-white/60 text-gray-700 border-gray-200">
+                        <Badge variant="outline" className="text-xs">
                           {feedback.category}
                         </Badge>
-                        <span className="text-sm font-semibold text-gray-800 bg-gray-100 px-2 py-1 rounded">
+                        <span className="text-sm font-semibold text-foreground bg-accent px-2 py-1 rounded">
                           {feedback.score}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-700 mb-2 leading-relaxed">{feedback.feedback}</p>
-                      <p className="text-xs text-gray-500 font-medium">{feedback.session}</p>
+                      <p className="text-sm text-foreground mb-2 leading-relaxed">{feedback.feedback}</p>
+                      <p className="text-xs text-muted-foreground font-medium">{feedback.session}</p>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-12 text-gray-500">
-                    <Mic className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                  <div className="text-center py-12 text-muted-foreground">
+                    <Mic className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                     <p className="text-sm">No feedback yet.</p>
                     <p className="text-sm">Start practicing to see your progress!</p>
                   </div>
                 )}
-                <Button variant="outline" size="sm" className="w-full bg-white/80 hover:bg-white border-gray-200 text-gray-700 mt-4" asChild>
+                <Button variant="outline" size="sm" className="w-full mt-4" asChild>
                   <Link href="/performance">View Detailed Feedback</Link>
                 </Button>
               </CardContent>
