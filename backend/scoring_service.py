@@ -1,7 +1,7 @@
 import os
 import json
 from typing import Dict, Any, Optional
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import BaseOutputParser
 from pydantic import BaseModel, Field
@@ -36,14 +36,17 @@ class PitchScoringService:
     """Service for scoring pitch performance using LLM analysis of audio expression data"""
     
     def __init__(self):
-        self.api_key = os.environ.get("OPENAI_API_KEY")
+        self.api_key = os.environ.get("GROQ_API_KEY")
         if not self.api_key:
-            raise ValueError("OPENAI_API_KEY environment variable is required")
+            raise ValueError("GROQ_API_KEY environment variable is required")
         
-        self.llm = ChatOpenAI(
-            model="gpt-4",
-            temperature=0.1,
-            api_key=self.api_key
+        self.llm = ChatGroq(
+            model="deepseek-r1-distill-llama-70b",
+            temperature=0,
+            max_tokens=None,
+            reasoning_format="parsed",
+            timeout=None,
+            max_retries=2
         )
         
         self.prompt_template = ChatPromptTemplate.from_messages([
