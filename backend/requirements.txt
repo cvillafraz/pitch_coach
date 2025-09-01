@@ -23,6 +23,6 @@ typing-inspection==0.4.1
 typing-extensions==4.15.0
 urllib3==2.5.0
 langchain>=0.1.0
-langchain-openai>=0.0.8
+langchain-groq>=0.3.7
 pytest>=8.4.1
 python-dotenv>=1.1.1
