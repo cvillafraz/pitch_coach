@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Mic, MicOff, User, Clock, MessageSquare, TrendingUp, AlertCircle, CheckCircle, Circle, Star } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import { VoiceRecorder } from "@/components/ui/voice-recorder"
 import { validateAudioBlob, sendAudioToAI } from "@/lib/audio-utils"
 import { MicdropLogo } from "@/components/ui/micdrop-logo"
@@ -19,7 +19,7 @@ const investorPersonas = {
     title: "Partner at TechVentures",
     type: "VC Investor",
     avatar: "SC",
-    avatarImage: "/placeholder-user.jpg", // Using existing placeholder image
+    avatarImage: "/sarah.png", // Using existing placeholder image
     responses: [
       "That's interesting. Can you tell me more about your customer acquisition strategy?",
       "What's your monthly recurring revenue growth rate?",
@@ -29,11 +29,25 @@ const investorPersonas = {
     ],
   },
   "angel-investor": {
-    name: "Michael Rodriguez",
+    name: "Dave Rodriguez",
     title: "Serial Entrepreneur & Angel",
     type: "Angel Investor",
     avatar: "MR",
-    avatarImage: "/michael.png", // Using existing placeholder image
+    avatarImage: "/dave.png", // Using existing placeholder image
+    responses: [
+      "I love the passion I'm hearing. What's your biggest challenge right now?",
+      "How did you validate this idea with customers?",
+      "Tell me about your team's background.",
+      "What's your go-to-market strategy?",
+      "How much runway do you need to reach profitability?",
+    ],
+  },
+    "pitch-coach": {
+    name: "Mike Dropp",
+    title: "Chief Pitch Officer | Founder Mentor",
+    type: "Pitch Coach",
+    avatar: "CM",
+    avatarImage: "/coach.png", // Using existing placeholder image
     responses: [
       "I love the passion I'm hearing. What's your biggest challenge right now?",
       "How did you validate this idea with customers?",
@@ -104,8 +118,9 @@ declare global {
 
 export default function PracticePage() {
   const searchParams = useSearchParams()
-  const personaId = searchParams.get("persona") || "tech-vc"
-  const persona = investorPersonas[personaId as keyof typeof investorPersonas] || investorPersonas["tech-vc"]
+  const router = useRouter()
+  const personaId = searchParams.get("persona") || "pitch-coach"
+  const persona = investorPersonas[personaId as keyof typeof investorPersonas] || investorPersonas["pitch-coach"]
 
   const [isListening, setIsListening] = useState(false)
   const [transcript, setTranscript] = useState("")
@@ -283,7 +298,7 @@ export default function PracticePage() {
     setCurrentFeedback(overallFeedback)
     setIsAnalyzing(false)
     
-    // Also add the transcription to the conversation if available
+    // Add the transcription to the conversation if available
     if (apiResponse.transcription) {
       setConversation((prev) => [...prev, { 
         speaker: "user", 
@@ -368,24 +383,19 @@ export default function PracticePage() {
       // Send audio to AI analysis API
       const result = await sendAudioToAI(audioBlob, { 
         duration, 
-        apiEndpoint: process.env.NEXT_PUBLIC_API_ENDPOINT || "https://pitch-coach.onrender.com/analyze-pitch" 
+        apiEndpoint: "http://localhost:8000/analyze-pitch" 
       })
+      
       console.log('AI Analysis Result:', result)
       
       // Update analysis metrics with the API response
-      if (result && result.success) {
-        updateAnalysisFromResponse(result)
-        setUploadStatus('✅ Audio processed successfully!')
-      } else {
-        throw new Error('Analysis failed - invalid response')
-      }
+      updateAnalysisFromResponse(result)
+      setUploadStatus('✅ Audio processed successfully!')
       
       setTimeout(() => setUploadStatus(null), 3000)
-      
     } catch (error) {
       console.error('Error processing audio:', error)
       setUploadStatus(`Error: ${error instanceof Error ? error.message : 'Processing failed'}`)
-      setIsAnalyzing(false) // Stop the analyzing state on error
       setTimeout(() => setUploadStatus(null), 5000)
     }
   }
@@ -412,7 +422,7 @@ export default function PracticePage() {
     }
   }
 
-  const endSession = () => {
+  const goBackToPersonas = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop()
     }
@@ -420,6 +430,7 @@ export default function PracticePage() {
     if (intervalRef.current) {
       clearInterval(intervalRef.current)
     }
+    router.push('/personas')
   }
 
   const formatTime = (seconds: number) => {
@@ -463,7 +474,7 @@ export default function PracticePage() {
               <Clock className="w-4 h-4" />
               <span>{formatTime(sessionDuration)}</span>
             </div>
-            <Button variant="outline" onClick={endSession} disabled={!isSessionActive}>
+            <Button variant="outline" onClick={goBackToPersonas}>
               End Session
             </Button>
           </div>

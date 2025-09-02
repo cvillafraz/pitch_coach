@@ -77,7 +77,7 @@ export default function WelcomePage() {
           </p>
           
           <div className="flex justify-center">
-            <Link href="/ai-voice">
+            <Link href="/onboarding">
               <InteractiveHoverButton 
                 text="Improve my pitch"
                 className="text-lg font-light"

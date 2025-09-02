@@ -33,25 +33,27 @@ import {
 } from "lucide-react"
 import { MicdropLogo } from "@/components/ui/micdrop-logo"
 import Link from "next/link"
+import Image from "next/image"
 
 const investorPersonas = [
   {
-    id: "tech-vc",
-    name: "Sarah Chen",
+    id: "pitch-coach",
+    name: "Coach Mike",
     title: "Partner at TechVentures",
-    type: "VC Investor",
+    type: "Analyst",
     focus: "Early-stage SaaS",
     personality: "Analytical, data-driven, asks tough questions about metrics and scalability",
     background: "Former product manager at Google, 8 years in VC",
     interests: ["B2B SaaS", "AI/ML", "Developer Tools"],
     investmentRange: "$1M - $10M",
     icon: TrendingUp,
-    difficulty: "Advanced",
+    image: "/coach.png",
+    difficulty: "Adaptive",
     color: "primary",
   },
   {
     id: "angel-investor",
-    name: "Michael Rodriguez",
+    name: "Dave Rodriguez",
     title: "Serial Entrepreneur & Angel",
     type: "Angel Investor",
     focus: "Consumer & Mobile",
@@ -60,12 +62,13 @@ const investorPersonas = [
     interests: ["Consumer Apps", "E-commerce", "Fintech"],
     investmentRange: "$25K - $250K",
     icon: User,
+    image: "/dave.png",
     difficulty: "Beginner",
     color: "secondary",
   },
   {
-    id: "corporate-buyer",
-    name: "Jennifer Park",
+    id: "tech-vc",
+    name: "Sarah Chen",
     title: "VP of Innovation at Fortune 500",
     type: "Corporate Customer",
     focus: "Enterprise Solutions",
@@ -74,6 +77,7 @@ const investorPersonas = [
     interests: ["Enterprise Software", "Automation", "Security"],
     investmentRange: "$100K - $5M",
     icon: Building2,
+    image: "/sarah.png",
     difficulty: "Intermediate",
     color: "primary",
   },
@@ -126,8 +130,8 @@ export default function PersonasPage() {
           </p>
         </div>
 
-        {/* Filters and Search */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
+        {/* Filters and Search TODO: KEEP UNTIL WE HAVE MORE AND IMPLMENT ADDING NEW COACHES*/}
+        {/* <div className="flex flex-col md:flex-row gap-4 mb-8">
           <div className="flex-1">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -180,7 +184,7 @@ export default function PersonasPage() {
               <CustomPersonaForm onClose={() => setIsCreateDialogOpen(false)} />
             </DialogContent>
           </Dialog>
-        </div>
+        </div> */}
 
         {/* Personas Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -188,11 +192,8 @@ export default function PersonasPage() {
             const Icon = persona.icon
             return (
               <Card key={persona.id} className="hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={`w-12 h-12 bg-${persona.color}/10 rounded-lg flex items-center justify-center`}>
-                      <Icon className={`w-6 h-6 text-${persona.color}`} />
-                    </div>
+                <CardHeader className="text-center">
+                  <div className="flex justify-end mb-4">
                     <div className="flex flex-col items-end space-y-2">
                       <Badge
                         variant={
@@ -210,7 +211,18 @@ export default function PersonasPage() {
                       </Badge>
                     </div>
                   </div>
-                  <CardTitle className="text-xl">{persona.name}</CardTitle>
+                  <div className="flex justify-center mb-6">
+                    <div className="w-32 h-32 rounded-full overflow-hidden">
+                      <Image
+                        src={persona.image}
+                        alt={`${persona.name} profile picture`}
+                        width={128}
+                        height={128}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl mb-2">{persona.name}</CardTitle>
                   <CardDescription className="text-sm font-medium text-muted-foreground">
                     {persona.title}
                   </CardDescription>
