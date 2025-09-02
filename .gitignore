@@ -245,3 +245,51 @@ __marimo__/
 # pycharm mac os
 .DS_Store
 .idea/
+
+# Contract binary files and build artifacts
+# Solidity
+artifacts/
+cache/
+out/
+*.sol.abi
+*.sol.bin
+*.sol.optimized.bin
+*.sol.json
+contracts/artifacts/
+build/contracts/
+
+# Hardhat
+artifacts/
+cache/
+typechain/
+typechain-types/
+
+# Foundry
+out/
+cache/
+broadcast/
+
+# Truffle
+build/
+
+# Remix IDE
+contracts/artifacts/
+
+# General contract binaries
+*.bin
+*.wasm
+*.bytecode
+
+# Contract deployment artifacts
+deployments/
+.openzeppelin/
+
+# ABI files (optional - uncomment if you don't want to track ABIs)
+# *.abi
+# abi/
+
+# Contract flattened files
+contracts_flattened/
+*.flattened.sol
+
+contracts/node_modules
