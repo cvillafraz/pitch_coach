@@ -30,20 +30,39 @@ export const BASE_CONFIG = {
 // Use testnet for development, mainnet for production
 export const CURRENT_NETWORK = process.env.NODE_ENV === "production" ? BASE_CONFIG.MAINNET : BASE_CONFIG.TESTNET
 
+// Smart contract configuration
+export const CONTRACT_CONFIG = {
+  // MicdropFarcaster smart contract address (deploy to get actual address)
+  CONTRACT_ADDRESS: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "0x742d35cc6639c21f9ec4c2c5d5e6c5d7a7f8b9c0", // Replace with actual deployed address
+  
+  // Contract ABI (simplified for payments)
+  ABI: [
+    "function purchasePremiumSession() external payable",
+    "function purchaseMonthlySubscription() external payable", 
+    "function purchaseYearlySubscription() external payable",
+    "function hasPremiumAccess(address user) external view returns (bool)",
+    "function hasActiveSubscription(address user) external view returns (bool)",
+    "function getUserSubscription(address user) external view returns (uint8, uint256, uint256, bool, uint256)",
+    "function usePremiumSession(address user) external",
+    "event PaymentReceived(address indexed user, uint8 indexed paymentType, uint256 amount, bytes32 paymentId)",
+    "event SubscriptionActivated(address indexed user, uint8 indexed subscriptionType, uint256 startTime, uint256 endTime)"
+  ],
+}
+
 // Payment configuration
 export const PAYMENT_CONFIG = {
   // Your receiving wallet address (set this to your actual Base wallet)
   RECEIVER_ADDRESS: process.env.NEXT_PUBLIC_BASE_RECEIVER_ADDRESS || "0x0000000000000000000000000000000000000000",
   
-  // Payment amounts in ETH
+  // Payment amounts in ETH (must match contract values)
   AMOUNTS: {
     PREMIUM_SESSION: "0.001", // 0.001 ETH for premium AI voice sessions
     MONTHLY_SUBSCRIPTION: "0.05", // 0.05 ETH for monthly subscription
     YEARLY_SUBSCRIPTION: "0.5", // 0.5 ETH for yearly subscription
   },
   
-  // Gas limit for transactionssss
-  GAS_LIMIT: "21000",
+  // Gas limit for transactions
+  GAS_LIMIT: "100000", // Increased for contract interactions
 }
 
 export enum PaymentType {
