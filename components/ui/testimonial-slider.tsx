@@ -98,7 +98,7 @@ export function TestimonialSlider({
                             leaveTo="opacity-0 translate-x-4"
                             beforeEnter={() => heightFix()}
                         >
-                            <div className="text-2xl font-light text-gray-800 before:content-['\201C'] after:content-['\201D'] leading-relaxed">
+                            <div className="text-2xl font-light text-white before:content-['\201C'] after:content-['\201D'] leading-relaxed">
                                 {testimonial.content}
                             </div>
                         </Transition>

@@ -46,7 +46,7 @@ export function SessionHistory() {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="h-24 bg-gray-100 rounded-lg animate-pulse" />
+          <div key={i} className="h-24 bg-gray-800 rounded-lg animate-pulse" />
         ))}
       </div>
     )
@@ -54,9 +54,9 @@ export function SessionHistory() {
 
   if (error) {
     return (
-      <div className="text-center p-6 bg-red-50 border border-red-200 rounded-lg">
-        <p className="text-red-800 font-medium">Error loading sessions</p>
-        <p className="text-red-600 text-sm mt-1">{error}</p>
+      <div className="text-center p-6 bg-red-900/40 border border-red-800 rounded-lg">
+        <p className="text-red-300 font-medium">Error loading sessions</p>
+        <p className="text-red-400 text-sm mt-1">{error}</p>
         <Button 
           onClick={() => refreshSessions()} 
           variant="outline" 
@@ -71,9 +71,9 @@ export function SessionHistory() {
 
   if (sessions.length === 0) {
     return (
-      <div className="text-center p-8 bg-gray-50 border border-gray-200 rounded-lg">
-        <FileAudio className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-700 font-medium mb-2">No sessions yet</p>
+      <div className="text-center p-8 bg-gray-900/40 border border-gray-800 rounded-lg">
+        <FileAudio className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+        <p className="text-gray-300 font-medium mb-2">No sessions yet</p>
         <p className="text-gray-500 text-sm">
           Start recording your pitch to see your practice sessions here
         </p>
@@ -84,7 +84,7 @@ export function SessionHistory() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-medium text-gray-800">Recent Sessions</h3>
+        <h3 className="text-lg font-medium text-white">Recent Sessions</h3>
         <Button 
           onClick={() => refreshSessions()} 
           variant="outline" 
@@ -96,20 +96,20 @@ export function SessionHistory() {
 
       <div className="space-y-3">
         {sessions.map((session) => (
-          <Card key={session.id} className="border border-gray-200">
+          <Card key={session.id} className="border border-gray-800 bg-gray-900/40">
             <CardContent className="p-4">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <h4 className="font-medium text-gray-800">
+                    <h4 className="font-medium text-white">
                       {session.persona_name}
                     </h4>
-                    <span className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">
+                    <span className="px-2 py-1 text-xs bg-blue-900/40 text-blue-300 rounded-full">
                       {session.persona_type}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                  <div className="flex items-center gap-4 text-sm text-gray-400 mb-3">
                     {session.duration && (
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
@@ -133,24 +133,24 @@ export function SessionHistory() {
                   {session.overall_score && (
                     <div className="flex items-center gap-4 mb-3">
                       <div className="text-sm">
-                        <span className="text-gray-600">Overall: </span>
+                        <span className="text-gray-400">Overall: </span>
                         <span className={`font-medium ${
-                          session.overall_score >= 80 ? 'text-green-600' :
-                          session.overall_score >= 60 ? 'text-yellow-600' : 'text-red-600'
+                          session.overall_score >= 80 ? 'text-green-400' :
+                          session.overall_score >= 60 ? 'text-yellow-400' : 'text-red-400'
                         }`}>
                           {session.overall_score}%
                         </span>
                       </div>
                       {session.content_score && (
                         <div className="text-sm">
-                          <span className="text-gray-600">Content: </span>
-                          <span className="font-medium">{session.content_score}%</span>
+                          <span className="text-gray-400">Content: </span>
+                          <span className="font-medium text-white">{session.content_score}%</span>
                         </div>
                       )}
                       {session.delivery_score && (
                         <div className="text-sm">
-                          <span className="text-gray-600">Delivery: </span>
-                          <span className="font-medium">{session.delivery_score}%</span>
+                          <span className="text-gray-400">Delivery: </span>
+                          <span className="font-medium text-white">{session.delivery_score}%</span>
                         </div>
                       )}
                     </div>
@@ -169,8 +169,8 @@ export function SessionHistory() {
 
                   {/* Feedback */}
                   {session.feedback_summary && (
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                      <p className="text-sm text-blue-800">{session.feedback_summary}</p>
+                    <div className="p-3 bg-blue-900/40 border border-blue-800 rounded-lg">
+                      <p className="text-sm text-blue-300">{session.feedback_summary}</p>
                     </div>
                   )}
                 </div>
@@ -192,7 +192,7 @@ export function SessionHistory() {
                     variant="outline"
                     size="sm"
                     onClick={() => handleDelete(session.id)}
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    className="text-red-400 hover:text-red-500 hover:bg-red-900/40"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>

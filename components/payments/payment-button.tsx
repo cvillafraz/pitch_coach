@@ -101,11 +101,11 @@ export function PaymentButton({
   }
 
   return (
-    <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
+    <Card className="bg-gray-900/40 backdrop-blur-sm border-gray-800">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between text-gray-800">
+        <CardTitle className="flex items-center justify-between text-white">
           <span>{paymentDetails.description}</span>
-          <Badge variant="outline" className="bg-white text-gray-700 border-gray-300">
+          <Badge variant="outline" className="bg-gray-800 text-gray-300 border-gray-700">
             {paymentDetails.amount} ETH
           </Badge>
         </CardTitle>
@@ -115,23 +115,23 @@ export function PaymentButton({
       </CardHeader>
       <CardContent className="space-y-4">
         {error && (
-          <div className="flex items-center space-x-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <AlertCircle className="w-4 h-4 text-red-600" />
-            <span className="text-sm text-red-800">{error}</span>
+          <div className="flex items-center space-x-2 p-3 bg-red-900/40 border border-red-800 rounded-lg">
+            <AlertCircle className="w-4 h-4 text-red-400" />
+            <span className="text-sm text-red-300">{error}</span>
           </div>
         )}
 
         {txHash && (
-          <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center justify-between p-3 bg-green-900/40 border border-green-800 rounded-lg">
             <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-green-800">Payment Sent</span>
+              <CheckCircle className="w-4 h-4 text-green-400" />
+              <span className="text-sm font-medium text-green-300">Payment Sent</span>
             </div>
             <Button
               size="sm"
               variant="outline"
               onClick={() => window.open(getExplorerUrl(txHash), "_blank")}
-              className="bg-white hover:bg-green-50 border-green-300 text-green-700"
+              className="bg-gray-800 hover:bg-gray-700 border-green-700 text-green-300"
             >
               View Transaction
             </Button>
@@ -139,15 +139,15 @@ export function PaymentButton({
         )}
 
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center justify-between text-sm text-gray-400">
             <span>Amount:</span>
             <span className="font-medium">{paymentDetails.amount} ETH</span>
           </div>
-          <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center justify-between text-sm text-gray-400">
             <span>Network:</span>
             <span className="font-medium">{CURRENT_NETWORK.name}</span>
           </div>
-          <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center justify-between text-sm text-gray-400">
             <span>Gas Limit:</span>
             <span className="font-medium">{PAYMENT_CONFIG.GAS_LIMIT}</span>
           </div>
@@ -156,7 +156,7 @@ export function PaymentButton({
         <Button
           onClick={handlePayment}
           disabled={disabled || isProcessing || !provider || !walletAddress}
-          className={`w-full bg-gray-900 hover:bg-gray-800 text-white ${className}`}
+          className={`w-full bg-white hover:bg-gray-200 text-black ${className}`}
         >
           {isProcessing ? (
             <>

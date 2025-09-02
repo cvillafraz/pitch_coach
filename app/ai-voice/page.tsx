@@ -185,15 +185,15 @@ export default function AIVoicePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
+      <header className="bg-black/60 backdrop-blur-sm border-b border-gray-800">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-sm">
               <Mic className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-light text-gray-800">Micdrop</h1>
+            <h1 className="text-xl font-light text-white">Micdrop</h1>
           </Link>
           
           <UserNav />
@@ -202,25 +202,25 @@ export default function AIVoicePage() {
 
       <main className="flex h-[calc(100vh-80px)]">
         {/* Sidebar - Claude/ChatGPT Style - Left Side */}
-        <div className={`${sidebarExpanded ? 'w-80' : 'w-16'} bg-white/60 backdrop-blur-sm border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out relative`}>
+        <div className={`${sidebarExpanded ? 'w-80' : 'w-16'} bg-gray-900/60 backdrop-blur-sm border-r border-gray-800 flex flex-col transition-all duration-300 ease-in-out relative`}>
           {/* Sidebar Toggle Button */}
           <button
             onClick={() => setSidebarExpanded(!sidebarExpanded)}
-            className="absolute -right-3 top-6 z-10 w-6 h-6 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
+            className="absolute -right-3 top-6 z-10 w-6 h-6 bg-gray-800 border border-gray-700 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
           >
             {sidebarExpanded ? (
-              <ChevronLeft className="w-3 h-3 text-gray-600" />
+              <ChevronLeft className="w-3 h-3 text-gray-400" />
             ) : (
-              <ChevronRight className="w-3 h-3 text-gray-600" />
+              <ChevronRight className="w-3 h-3 text-gray-400" />
             )}
           </button>
 
           {sidebarExpanded && (
             <>
               {/* Sidebar Header */}
-              <div className="p-6 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-800">Real-time Analysis</h3>
-                <p className="text-sm text-gray-600 mt-1">
+              <div className="p-6 border-b border-gray-800">
+                <h3 className="text-lg font-medium text-white">Real-time Analysis</h3>
+                <p className="text-sm text-gray-400 mt-1">
                   {isRecording ? 'Analyzing your pitch...' : 'Start recording to see feedback'}
                 </p>
               </div>
@@ -229,31 +229,31 @@ export default function AIVoicePage() {
               <div className="flex-1 overflow-y-auto">
                 {/* Analysis Metrics */}
                 <div className="p-6 space-y-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">Performance Metrics</h4>
+                  <h4 className="text-sm font-medium text-gray-300 mb-3">Performance Metrics</h4>
                   {analysisMetrics.map((metric) => (
-                    <div key={metric.id} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50/50">
+                    <div key={metric.id} className="flex items-start gap-3 p-3 rounded-lg bg-gray-800/50">
                       <div className="mt-0.5">
                         {metric.status === 'analyzing' ? (
-                          <Circle className="w-4 h-4 text-gray-400 animate-pulse" />
+                          <Circle className="w-4 h-4 text-gray-500 animate-pulse" />
                         ) : metric.status === 'good' ? (
-                          <CheckCircle className="w-4 h-4 text-green-500" />
+                          <CheckCircle className="w-4 h-4 text-green-400" />
                         ) : (
-                          <AlertCircle className="w-4 h-4 text-orange-500" />
+                          <AlertCircle className="w-4 h-4 text-orange-400" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
-                          <p className="text-sm font-medium text-gray-800">{metric.label}</p>
+                          <p className="text-sm font-medium text-white">{metric.label}</p>
                           {metric.score > 0 && (
                             <span className={`text-xs px-2 py-1 rounded-full ${metric.status === 'good'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-orange-100 text-orange-700'
+                              ? 'bg-green-900/40 text-green-300'
+                              : 'bg-orange-900/40 text-orange-300'
                               }`}>
                               {metric.score}%
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-gray-600">{metric.feedback}</p>
+                        <p className="text-xs text-gray-400">{metric.feedback}</p>
                       </div>
                     </div>
                   ))}
@@ -261,24 +261,24 @@ export default function AIVoicePage() {
 
                 {/* AI Feedback */}
                 {(feedback || isAnalyzing) && (
-                  <div className="p-6 border-t border-gray-200">
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">AI Feedback</h4>
-                    <div className="p-4 rounded-lg bg-blue-50/50 border border-blue-200">
+                  <div className="p-6 border-t border-gray-800">
+                    <h4 className="text-sm font-medium text-gray-300 mb-3">AI Feedback</h4>
+                    <div className="p-4 rounded-lg bg-blue-900/40 border border-blue-800">
                       {isAnalyzing ? (
                         <div className="flex items-center gap-3">
-                          <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                          <span className="text-sm text-blue-700">Generating feedback...</span>
+                          <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                          <span className="text-sm text-blue-300">Generating feedback...</span>
                         </div>
                       ) : (
-                        <p className="text-sm text-blue-800 leading-relaxed">{feedback}</p>
+                        <p className="text-sm text-blue-200 leading-relaxed">{feedback}</p>
                       )}
                     </div>
                   </div>
                 )}
 
                 {/* Recent Recordings */}
-                <div className="p-6 border-t border-gray-200">
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">Recent Recordings</h4>
+                <div className="p-6 border-t border-gray-800">
+                  <h4 className="text-sm font-medium text-gray-300 mb-3">Recent Recordings</h4>
                   {recordings.length === 0 ? (
                     <p className="text-gray-500 text-sm text-center py-4">
                       No recordings yet. Start practicing!
@@ -286,20 +286,20 @@ export default function AIVoicePage() {
                   ) : (
                     <div className="space-y-2">
                       {recordings.slice(-3).map((recording: Recording, index: number) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50/50 rounded-lg">
+                        <div key={index} className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
                           <div className="flex-1">
-                            <p className="text-sm font-medium">Recording {recordings.length - index}</p>
+                            <p className="text-sm font-medium text-white">Recording {recordings.length - index}</p>
                             <p className="text-xs text-gray-500">
                               {recording.timestamp.toLocaleTimeString()}
                             </p>
                             {recording.uploadResult && (
-                              <p className="text-xs text-green-600 mt-1">
+                              <p className="text-xs text-green-400 mt-1">
                                 ✓ Uploaded to cloud
                               </p>
                             )}
                           </div>
                           <div className="text-right">
-                            <span className="text-xs font-mono text-gray-600">
+                            <span className="text-xs font-mono text-gray-400">
                               {formatTime(recording.duration)}
                             </span>
                             {recording.audioUrl && (
@@ -318,39 +318,39 @@ export default function AIVoicePage() {
                 </div>
 
                 {/* Tips */}
-                <div className="p-6 border-t border-gray-200">
-                  <h4 className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+                <div className="p-6 border-t border-gray-800">
+                  <h4 className="text-sm font-medium text-gray-300 mb-3 flex items-center gap-2">
                     <Lightbulb className="w-4 h-4" />
                     Tips for Better Pitches
                   </h4>
                   <div className="space-y-3">
                     <div className="flex items-start gap-3">
-                      <Zap className="w-3 h-3 text-orange-500 mt-1 flex-shrink-0" />
+                      <Zap className="w-3 h-3 text-orange-400 mt-1 flex-shrink-0" />
                       <div>
-                        <p className="text-sm font-medium">Be Passionate</p>
-                        <p className="text-xs text-gray-600">Let your enthusiasm show through your voice</p>
+                        <p className="text-sm font-medium text-white">Be Passionate</p>
+                        <p className="text-xs text-gray-400">Let your enthusiasm show through your voice</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Zap className="w-3 h-3 text-orange-500 mt-1 flex-shrink-0" />
+                      <Zap className="w-3 h-3 text-orange-400 mt-1 flex-shrink-0" />
                       <div>
-                        <p className="text-sm font-medium">Use Metrics</p>
-                        <p className="text-xs text-gray-600">Include specific numbers and data points</p>
+                        <p className="text-sm font-medium text-white">Use Metrics</p>
+                        <p className="text-xs text-gray-400">Include specific numbers and data points</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Zap className="w-3 h-3 text-orange-500 mt-1 flex-shrink-0" />
+                      <Zap className="w-3 h-3 text-orange-400 mt-1 flex-shrink-0" />
                       <div>
-                        <p className="text-sm font-medium">Tell a Story</p>
-                        <p className="text-xs text-gray-600">Connect emotionally with your audience</p>
+                        <p className="text-sm font-medium text-white">Tell a Story</p>
+                        <p className="text-xs text-gray-400">Connect emotionally with your audience</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Quick Actions */}
-                <div className="p-6 border-t border-gray-200">
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">Quick Actions</h4>
+                <div className="p-6 border-t border-gray-800">
+                  <h4 className="text-sm font-medium text-gray-300 mb-3">Quick Actions</h4>
                   <div className="space-y-2">
                     <Button variant="premium" size="sm" className="w-full text-xs" asChild>
                       <Link href="/personas">Practice with Personas</Link>
@@ -373,8 +373,8 @@ export default function AIVoicePage() {
               <div className="w-8 h-8 bg-gradient-to-br from-rose-400 to-orange-400 rounded-lg flex items-center justify-center">
                 <Mic className="w-4 h-4 text-white" />
               </div>
-              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                <Lightbulb className="w-4 h-4 text-gray-600" />
+              <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
+                <Lightbulb className="w-4 h-4 text-gray-300" />
               </div>
             </div>
           )}
@@ -384,7 +384,7 @@ export default function AIVoicePage() {
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="max-w-lg w-full">
             <div className="text-center mb-16">
-              <h2 className="text-5xl font-light text-gray-800 mb-6">
+              <h2 className="text-5xl font-light text-white mb-6">
                 AI Pitch <span className="italic bg-gradient-to-r from-rose-400 to-orange-400 bg-clip-text text-transparent">Analyzer</span>
               </h2>
             </div>
@@ -392,8 +392,8 @@ export default function AIVoicePage() {
             {/* Clean Recording Card - No Background */}
             <div className="text-center">
               <div className="mb-8">
-                <h3 className="text-2xl font-light text-gray-800 mb-4 flex items-center justify-center gap-3">
-                  <Mic className="w-6 h-6 text-gray-800" />
+                <h3 className="text-2xl font-light text-white mb-4 flex items-center justify-center gap-3">
+                  <Mic className="w-6 h-6 text-white" />
                   Record Your Pitch
                 </h3>
               </div>
@@ -412,8 +412,8 @@ export default function AIVoicePage() {
                 {uploadStatus && (
                   <div className={`mt-4 px-4 py-2 rounded-lg text-sm ${
                     uploadStatus.includes('Error') 
-                      ? 'bg-red-100 text-red-700 border border-red-200'
-                      : 'bg-green-100 text-green-700 border border-green-200'
+                      ? 'bg-red-900/40 text-red-300 border border-red-800'
+                      : 'bg-green-900/40 text-green-300 border border-green-800'
                   }`}>
                     {uploadStatus}
                   </div>

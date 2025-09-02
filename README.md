@@ -42,3 +42,4 @@ If you plan to use the Google login flow in development:
 ## Notes
 - Protected routes: `/dashboard`, `/practice`, `/feedback`, `/performance`, `/personas` require auth.
 - Without valid Supabase env vars, auth-related pages will not work.
+

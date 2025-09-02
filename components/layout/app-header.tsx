@@ -18,7 +18,7 @@ export function AppHeader({
   title = "Micdrop" 
 }: AppHeaderProps) {
   return (
-    <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
+    <header className="bg-black/60 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}

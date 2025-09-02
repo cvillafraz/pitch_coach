@@ -7,19 +7,19 @@ import Link from "next/link"
 
 export default function AuthCodeErrorPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50 p-4">
-      <Card className="w-full max-w-md border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+    <div className="min-h-screen flex items-center justify-center bg-black p-4">
+      <Card className="w-full max-w-md border-0 shadow-lg bg-gray-900/80 backdrop-blur-sm">
         <CardHeader className="text-center space-y-4">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto">
-            <AlertCircle className="w-8 h-8 text-red-500" />
+          <div className="w-16 h-16 bg-red-900/40 rounded-full flex items-center justify-center mx-auto">
+            <AlertCircle className="w-8 h-8 text-red-400" />
           </div>
-          <CardTitle className="text-2xl font-light text-gray-800">Authentication Error</CardTitle>
-          <CardDescription className="text-gray-600 text-base">
+          <CardTitle className="text-2xl font-light text-white">Authentication Error</CardTitle>
+          <CardDescription className="text-gray-400 text-base">
             There was a problem signing you in. This could be due to:
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <ul className="text-sm text-gray-600 space-y-2 list-disc list-inside">
+          <ul className="text-sm text-gray-400 space-y-2 list-disc list-inside">
             <li>The authentication code has expired</li>
             <li>The authentication process was interrupted</li>
             <li>There was a temporary server issue</li>

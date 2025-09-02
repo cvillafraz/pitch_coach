@@ -13,9 +13,9 @@ export function GoogleLoginButton({ className, size = "default" }: GoogleLoginBu
     <Link
       href="/auth/login"
       className={cn(
-        "group relative inline-flex items-center justify-center gap-3 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-700 hover:text-gray-900 border border-gray-200/60 hover:border-gray-300 rounded-full shadow-sm hover:shadow-lg transition-all duration-300 ease-out font-light hover:font-normal overflow-hidden",
+        "group relative inline-flex items-center justify-center gap-3 bg-gray-800/80 backdrop-blur-sm hover:bg-gray-700 text-white hover:text-white border border-gray-700/60 hover:border-gray-600 rounded-full shadow-sm hover:shadow-lg transition-all duration-300 ease-out font-light hover:font-normal overflow-hidden",
         // Subtle gradient overlay on hover
-        "before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-50/0 before:via-green-50/0 before:to-yellow-50/0 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
+        "before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-500/10 before:via-green-500/10 before:to-yellow-500/10 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
         size === "sm" && "h-9 px-4 text-sm",
         size === "default" && "h-11 px-6 text-base",
         size === "lg" && "h-12 px-8 text-lg",
