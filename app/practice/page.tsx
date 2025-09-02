@@ -399,7 +399,7 @@ export default function PracticePage() {
       // Send audio to AI analysis API
       const result = await sendAudioToAI(audioBlob, { 
         duration, 
-        apiEndpoint: "http://localhost:8000/analyze-pitch" 
+        apiEndpoint: process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:8000/analyze-pitch' 
       })
       
       console.log('AI Analysis Result:', result)
