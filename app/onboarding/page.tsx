@@ -239,7 +239,7 @@ export default function OnboardingPage() {
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <MicdropLogo size="sm" showText={true} />
+          <MicdropLogo size="sm" />
           <div className="flex items-center space-x-4">
             <div className="text-sm text-muted-foreground">
               Step {currentStep} of {onboardingSteps.length}
