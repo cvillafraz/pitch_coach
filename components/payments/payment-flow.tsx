@@ -87,15 +87,15 @@ export function PaymentFlow({ onPaymentComplete, className }: PaymentFlowProps) 
       {walletAddress && (
         <div className="space-y-6">
           <div className="text-center">
-            <h2 className="text-2xl font-light text-gray-800 mb-2">Choose Your Plan</h2>
-            <p className="text-gray-600">Pay securely with Base ETH</p>
+            <h2 className="text-2xl font-light text-white mb-2">Choose Your Plan</h2>
+            <p className="text-gray-400">Pay securely with Base ETH</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {paymentOptions.map((option) => (
               <Card
                 key={option.type}
-                className={`relative bg-white/60 backdrop-blur-sm border-gray-200 cursor-pointer transition-all hover:scale-105 hover:shadow-lg ${
+                className={`relative bg-gray-900/40 backdrop-blur-sm border-gray-800 cursor-pointer transition-all hover:scale-105 hover:shadow-lg ${
                   option.popular ? "ring-2 ring-orange-400 ring-opacity-50" : ""
                 } ${selectedPayment === option.type ? "ring-2 ring-blue-400" : ""}`}
                 onClick={() => setSelectedPayment(option.type)}
@@ -114,10 +114,10 @@ export function PaymentFlow({ onPaymentComplete, className }: PaymentFlowProps) 
                       {option.icon}
                     </div>
                   </div>
-                  <CardTitle className="text-gray-800">{option.title}</CardTitle>
-                  <CardDescription className="text-gray-600">{option.description}</CardDescription>
+                  <CardTitle className="text-white">{option.title}</CardTitle>
+                  <CardDescription className="text-gray-400">{option.description}</CardDescription>
                   <div className="flex items-center justify-center space-x-2 mt-3">
-                    <span className="text-3xl font-light text-gray-800">{option.amount} ETH</span>
+                    <span className="text-3xl font-light text-white">{option.amount} ETH</span>
                     {option.originalAmount && (
                       <span className="text-lg text-gray-500 line-through">{option.originalAmount} ETH</span>
                     )}
@@ -127,7 +127,7 @@ export function PaymentFlow({ onPaymentComplete, className }: PaymentFlowProps) 
                 <CardContent className="space-y-4">
                   <ul className="space-y-2">
                     {option.features.map((feature, index) => (
-                      <li key={index} className="flex items-center text-sm text-gray-600">
+                      <li key={index} className="flex items-center text-sm text-gray-400">
                         <CheckCircle className="w-4 h-4 mr-2 text-green-500 flex-shrink-0" />
                         {feature}
                       </li>
@@ -139,8 +139,8 @@ export function PaymentFlow({ onPaymentComplete, className }: PaymentFlowProps) 
                     variant={selectedPayment === option.type ? "default" : "outline"}
                     className={`w-full ${
                       selectedPayment === option.type
-                        ? "bg-gray-900 hover:bg-gray-800 text-white"
-                        : "bg-white hover:bg-gray-50 border-gray-300 text-gray-700"
+                        ? "bg-white hover:bg-gray-200 text-black"
+                        : "bg-gray-800 hover:bg-gray-700 border-gray-700 text-white"
                     }`}
                   >
                     {selectedPayment === option.type ? "Selected" : "Select Plan"}
@@ -165,23 +165,23 @@ export function PaymentFlow({ onPaymentComplete, className }: PaymentFlowProps) 
 
       {/* Completed Payments */}
       {completedPayments.length > 0 && (
-        <Card className="bg-green-50 border-green-200">
+        <Card className="bg-green-900/40 border-green-800">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2 text-green-800">
+            <CardTitle className="flex items-center space-x-2 text-green-300">
               <CheckCircle className="w-5 h-5" />
               <span>Payment Successful</span>
             </CardTitle>
-            <CardDescription className="text-green-700">
+            <CardDescription className="text-green-400">
               Your payment has been confirmed on the Base network
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-green-700">
+            <p className="text-sm text-green-400">
               You can now access premium features. Transaction hashes:
             </p>
             <ul className="mt-2 space-y-1">
               {completedPayments.map((txHash) => (
-                <li key={txHash} className="text-xs font-mono text-green-600">
+                <li key={txHash} className="text-xs font-mono text-green-500">
                   {txHash}
                 </li>
               ))}

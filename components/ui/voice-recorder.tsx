@@ -246,10 +246,10 @@ export function VoiceRecorder({
     return (
       <div className={cn("w-full py-4 text-center", className)}>
         <div className="max-w-xl w-full mx-auto">
-          <div className="p-6 bg-red-50 border border-red-200 rounded-lg">
-            <Mic className="w-8 h-8 text-red-500 mx-auto mb-3" />
-            <p className="text-red-800 font-medium mb-2">Microphone Access Required</p>
-            <p className="text-red-600 text-sm mb-4">
+          <div className="p-6 bg-red-900/40 border border-red-800 rounded-lg">
+            <Mic className="w-8 h-8 text-red-400 mx-auto mb-3" />
+            <p className="text-red-300 font-medium mb-2">Microphone Access Required</p>
+            <p className="text-red-400 text-sm mb-4">
               Please allow microphone access to record your pitch.
             </p>
             <button
@@ -273,18 +273,18 @@ export function VoiceRecorder({
             "group w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-200",
             isRecording
               ? "bg-red-500 hover:bg-red-600 shadow-lg"
-              : "bg-gray-100 hover:bg-gray-200 shadow-sm"
+              : "bg-gray-800 hover:bg-gray-700 shadow-sm"
           )}
           type="button"
           onClick={handleClick}
           disabled={isUploading}
         >
           {isUploading ? (
-            <Upload className="w-6 h-6 text-gray-600 animate-pulse" />
+            <Upload className="w-6 h-6 text-gray-400 animate-pulse" />
           ) : isRecording ? (
             <Square className="w-6 h-6 text-white" />
           ) : (
-            <Mic className="w-6 h-6 text-gray-700" />
+            <Mic className="w-6 h-6 text-gray-300" />
           )}
         </button>
 
@@ -293,8 +293,8 @@ export function VoiceRecorder({
           className={cn(
             "font-mono text-sm transition-all duration-300",
             isRecording
-              ? "text-red-600 font-medium"
-              : "text-gray-600"
+              ? "text-red-400 font-medium"
+              : "text-gray-400"
           )}
         >
           {formatTime(duration)}
@@ -309,7 +309,7 @@ export function VoiceRecorder({
                 "w-0.5 rounded-full transition-all duration-100",
                 isRecording
                   ? "bg-red-400"
-                  : "bg-gray-300"
+                  : "bg-gray-700"
               )}
               style={{
                 height: isRecording 
@@ -321,7 +321,7 @@ export function VoiceRecorder({
         </div>
 
         {/* Status Text */}
-        <p className="h-4 text-xs text-gray-700">
+        <p className="h-4 text-xs text-gray-500">
           {isUploading 
             ? "Uploading..." 
             : isRecording 

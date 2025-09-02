@@ -33,17 +33,17 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50 p-4">
-      <Card className="w-full max-w-md border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+    <div className="min-h-screen flex items-center justify-center bg-black p-4">
+      <Card className="w-full max-w-md border-0 shadow-lg bg-gray-900/80 backdrop-blur-sm">
         <CardHeader className="text-center space-y-4">
-          <CardTitle className="text-3xl font-light text-gray-800">Welcome</CardTitle>
-          <CardDescription className="text-gray-600 text-base">
+          <CardTitle className="text-3xl font-light text-white">Welcome</CardTitle>
+          <CardDescription className="text-gray-400 text-base">
             Continue your pitch coaching journey
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {error && (
-            <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg border border-red-100">
+            <div className="text-sm text-red-400 bg-red-900/40 p-3 rounded-lg border border-red-800">
               {error}
             </div>
           )}

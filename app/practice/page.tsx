@@ -138,6 +138,9 @@ export default function PracticePage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
   const [uploadStatus, setUploadStatus] = useState<string | null>(null)
+  const [showResults, setShowResults] = useState(false)
+  const pitchScoreRef = useRef<HTMLDivElement | null>(null)
+  const metricsRef = useRef<HTMLDivElement | null>(null)
   const [analysisMetrics, setAnalysisMetrics] = useState<AnalysisMetric[]>([
     { id: 'clarity', label: 'Clarity', score: 0, status: 'analyzing', feedback: 'Speak clearly and at a steady pace' },
     { id: 'confidence', label: 'Confidence', score: 0, status: 'analyzing', feedback: 'Project confidence through your voice' },
@@ -248,6 +251,8 @@ export default function PracticePage() {
 
     // Start analysis - metrics will be updated when audio processing completes
     setIsAnalyzing(true)
+    // Show results containers once a recording exists
+    if (!showResults) setShowResults(true)
   }
 
   const updateAnalysisFromResponse = (apiResponse: any) => {
@@ -318,6 +323,17 @@ export default function PracticePage() {
       }, 1500 + Math.random() * 1000)
     }
   }
+  // Auto scroll to results when they first appear or when analysis finishes
+  useEffect(() => {
+    if (showResults) {
+      // Prefer metrics on mobile; pitch score on desktop
+      const target = (typeof window !== 'undefined' && window.innerWidth < 1024)
+        ? metricsRef.current
+        : pitchScoreRef.current
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [showResults, isAnalyzing])
+
 
   const handleUploadComplete = (uploadResult: any) => {
     console.log('Upload completed:', uploadResult)
@@ -482,10 +498,10 @@ export default function PracticePage() {
       </header>
 
       <main className="container mx-auto px-4 py-6">
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className={`grid gap-6 ${showResults ? 'lg:grid-cols-3' : 'lg:grid-cols-2'}`}>
           {/* Left Column - Investor Info */}
           <div className="space-y-6">
-            <Card>
+            <Card className="md:min-h-[420px] lg:min-h-[480px] flex flex-col justify-center">
               <CardHeader className="text-center pb-4">
                 <div className="flex justify-center mb-4">
                   <div className="w-32 h-32 rounded-full overflow-hidden shadow-lg border-4 border-primary">
@@ -540,7 +556,7 @@ export default function PracticePage() {
           {/* Center Column - Speech Interface */}
           <div className="space-y-6">
             {/* Voice Recording Interface */}
-            <Card>
+            <Card className="md:min-h-[420px] lg:min-h-[480px] flex flex-col justify-center">
               <CardHeader>
                 <CardTitle className="text-center">AI-Powered Pitch Analysis</CardTitle>
                 <CardDescription className="text-center">
@@ -623,60 +639,78 @@ export default function PracticePage() {
             </Card> */}
           </div>
 
-          {/* Right Column - Pitch Score and Conversation */}
-          <div className="space-y-6">
-            {/* Pitch Score */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Pitch Score</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center py-8">
-                <div className="flex justify-center space-x-1 mb-2">
-                  {renderStars(calculateStarRating())}
-                </div>
-                <p className="text-2xl font-bold text-muted-foreground">
-                  {calculateStarRating()}/5
-                </p>
-              </CardContent>
-            </Card>
+          {/* Right Column - Pitch Score and Metrics (shown after recording) */}
+          {showResults && (
+            <div className="space-y-6">
+              {/* Pitch Score */}
+              <div ref={pitchScoreRef}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Pitch Score</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-center py-8">
+                    <div className="flex justify-center space-x-1 mb-2">
+                      {renderStars(calculateStarRating())}
+                    </div>
+                    <p className="text-2xl font-bold text-muted-foreground">
+                      {calculateStarRating()}/5
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
 
-            {/* Performance Metrics */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Performance Metrics</CardTitle>
-                <CardDescription>Real-time analysis of your pitch</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {analysisMetrics.map((metric) => (
-                  <div key={metric.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
-                    <div className="mt-0.5">
-                      {metric.status === 'analyzing' ? (
-                        <Circle className="w-4 h-4 text-muted-foreground animate-pulse" />
-                      ) : metric.status === 'good' ? (
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <AlertCircle className="w-4 h-4 text-orange-500" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="text-sm font-medium">{metric.label}</p>
-                        {metric.score > 0 && (
-                          <span className={`text-xs px-2 py-1 rounded-full ${metric.status === 'good'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-orange-100 text-orange-700'
-                            }`}>
-                            {metric.score}%
-                          </span>
-                        )}
+              {/* Performance Metrics */}
+              <div ref={metricsRef}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Performance Metrics</CardTitle>
+                    <CardDescription>Real-time analysis of your pitch</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {analysisMetrics.map((metric) => (
+                      <div
+                        key={metric.id}
+                        className="flex items-center gap-4 p-4 rounded-2xl bg-gray-900/60 border border-gray-800 hover:border-gray-700 transition-colors"
+                      >
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center ring-2 ${
+                            metric.status === 'analyzing'
+                              ? 'ring-gray-700 text-gray-400'
+                              : metric.status === 'good'
+                              ? 'ring-green-800 text-green-400'
+                              : 'ring-orange-800 text-orange-400'
+                          }`}
+                        >
+                          {metric.status === 'analyzing' ? (
+                            <Circle className="w-4 h-4 animate-pulse" />
+                          ) : metric.status === 'good' ? (
+                            <CheckCircle className="w-4 h-4" />
+                          ) : (
+                            <AlertCircle className="w-4 h-4" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <p className="text-base font-medium">{metric.label}</p>
+                            {metric.score > 0 && (
+                              <span className={`text-xs px-2 py-1 rounded-full ${
+                                metric.status === 'good'
+                                  ? 'bg-green-900/40 text-green-300'
+                                  : 'bg-orange-900/40 text-orange-300'
+                              }`}>
+                                {metric.score}%
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">{metric.feedback}</p>
+                        </div>
                       </div>
-                      <p className="text-xs text-muted-foreground">{metric.feedback}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
           {/* Right Column - Conversation */}
           <div>
             {/* <Card className="h-[600px] flex flex-col">

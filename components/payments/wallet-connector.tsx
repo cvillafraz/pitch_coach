@@ -160,9 +160,9 @@ export function WalletConnector({ onWalletConnected, onWalletDisconnected }: Wal
 
   if (!window.ethereum) {
     return (
-      <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
+      <Card className="bg-gray-900/40 backdrop-blur-sm border-gray-800">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-gray-800">
+          <CardTitle className="flex items-center space-x-2 text-white">
             <Wallet className="w-5 h-5" />
             <span>Wallet Required</span>
           </CardTitle>
@@ -173,7 +173,7 @@ export function WalletConnector({ onWalletConnected, onWalletDisconnected }: Wal
         <CardContent>
           <Button
             onClick={() => window.open("https://metamask.io/download/", "_blank")}
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white"
+            className="w-full bg-white hover:bg-gray-200 text-black"
           >
             Install MetaMask
           </Button>
@@ -183,9 +183,9 @@ export function WalletConnector({ onWalletConnected, onWalletDisconnected }: Wal
   }
 
   return (
-    <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
+    <Card className="bg-gray-900/40 backdrop-blur-sm border-gray-800">
       <CardHeader>
-        <CardTitle className="flex items-center space-x-2 text-gray-800">
+        <CardTitle className="flex items-center space-x-2 text-white">
           <Wallet className="w-5 h-5" />
           <span>Wallet Connection</span>
         </CardTitle>
@@ -198,7 +198,7 @@ export function WalletConnector({ onWalletConnected, onWalletDisconnected }: Wal
           <Button
             onClick={connectWallet}
             disabled={isConnecting}
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white"
+            className="w-full bg-white hover:bg-gray-200 text-black"
           >
             {isConnecting ? (
               <>
@@ -214,36 +214,36 @@ export function WalletConnector({ onWalletConnected, onWalletDisconnected }: Wal
           </Button>
         ) : (
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-green-900/40 border border-green-800 rounded-lg">
               <div className="flex items-center space-x-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-green-800">Connected</span>
+                <CheckCircle className="w-4 h-4 text-green-400" />
+                <span className="text-sm font-medium text-green-300">Connected</span>
               </div>
-              <Badge variant="outline" className="bg-white text-green-700 border-green-300">
+              <Badge variant="outline" className="bg-gray-800 text-green-300 border-green-700">
                 {formatAddress(address)}
               </Badge>
             </div>
             
             {networkError && (
-              <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-orange-900/40 border border-orange-800 rounded-lg">
                 <div className="flex items-center space-x-2">
-                  <AlertCircle className="w-4 h-4 text-orange-600" />
-                  <span className="text-sm text-orange-800">{networkError}</span>
+                  <AlertCircle className="w-4 h-4 text-orange-400" />
+                  <span className="text-sm text-orange-300">{networkError}</span>
                 </div>
                 <Button
                   size="sm"
                   onClick={switchToBaseNetwork}
                   variant="outline"
-                  className="bg-white hover:bg-orange-50 border-orange-300 text-orange-700"
+                  className="bg-gray-800 hover:bg-gray-700 border-orange-700 text-orange-300"
                 >
                   Switch Network
                 </Button>
               </div>
             )}
             
-            <div className="flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center justify-between text-sm text-gray-400">
               <span>Network:</span>
-              <Badge variant="outline" className="bg-white text-gray-700 border-gray-300">
+              <Badge variant="outline" className="bg-gray-800 text-gray-300 border-gray-700">
                 {CURRENT_NETWORK.name}
               </Badge>
             </div>
@@ -252,7 +252,7 @@ export function WalletConnector({ onWalletConnected, onWalletDisconnected }: Wal
               onClick={disconnectWallet}
               variant="outline"
               size="sm"
-              className="w-full bg-white hover:bg-gray-50 border-gray-300 text-gray-700"
+              className="w-full bg-gray-800 hover:bg-gray-700 border-gray-700 text-gray-300"
             >
               Disconnect
             </Button>

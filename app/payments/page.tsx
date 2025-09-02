@@ -53,29 +53,29 @@ export default function PaymentsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <Mic className="w-8 h-8 mx-auto mb-4 text-gray-600 animate-pulse" />
-          <p className="text-gray-600">Loading...</p>
+          <Mic className="w-8 h-8 mx-auto mb-4 text-gray-400 animate-pulse" />
+          <p className="text-gray-400">Loading...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
+      <header className="bg-black/60 backdrop-blur-sm border-b border-gray-800">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/dashboard" className="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+              <Link href="/dashboard" className="flex items-center space-x-2 text-gray-400 hover:text-white">
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
               </Link>
             </Button>
             
-            <MicdropLogo showText={true} />
+            <MicdropLogo showText={true} variant="white" />
           </div>
           
           <UserNav />
@@ -84,8 +84,8 @@ export default function PaymentsPage() {
 
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-light text-gray-800 mb-4">Premium Plans</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-light text-white mb-4">Premium Plans</h1>
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             Unlock advanced AI coaching features with secure Base blockchain payments. 
             Get detailed feedback, personalized recommendations, and priority support.
           </p>
@@ -93,45 +93,45 @@ export default function PaymentsPage() {
 
         {/* Features Overview */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="bg-white/60 backdrop-blur-sm border-gray-200 text-center">
+          <Card className="bg-gray-900/40 backdrop-blur-sm border-gray-800 text-center">
             <CardHeader>
               <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mx-auto mb-2">
                 <Shield className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800">Secure Payments</CardTitle>
+              <CardTitle className="text-white">Secure Payments</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-400 text-sm">
                 Pay directly with Base ETH. No intermediaries, no credit cards required. 
                 Your wallet, your control.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/60 backdrop-blur-sm border-gray-200 text-center">
+          <Card className="bg-gray-900/40 backdrop-blur-sm border-gray-800 text-center">
             <CardHeader>
               <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center mx-auto mb-2">
                 <Zap className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800">Instant Access</CardTitle>
+              <CardTitle className="text-white">Instant Access</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-400 text-sm">
                 Premium features unlock immediately after payment confirmation. 
                 Start practicing with advanced AI right away.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/60 backdrop-blur-sm border-gray-200 text-center">
+          <Card className="bg-gray-900/40 backdrop-blur-sm border-gray-800 text-center">
             <CardHeader>
               <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center mx-auto mb-2">
                 <CreditCard className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800">Low Fees</CardTitle>
+              <CardTitle className="text-white">Low Fees</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-400 text-sm">
                 Base network offers low transaction fees and fast confirmation times. 
                 More value for your money.
               </p>
@@ -145,28 +145,28 @@ export default function PaymentsPage() {
         {/* Payment History */}
         {paymentHistory.length > 0 && (
           <div className="mt-12">
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
+            <Card className="bg-gray-900/40 backdrop-blur-sm border-gray-800">
               <CardHeader>
-                <CardTitle className="text-gray-800">Payment History</CardTitle>
+                <CardTitle className="text-white">Payment History</CardTitle>
                 <CardDescription>Your recent transactions on Base network</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {paymentHistory.map((payment) => (
-                    <div key={payment.id} className="flex items-center justify-between p-3 bg-white/40 rounded-lg border border-gray-200">
+                    <div key={payment.id} className="flex items-center justify-between p-3 bg-gray-800/40 rounded-lg border border-gray-700">
                       <div>
-                        <p className="font-medium text-gray-800 capitalize">
+                        <p className="font-medium text-white capitalize">
                           {payment.payment_type.replace('_', ' ')}
                         </p>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-400">
                           {new Date(payment.created_at).toLocaleDateString()}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-gray-800">{payment.amount} ETH</p>
+                        <p className="font-medium text-white">{payment.amount} ETH</p>
                         <p className={`text-sm capitalize ${
-                          payment.status === 'confirmed' ? 'text-green-600' : 
-                          payment.status === 'failed' ? 'text-red-600' : 'text-yellow-600'
+                          payment.status === 'confirmed' ? 'text-green-400' : 
+                          payment.status === 'failed' ? 'text-red-400' : 'text-yellow-400'
                         }`}>
                           {payment.status}
                         </p>

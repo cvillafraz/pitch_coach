@@ -93,18 +93,18 @@ export function AIVoiceInput({
                         "group w-16 h-16 rounded-xl flex items-center justify-center transition-colors",
                         submitted
                             ? "bg-none"
-                            : "bg-none hover:bg-black/10 dark:hover:bg-white/10"
+                            : "bg-none hover:bg-white/10"
                     )}
                     type="button"
                     onClick={handleClick}
                 >
                     {submitted ? (
                         <div
-                            className="w-6 h-6 rounded-sm animate-spin bg-gray-800 cursor-pointer pointer-events-auto"
+                            className="w-6 h-6 rounded-sm animate-spin bg-white cursor-pointer pointer-events-auto"
                             style={{ animationDuration: "3s" }}
                         />
                     ) : (
-                        <Mic className="w-6 h-6 text-gray-800" />
+                        <Mic className="w-6 h-6 text-white" />
                     )}
                 </button>
 
@@ -112,8 +112,8 @@ export function AIVoiceInput({
                     className={cn(
                         "font-mono text-sm transition-opacity duration-300",
                         submitted
-                            ? "text-gray-800"
-                            : "text-gray-600"
+                            ? "text-white"
+                            : "text-gray-400"
                     )}
                 >
                     {formatTime(time)}
@@ -126,8 +126,8 @@ export function AIVoiceInput({
                             className={cn(
                                 "w-0.5 rounded-full transition-all duration-300",
                                 submitted
-                                    ? "bg-gray-700 animate-pulse"
-                                    : "bg-gray-300 h-1"
+                                    ? "bg-gray-300 animate-pulse"
+                                    : "bg-gray-700 h-1"
                             )}
                             style={
                                 submitted && isClient
@@ -141,7 +141,7 @@ export function AIVoiceInput({
                     ))}
                 </div>
 
-                <p className="h-4 text-xs text-gray-700">
+                <p className="h-4 text-xs text-gray-500">
                     {submitted ? "Listening..." : "Click to speak"}
                 </p>
             </div>

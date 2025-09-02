@@ -51,11 +51,11 @@ const testimonials = [
 
 export default function WelcomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-yellow-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-white/60 backdrop-blur-sm border-b border-gray-100">
+      <header className="bg-black/60 backdrop-blur-sm border-b border-gray-800">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <MicdropLogo size="xxl" />
+          <MicdropLogo size="xxl" variant="white" />
           <div className="flex items-center space-x-3">
             <HeaderNav />
           </div>
@@ -65,14 +65,14 @@ export default function WelcomePage() {
       {/* Hero Section */}
       <main className="container mx-auto px-6 py-20">
         <div className="text-center max-w-4xl mx-auto mb-12 py-20">
-          <h1 className="text-6xl md:text-8xl font-light text-gray-800 mb-6 leading-tight">
+          <h1 className="text-6xl md:text-8xl font-light text-white mb-6 leading-tight">
             Make your pitch{" "}
             <span className="italic bg-gradient-to-r from-rose-400 to-orange-400 bg-clip-text text-transparent">
               shine.
             </span>
           </h1>
           
-          <p className="text-xl text-gray-500 mb-16 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-400 mb-16 max-w-2xl mx-auto leading-relaxed">
             Turn ideas into a calm, confident pitch that gets money.
           </p>
           
@@ -88,40 +88,40 @@ export default function WelcomePage() {
 
         {/* Secondary Hero Section */}
         <div className="text-center max-w-4xl mx-auto mb-24 py-16">
-          <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6 leading-tight">
+          <h2 className="text-4xl md:text-6xl font-light text-white mb-6 leading-tight">
             Good pitches get{" "}
-            <span className="italic font-medium text-gray-900">
+            <span className="italic font-medium text-gray-100">
               money
             </span>
           </h2>
           
-          <p className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
             Real examples of confident, compelling pitches
           </p>
         </div>
 
         {/* Features Section */}
         <div id="features" className="grid md:grid-cols-3 gap-8 mb-24">
-          <div className="text-center p-8 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-100">
-          <Mic className="w-8 h-8 text-rose-500" />
-            <h3 className="text-xl font-medium text-gray-800 mb-4">Smart Recognition</h3>
-            <p className="text-gray-600 leading-relaxed">
+          <div className="text-center p-8 bg-gray-900/40 backdrop-blur-sm rounded-lg border border-gray-800">
+            <Mic className="w-8 h-8 text-rose-500 mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-white mb-4">Smart Recognition</h3>
+            <p className="text-gray-400 leading-relaxed">
               Advanced speech recognition that understands your pitch and responds naturally
             </p>
           </div>
 
-          <div className="text-center p-8 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-100">
-          <Target className="w-8 h-8 text-orange-500" />
-            <h3 className="text-xl font-medium text-gray-800 mb-4">Instant Feedback</h3>
-            <p className="text-gray-600 leading-relaxed">
+          <div className="text-center p-8 bg-gray-900/40 backdrop-blur-sm rounded-lg border border-gray-800">
+            <Target className="w-8 h-8 text-orange-500 mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-white mb-4">Instant Feedback</h3>
+            <p className="text-gray-400 leading-relaxed">
               Get actionable insights to improve your delivery, content, and overall impact
             </p>
           </div>
 
-          <div className="text-center p-8 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-100">
-          <TrendingUp className="w-8 h-8 text-yellow-500" />
-            <h3 className="text-xl font-medium text-gray-800 mb-4">Track Progress</h3>
-            <p className="text-gray-600 leading-relaxed">
+          <div className="text-center p-8 bg-gray-900/40 backdrop-blur-sm rounded-lg border border-gray-800">
+            <TrendingUp className="w-8 h-8 text-yellow-500 mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-white mb-4">Track Progress</h3>
+            <p className="text-gray-400 leading-relaxed">
               Monitor your improvement with detailed analytics and performance metrics
             </p>
           </div>
@@ -130,21 +130,19 @@ export default function WelcomePage() {
         {/* Testimonials Section */}
         <div className="mb-24">
           <div className="text-center mb-16">
-            <h3 className="text-3xl font-light text-gray-800 mb-4">
+            <h3 className="text-3xl font-light text-white mb-4">
               Trusted by founders
             </h3>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-400 text-lg">
               See how Micdrop helped secure millions in funding
             </p>
           </div>
           <TestimonialSlider testimonials={testimonials} />
         </div>
-
-
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-100 bg-white/40 backdrop-blur-sm mt-24">
+      <footer className="border-t border-gray-800 bg-black/40 backdrop-blur-sm mt-24">
         <div className="container mx-auto px-6 py-8 text-center text-gray-500">
           <p>&copy; 2025 Micdrop. Empowering founders to pitch with confidence.</p>
         </div>

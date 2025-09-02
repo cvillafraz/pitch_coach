@@ -63,7 +63,7 @@ export default function OnboardingPage() {
 
   const WelcomeStep = () => (
     <div className="text-center space-y-6">
-      <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+      <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto">
         <Mic className="w-10 h-10 text-primary" />
       </div>
       <div>
@@ -97,49 +97,84 @@ export default function OnboardingPage() {
         <p className="text-lg text-muted-foreground">Four powerful features to help you master your pitch</p>
       </div>
       <div className="grid md:grid-cols-2 gap-6">
-        <Card className="border-2 border-primary/20">
-          <CardHeader>
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-2">
-              <Mic className="w-6 h-6 text-primary" />
+        <Card className="group border-2 border-cyan-400/20 hover:border-cyan-400/40 hover:bg-cyan-500/5 transition-all duration-300 hover:-translate-y-0.5">
+          <CardHeader className="space-y-2">
+            <div className="flex items-center gap-3">
+              <Mic className="w-5 h-5 text-cyan-400" />
+              <CardTitle className="text-lg">1. Speech Recognition</CardTitle>
             </div>
-            <CardTitle className="text-xl">1. Speech Recognition</CardTitle>
             <CardDescription>
               Practice speaking naturally while our AI listens and responds in real-time
             </CardDescription>
           </CardHeader>
         </Card>
-        <Card className="border-2 border-secondary/20">
-          <CardHeader>
-            <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-2">
-              <Users className="w-6 h-6 text-secondary" />
+        <Card className="group border-2 border-emerald-400/20 hover:border-emerald-400/40 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-0.5">
+          <CardHeader className="space-y-2">
+            <div className="flex items-center gap-3">
+              <Users className="w-5 h-5 text-emerald-400" />
+              <CardTitle className="text-lg">2. Investor Personas</CardTitle>
             </div>
-            <CardTitle className="text-xl">2. Investor Personas</CardTitle>
             <CardDescription>
               Choose from different investor types or create custom personas for targeted practice
             </CardDescription>
           </CardHeader>
         </Card>
-        <Card className="border-2 border-primary/20">
-          <CardHeader>
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-2">
-              <Target className="w-6 h-6 text-primary" />
+        <Card className="group border-2 border-violet-400/20 hover:border-violet-400/40 hover:bg-violet-500/5 transition-all duration-300 hover:-translate-y-0.5">
+          <CardHeader className="space-y-2">
+            <div className="flex items-center gap-3">
+              <Target className="w-5 h-5 text-violet-400" />
+              <CardTitle className="text-lg">3. Real-Time Feedback</CardTitle>
             </div>
-            <CardTitle className="text-xl">3. Real-Time Feedback</CardTitle>
             <CardDescription>Get instant suggestions on your delivery, content, and presentation style</CardDescription>
           </CardHeader>
         </Card>
-        <Card className="border-2 border-secondary/20">
-          <CardHeader>
-            <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-2">
-              <TrendingUp className="w-6 h-6 text-secondary" />
+        <Card className="group border-2 border-amber-400/20 hover:border-amber-400/40 hover:bg-amber-500/5 transition-all duration-300 hover:-translate-y-0.5">
+          <CardHeader className="space-y-2">
+            <div className="flex items-center gap-3">
+              <TrendingUp className="w-5 h-5 text-amber-400" />
+              <CardTitle className="text-lg">4. Progress Tracking</CardTitle>
             </div>
-            <CardTitle className="text-xl">4. Progress Tracking</CardTitle>
             <CardDescription>Monitor your improvement with detailed analytics and performance scores</CardDescription>
           </CardHeader>
         </Card>
       </div>
     </div>
   )
+
+  // Helper to keep consistent color classes without dynamic tailwind strings
+  const getColorClassesForType = (id: string) => {
+    switch (id) {
+      case "investor":
+        return {
+          border: "border-emerald-400/20",
+          hoverBorder: "hover:border-emerald-400/40",
+          hoverBg: "hover:bg-emerald-500/5",
+          icon: "text-emerald-400",
+        }
+      case "sales":
+        return {
+          border: "border-violet-400/20",
+          hoverBorder: "hover:border-violet-400/40",
+          hoverBg: "hover:bg-violet-500/5",
+          icon: "text-violet-400",
+        }
+      case "demo":
+        return {
+          border: "border-amber-400/20",
+          hoverBorder: "hover:border-amber-400/40",
+          hoverBg: "hover:bg-amber-500/5",
+          icon: "text-amber-400",
+        }
+      case "general":
+      default:
+        return {
+          border: "border-cyan-400/20",
+          hoverBorder: "hover:border-cyan-400/40",
+          hoverBg: "hover:bg-cyan-500/5",
+          icon: "text-cyan-400",
+        }
+    }
+  }
 
   const GoalStep = () => (
     <div className="space-y-8">
@@ -152,23 +187,26 @@ export default function OnboardingPage() {
       <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
         {pitchTypes.map((type) => {
           const Icon = type.icon
+          const color = getColorClassesForType(type.id)
           return (
             <Card
               key={type.id}
-              className={`cursor-pointer transition-all hover:shadow-md ${
-                selectedGoal === type.id ? "border-2 border-primary bg-primary/5" : "border hover:border-primary/50"
-              }`}
+              className={`group cursor-pointer transition-all hover:shadow-md ${
+                selectedGoal === type.id
+                  ? `border-2 border-primary ring-2 ring-primary/40 bg-primary/5`
+                  : `border ${color.border} ${color.hoverBorder} ${color.hoverBg}`
+              } hover:-translate-y-0.5`}
               onClick={() => setSelectedGoal(type.id)}
             >
-              <CardHeader className="text-center">
-                <div
-                  className={`w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-2 ${
-                    selectedGoal === type.id ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"
-                  }`}
-                >
-                  <Icon className="w-6 h-6" />
+              <CardHeader className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <Icon
+                    className={`w-5 h-5 ${
+                      selectedGoal === type.id ? "text-primary" : color.icon
+                    }`}
+                  />
+                  <CardTitle className="text-lg">{type.title}</CardTitle>
                 </div>
-                <CardTitle className="text-xl">{type.title}</CardTitle>
                 <CardDescription>{type.description}</CardDescription>
               </CardHeader>
             </Card>
@@ -187,7 +225,7 @@ export default function OnboardingPage() {
 
   const ReadyStep = () => (
     <div className="text-center space-y-8">
-      <div className="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mx-auto">
+      <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto">
         <CheckCircle className="w-10 h-10 text-secondary" />
       </div>
       <div>
