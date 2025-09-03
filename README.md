@@ -3,7 +3,7 @@
 Local development setup for the Micdrop Next.js app.
 
 ## Prerequisites
-- Node.js 18.18+ or 20+
+- Node.js 22+
 - pnpm 10.15.0 (recommended)
   - Install: `corepack enable && corepack prepare pnpm@10.15.0 --activate`
 
